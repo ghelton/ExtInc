@@ -7,6 +7,8 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
 	
+	import player.PlayerData;
+	
 	
 	/**
 	 * [Description]
@@ -36,6 +38,8 @@ package
 		{
 			/*stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;*/
+			
+			var player:PlayerData = new PlayerData();
 		}
 		
 		//--------------------------------------
