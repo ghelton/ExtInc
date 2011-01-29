@@ -75,10 +75,10 @@ package
 			/*stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;*/
 			
-			/*var player:PlayerData = new PlayerData();
+			var player:PlayerData = new PlayerData();
 			var tool:Tool = player.getTool(Lookup.MINES);
 			tool.addEventListener(ToolEvent.TOOL_AVAILABLE, onTool, false, 0, true);
-			tool.useTool();*/
+			tool.useTool();
 		}
 		
 		//--------------------------------------
