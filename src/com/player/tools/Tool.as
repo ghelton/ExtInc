@@ -1,10 +1,10 @@
-package player.tools
+package com.player.tools
 {
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import lookup.Lookup;
+	import com.lookup.Lookup;
 
 	public class Tool extends EventDispatcher
 	{

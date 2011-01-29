@@ -1,4 +1,4 @@
-package creatures
+package com.creatures
 {
 	public class Creature extends 
 	{

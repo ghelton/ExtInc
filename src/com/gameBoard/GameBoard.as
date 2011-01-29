@@ -1,6 +1,6 @@
-package gameBoard
+package com.gameBoard
 {
-	import creatures.Entity;
+	import com.creatures.Entity;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;

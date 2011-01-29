@@ -1,4 +1,4 @@
-package player.tools
+package com.player.tools
 {
 	import flash.events.Event;
 	

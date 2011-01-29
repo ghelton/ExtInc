@@ -1,4 +1,4 @@
-package gameBoard
+package com.gameBoard
 {
 	import flash.display.Sprite;
 	

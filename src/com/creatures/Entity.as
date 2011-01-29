@@ -1,10 +1,10 @@
-package creatures
+package com.creatures
 {
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
-	import lookup.Lookup;
+	import com.lookup.Lookup;
 	
 	
 	public class Entity extends EventDispatcher

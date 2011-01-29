@@ -1,4 +1,4 @@
-package lookup
+package com.lookup
 {
 	public class Lookup
 	{

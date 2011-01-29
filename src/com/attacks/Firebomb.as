@@ -1,6 +1,6 @@
-package attacks
+package com.attacks
 {
-	import creatures.Fire;
+	import com.creatures.Fire;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;

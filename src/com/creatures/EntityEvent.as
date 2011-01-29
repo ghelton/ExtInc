@@ -1,4 +1,4 @@
-package creatures
+package com.creatures
 {
 	import flash.events.Event;
 	

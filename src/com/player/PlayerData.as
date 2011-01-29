@@ -1,8 +1,8 @@
-package player
+package com.player
 {
-	import lookup.Lookup;
+	import com.lookup.Lookup;
 	
-	import player.tools.Tool;
+	import com.player.tools.Tool;
 
 	public class PlayerData
 	{

@@ -1,16 +1,19 @@
 package
 {
-	import attacks.Firebomb;
+	import com.attacks.Firebomb;
+	
+	import com.creatures.Entity;
 	
 	import flash.display.Sprite;
-	import flash.text.engine.TabAlignment;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
+	import flash.text.engine.TabAlignment;
 	
-	import gameBoard.GameBoard;
-	import gameBoard.Tile;
-	import player.PlayerData;
+	import com.gameBoard.GameBoard;
+	import com.gameBoard.Tile;
+	
+	import com.player.PlayerData;
 	
 	
 	/**
@@ -61,11 +64,15 @@ package
 			gameBoard = new GameBoard(buildGameBoard());
 			
 			addChild(gameBoard);
-//			gameBoard.addEntity(
+			
+			var testPoint:Point;
+			for(var count:int = 10; count >= 0; count--)
+			{
+				testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
+				gameBoard.addEntity(new Entity(null, 100, testPoint, 0));
+			}
 			/*stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;*/
-			
-			var player:PlayerData = new PlayerData();
 		}
 		
 		//--------------------------------------

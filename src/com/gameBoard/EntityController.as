@@ -1,4 +1,4 @@
-package gameBoard
+package com.gameBoard
 {
 	public class EntityController
 	{

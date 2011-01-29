@@ -1,9 +1,9 @@
-package creatures
+package com.creatures
 {
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import lookup.Lookup;
+	import com.lookup.Lookup;
 	
 	public class Panda
 	{
