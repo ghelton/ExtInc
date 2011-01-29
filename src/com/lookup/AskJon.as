@@ -1,6 +1,18 @@
 package com.lookup
 {
-	public class Lookup
+	import com.creatures.Commando;
+	import com.creatures.Fire;
+	import com.creatures.Marine;
+	import com.creatures.Mine;
+	import com.creatures.Panda;
+	import com.creatures.PandaBait;
+	import com.creatures.Seal;
+	import com.creatures.SealBait;
+	import com.creatures.Tiger;
+	import com.creatures.TigerBait;
+	import com.creatures.Tree;
+
+	public class AskJon
 	{
 		//Animals
 		public static const PANDA:String 				= 'PANDA';
@@ -195,17 +207,17 @@ package com.lookup
 		//Health regen per second
 		public static const entityRegenArray:Object = 
 			{
-				PANDA:			-1,
-				SEAL:			-1,
-				TIGER:			-1,
-				COMMANDO:		-10,
-				MARINE:			-20,
-				FIRE:			-10,
-				TREE:			5,
-				PANDA_BAIT:		0,
-				SEAL_BAIT:		0,
-				TIGER_BAIT:		0,
-				MINE:			0
+				PANDA:			-1.0,
+				SEAL:			-1.0,
+				TIGER:			-1.0,
+				COMMANDO:		-10.0,
+				MARINE:			-20.0,
+				FIRE:			-10.0,
+				TREE:			5.0,
+				PANDA_BAIT:		0.0,
+				SEAL_BAIT:		0.0,
+				TIGER_BAIT:		0.0,
+				MINE:			0.0
 			};
 		
 		//toolz
@@ -220,7 +232,36 @@ package com.lookup
 				COMMANDO_TOOL:		{cooldown:5, cost:100}
 			};
 		
-		public function Lookup()
+		public static const classLookup:Object =
+			{
+				PANDA: 			Panda,
+				TIGER: 			Tiger,
+				SEAL: 			Seal,
+				COMMANDO:		Commando,
+				MARINE:			Marine,
+				FIRE:			Fire,
+				TREE:			Tree,
+				PANDA_BAIT:		PandaBait,
+				SEAL_BAIT:		SealBait,
+				TIGER_BAIT:		TigerBait,
+				MINE:			Mine
+			}
+		
+		public static const colorOf:Object =
+			{
+				PANDA: 			0xEEFFCC,
+				TIGER: 			0xFFA0A0,
+				SEAL: 			0xFFA0A0,
+				COMMANDO:		0xFFBBAA,
+				MARINE:			0x0BFF0A,
+				FIRE:			0xFFA0A0,
+				TREE:			0x00CCA0,
+				PANDA_BAIT:		0x00AABB,
+				SEAL_BAIT:		0x0AABB0,
+				TIGER_BAIT:		0xAABB00,
+				MINE:			0xCC00DD
+			}
+		public function AskJon()
 		{
 			
 		}

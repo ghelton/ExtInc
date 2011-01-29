@@ -1,15 +1,15 @@
 package com.creatures
 {
+	import com.lookup.AskJon;
+	
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import com.lookup.Lookup;
-	
-	public class Marine
+	public class Marine extends Entity
 	{
-		public function Marine($graphic:Sprite, $health:Number, $point:Point)
+		public function Marine($health:Number, $point:Point)
 		{
-			super($graphic, $health, $point, Lookup.MARINE);
+			super(null, $health, $point, AskJon.MARINE);
 		}
 	}
 }

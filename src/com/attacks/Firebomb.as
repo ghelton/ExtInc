@@ -36,7 +36,7 @@ package com.attacks
 
 			for(var i:int = 0; i < _numFires; i++)
 			{
-				flame = new Fire(new Sprite(), 100, new Point(_start.x + _pathOffset.x * i, _start.y + _pathOffset.y * i));
+				flame = new Fire(100, new Point(_start.x + _pathOffset.x * i, _start.y + _pathOffset.y * i));
 				dispatchEvent(new AttackEvent(AttackEvent.FIRE, flame));
 //				_fires[i] = flame;
 			}

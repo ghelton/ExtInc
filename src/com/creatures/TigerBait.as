@@ -3,13 +3,20 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import com.lookup.Lookup;
+	import com.lookup.AskJon;
 	
-	public class TigerBait
+	public class TigerBait extends Entity
 	{
-		public function TigerBait($graphic:Sprite, $health:Number, $point:Point)
+		public function TigerBait($health:Number, $point:Point)
 		{
-			super($graphic, $health, $point, Lookup.TIGER_BAIT);
+//			var tempGraphic:Sprite = new Sprite();
+//			with(tempGraphic.graphics)
+//			{
+//				beginFill(0xFFA0A0, 0.5);
+//				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
+//				endFill();
+//			}
+			super(null, $health, $point, AskJon.TIGER_BAIT);
 		}
 	}
 }

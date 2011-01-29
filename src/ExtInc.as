@@ -4,7 +4,7 @@ package
 	import com.creatures.Entity;
 	import com.gameBoard.GameBoard;
 	import com.gameBoard.Tile;
-	import com.lookup.Lookup;
+	import com.lookup.AskJon;
 	import com.player.PlayerData;
 	import com.player.tools.Tool;
 	import com.player.tools.ToolEvent;
@@ -58,8 +58,7 @@ package
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
-		private var testTypes:Array = [Lookup.COMMANDO, Lookup.SEAL, Lookup.PANDA, Lookup.MARINE];
-		private var testColors:Array = [0xFF0000, 0x0FF000, 0x00FF00, 0x000FF0];
+		private var testTypes:Array = [AskJon.COMMANDO, AskJon.SEAL, AskJon.PANDA, AskJon.MARINE, AskJon.PANDA];
 		
 		private var _player:PlayerData;
 
@@ -87,12 +86,16 @@ package
 			
 			gameBoard.x = _gameBoardMask.x = 55; 
 			gameBoard.y = _gameBoardMask.y = 40;
-			
+			var count:int;
 			var testPoint:Point;
-			for(var count:int = 10; count >= 0; count--)
+			for each(var enemyType:String in testTypes)
 			{
-				testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
-				gameBoard.addEntity(new Entity(null, 100, testPoint, Lookup.COMMANDO));
+				for(count = 10; count >= 0; count--)
+				{
+					testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
+					gameBoard.createEntity(testPoint, enemyType);
+//					gameBoard.addEntity(new Entity(null, 100, testPoint, enemyType));
+				}
 			}
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
