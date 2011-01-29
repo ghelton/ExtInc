@@ -5,6 +5,7 @@ package gameBoard
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.utils.Timer;
+	import flash.utils.getTimer;
 
 	public class GameBoard extends Sprite
 	{
@@ -20,6 +21,7 @@ package gameBoard
 		}
 		
 		private var _tileLayer:Sprite = new Sprite();
+		private var _entityLayer:Sprite = new Sprite();
 		
 		private function drawGrid():void
 		{
@@ -41,7 +43,7 @@ package gameBoard
 		
 		public function tick(stepTime:Number):void
 		{
-//			Entity.
+			Entity._masterTime = (getTimer() / 1000);
 			for each(var entity:Entity in entities)
 				entity.tick(stepTime);
 		}
@@ -49,6 +51,7 @@ package gameBoard
 		public function addEntity(newEntity:Entity):void
 		{
 			entities.push(newEntity);
+			_entityLayer.addChild(newEntity.getGraphic());
 		}
 		public function removeEntity(deadEntity:Entity):void
 		{

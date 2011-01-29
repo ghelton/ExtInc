@@ -3,24 +3,24 @@ package lookup
 	public class Lookup
 	{
 		//Animals
-		public static const PANDA:int 				= 100;
-		public static const SEAL:int 				= 101;
-		public static const TIGER:int 				= 102;
+		public static const PANDA:uint 				= 100;
+		public static const SEAL:uint 				= 101;
+		public static const TIGER:uint 				= 102;
 		
 		//Units
-		public static const COMMANDO:int 			= 200;
-		public static const MARINE:int 				= 201;
+		public static const COMMANDO:uint 			= 200;
+		public static const MARINE:uint 				= 201;
 		
 		//Environmental
-		public static const TREE:int 				= 300;
+		public static const TREE:uint 				= 300;
 		
 		//TOOLS
-		public static const PANDA_BAIT_REG 			= 400;
-		public static const SEAL_BAIT_REG 			= 401;
-		public static const TIGER_BAIT_REG 			= 402;
-		public static const FIRE:int 				= 403;
-		public static const MINES:int				= 404;
-		public static const MARINES:int				= 405;
+		public static const PANDA_BAIT:uint		= 400;
+		public static const SEAL_BAIT:uint		= 401;
+		public static const TIGER_BAIT:uint		= 402;
+		public static const FIRE:uint				= 403;
+		public static const MINES:uint				= 404;
+		public static const MARINES:uint			= 405;
 		
 		public static const entityFactionMatrix:Object = 
 			{
@@ -92,16 +92,30 @@ package lookup
 		
 		public static const entityRangeArray:Object = 
 			{
-				PANDA:			0,
-				SEAL:			0,
-				TIGER:			0,
-				COMMANDO:		0,
-				MARINE:			0,
-				FIRE:			0,
-				TREE:			0,
-				PANDA_BAIT_REG:	0,
-				SEAL_BAIT_REG:	0,
-				TIGER_BAIT_REG:	0
+				PANDA:			1,
+				SEAL:			1,
+				TIGER:			1,
+				COMMANDO:		1,
+				MARINE:			1,
+				FIRE:			1,
+				TREE:			1,
+				PANDA_BAIT_REG:	1,
+				SEAL_BAIT_REG:	1,
+				TIGER_BAIT_REG:	1
+			};
+		
+		public static const entityROFArray:Object = 
+			{
+				PANDA:			1,
+				SEAL:			1,
+				TIGER:			1,
+				COMMANDO:		1,
+				MARINE:			1,
+				FIRE:			1,
+				TREE:			1,
+				PANDA_BAIT_REG:	1,
+				SEAL_BAIT_REG:	1,
+				TIGER_BAIT_REG:	1
 			};
 		
 		public static const playersStartingData:Object = 
