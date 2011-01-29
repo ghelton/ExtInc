@@ -101,13 +101,14 @@ package com.creatures
 		
 		public function attackEntity(enemy:Entity, timeDelta:Number):void
 		{
-			var healthChange:Number = timeDelta * Lookup.entityDamageMatrix[_type][enemy.type];
+			var healthChange:Number = Lookup.entityDamageMatrix[_type][enemy.type];
 			if((_health + healthChange) < 0)
 			{
+				trace("DEAD");
 				_health = 0;
-				enemy.dispatchEvent(new EntityEvent(EntityEvent.KILLED));
+				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			} else {
-				_health += timeDelta * Lookup.entityDamageMatrix[_type][enemy.type];	
+				_health += Lookup.entityDamageMatrix[_type][enemy.type];	
 			}
 		}
 		
@@ -124,6 +125,11 @@ package com.creatures
 			{
 				
 			} else {
+				if(fearVector.x < 0.01 && fearVector.y < .01)
+				{
+					return;
+				}
+				
 				_centerPoint.x += fearVector.x * deltaTime * Lookup.entitySpeedArray[_type];
 				_centerPoint.y += fearVector.y * deltaTime * Lookup.entitySpeedArray[_type];
 				updatePosition();
@@ -134,7 +140,7 @@ package com.creatures
 		public function attackTick():void
 		{
 			var distance:Number = 0;
-			var closestDistance:Number = 10000;
+			var closestDistance:Number = Number.POSITIVE_INFINITY;
 			var closestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			if(!canAttack())
@@ -148,7 +154,7 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if(!(Lookup.entityFactionMatrix[enemy.type] == Lookup.entityFactionMatrix[_type] == 0) && distance <= closestDistance)
+				if(!(Lookup.entityDamageMatrix[enemy.type] == Lookup.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= Lookup.entityRangeArray[_type])
 				{
 					closestEntity = enemy;
 					closestDistance = distance;
@@ -160,8 +166,8 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(enemy, deltaTime);
-			enemy.riposte(this);
+			attackEntity(closestEntity, deltaTime);
+			closestEntity.riposte(this);
 		}
 		
 		public function riposte(attacker:Entity):void
@@ -172,12 +178,11 @@ package com.creatures
 			}	
 		}
 		
-		
-		
 		public function updateFearVector():void
 		{
 			var scale:Number;
-			var newFearFector:Point = new Point();
+			var newFearVector:Point = new Point();
+			var differenceVector:Point = new Point();
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
@@ -185,11 +190,15 @@ package com.creatures
 					continue;
 				}
 				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
-				newFearFector = newFearFector.add(enemy.centerPoint.subtract(centerPoint)); 
-				newFearFector.x *= scale;
-				newFearFector.y *= scale;
+				
+				differenceVector = enemy._centerPoint.subtract(_centerPoint);
+				
+				differenceVector.x *= scale;
+				differenceVector.y *= scale;
+				
+				newFearVector = newFearVector.add(differenceVector); 
 			}
-			fearVector = (fearVector.add(newFearFector));
+			fearVector = (fearVector.add(newFearVector));
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;
 		}

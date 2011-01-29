@@ -1,9 +1,14 @@
 package com.gameBoard
 {
+	import com.attacks.AttackEvent;
+	import com.attacks.Firebomb;
 	import com.creatures.Entity;
+	import com.creatures.EntityEvent;
+	import com.creatures.Fire;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
@@ -23,15 +28,70 @@ package com.gameBoard
 			addChild(_tileLayer);
 			addChild(_entityLayer);
 			
-			addEventListener(Event.ENTER_FRAME, init);
+			addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		// EVENT LISTENERS
+		
+		private var _weapons:Vector.<Firebomb> = new Vector.<Firebomb>();
+		private var _weapon:Firebomb;
+		private var _startPoint:Point;
+		private function onAttackDown(e:Event):void 
+		{
+//			trace('attack down');
+			_startPoint = new Point(mouseX, mouseY);
+			_weapon = new Firebomb(_startPoint, 30);
+			_weapons.push(_weapon);
+			
+			_tileLayer.removeEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, onAttackUp);
+		}
+		private function onAttackUp(e:Event):void
+		{
+			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, onAttackUp);
+			
+			_weapon.addEventListener(AttackEvent.FIRE, fireAttack);
+			_weapon.addEventListener(AttackEvent.FINISHED, finishAttack);
+			_weapon.drop(new Point(mouseX, mouseY));
+		}
+		private function fireAttack(attack:AttackEvent):void 
+		{
+			addEntity(attack.bomb);
+		}
+		private function finishAttack(attack:AttackEvent):void
+		{
+			var weapon:Firebomb = attack.weapon;
+			if(weapon != null)
+			{
+				weapon.removeEventListener(AttackEvent.FIRE, fireAttack);
+				weapon.removeEventListener(AttackEvent.FINISHED, finishAttack);
+				
+				var index:int = _weapons.lastIndexOf(weapon);
+				if(index >= 0)
+					_weapons.splice(index, 1);
+			}
+		}
+		private function tangoDown(e:EntityEvent):void
+		{
+			removeEntity(e.entity);
 		}
 		
 		private function init(e:Event):void
 		{
-			removeEventListener(Event.ENTER_FRAME, init);
+			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			stage.addEventListener(Event.ENTER_FRAME, mainLoop);
+			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
+			
+			addEventListener(Event.ENTER_FRAME, mainLoop);
 		}
+		
+		
+		
+		
+		
+		
+		//UTILITY AND DRAW
 		
 		private var _tileLayer:Sprite = new Sprite();
 		private var _entityLayer:Sprite = new Sprite();
@@ -70,6 +130,7 @@ package com.gameBoard
 		
 		public function addEntity(newEntity:Entity):void
 		{
+			newEntity.addEventListener(EntityEvent.KILLED, tangoDown);
 			newEntity.setHitList(entities);
 			entities.push(newEntity);
 			_entityLayer.addChild(newEntity.getGraphic());
@@ -77,8 +138,10 @@ package com.gameBoard
 		public function removeEntity(deadEntity:Entity):void
 		{
 			var index:int = entities.lastIndexOf(deadEntity);
-			if(index >= 0)
+			deadEntity.removeEventListener(EntityEvent.KILLED, tangoDown);
+			if(index >= 0) {
 				entities.splice(index, 1);
+			}
 		}
 		
 		private function mainLoop(e:Event):void

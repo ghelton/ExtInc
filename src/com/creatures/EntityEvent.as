@@ -5,9 +5,13 @@ package com.creatures
 	public class EntityEvent extends Event
 	{
 		public static const KILLED:String = 'KILLED';
-		public function EntityEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public static const SPLIT:String = 'SPLIT';
+		
+		public var entity:Entity;
+		public function EntityEvent(type:String, targetEntity:Entity)
 		{
-			super(type, bubbles, cancelable);
+			super(type, false, false);
+			entity = targetEntity;
 		}
 	}
 }

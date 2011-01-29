@@ -1,48 +1,65 @@
 package com.attacks
 {
+	import com.creatures.Entity;
 	import com.creatures.Fire;
+	import com.gameBoard.GameBoard;
 	
 	import flash.display.Sprite;
+	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 
-	public class Firebomb
+	public class Firebomb extends EventDispatcher
 	{
 		private var _start:Point;
 		private var _end:Point;
 		private var _numFires:uint;
-		private var _fires:Vector.<Fire>;
+//		private var _fires:Vector.<Fire>;
 		
-		public function Firebomb($start:Point, $end:Point, $numFires:uint)
+		public function Firebomb($start:Point, $numFires:uint)
 		{
 			_start = $start;
-			_end = $end;
 			_numFires = $numFires;
 			
-			var vector:Point = _end.subtract(_start);
-			var length:Number = vector.length;
-			var angle:Number = Math.atan2(vector.y, vector.x);
-			var spacing:Number = length / $numFires;
-			
-			_fires = new Vector.<Fire>($numFires, true);
-			var flame:Fire;
-			var unitX:Number = vector.x / $numFires + $start.x;
-			var unitY:Number = vector.y / $numFires + $start.y;
-			for(var i:int = 0; i < $numFires; i++)
-			{
-				flame = new Fire(new Sprite(), 10, new Point(unitX * i, unitY * i));
-				_fires[i] = flame;
-			}
 		}
 		
-		public function drawFires(drawTo:Sprite):void
+		private var _pathOffset:Point;
+		public function drop(endPoint:Point):void
 		{
-			drawTo.graphics.lineStyle(1, 0, 1, true);
-			var p:Point;
-			for(var i:int = 0; i < _fires.length; i++)
+			_end = endPoint;
+			var flame:Fire;
+			var vector:Point = _end.subtract(_start);
+			var length:Number = vector.length;
+			
+			
+//			_fires = new Vector.<Fire>(_numFires, true);
+			_pathOffset = new Point(vector.x / _numFires, vector.y / _numFires);
+
+			for(var i:int = 0; i < _numFires; i++)
 			{
-				p = _fires[i].centerPoint;
-				drawTo.graphics.drawCircle(p.x, p.y, 1);
+				flame = new Fire(new Sprite(), 100, new Point(_start.x + _pathOffset.x * i, _start.y + _pathOffset.y * i));
+				dispatchEvent(new AttackEvent(AttackEvent.FIRE, flame));
+//				_fires[i] = flame;
 			}
+			dispatchEvent(new AttackEvent(AttackEvent.FINISHED, null, this));
 		}
+		
+//		public function getSpawn():Vector.<Fire>
+//		{
+//			return _fires;
+//		}
+		
+		
+		
+//		public function draw():Sprite
+//		{
+//			var target:Sprite = new Sprite();
+//			target.graphics.beginFill(0xFF0000, 0.4);
+//			var p:Point;
+//			for(var i:int = 0; i < _fires.length; i++)
+//			{
+//				p = _fires[i].centerPoint;
+//				drawTo.graphics.drawCircle(p.x, p.y, 1);
+//			}
+//		}
 	}
 }

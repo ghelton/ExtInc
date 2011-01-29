@@ -32,8 +32,8 @@ package
 		private var _theGrid:Vector.<Vector.<Tile>>;
 		private var gameBoard:GameBoard;
 		
-		private static const GRID_WIDTH:uint = 25;
-		private static const GRID_HEIGHT:uint = 25;
+		private static const GRID_WIDTH:uint = 31;
+		private static const GRID_HEIGHT:uint = 21;
 		private function buildGameBoard():Vector.<Vector.<Tile>>
 		{
 			var widthCount:uint;
@@ -58,6 +58,9 @@ package
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
+		private var testTypes:Array = [Lookup.COMMANDO, Lookup.SEAL, Lookup.PANDA, Lookup.MARINE];
+		private var testColors:Array = [0xFF0000, 0x0FF000, 0x00FF00, 0x000FF0];
+		
 		private var _player:PlayerData;
 
 		private var _bg:Loader;
