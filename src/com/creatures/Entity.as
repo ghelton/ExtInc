@@ -53,7 +53,12 @@ package com.creatures
 		{
 			_masterTime = masterTime;
 		}
-			
+		
+		public function getHealth():Number
+		{
+			return _health;
+		}
+		
 		public function get centerPoint():Point
 		{
 			return _centerPoint.clone();
@@ -76,10 +81,16 @@ package com.creatures
 			return other._centerPoint.subtract(_centerPoint).length;
 		}
 		
+		
 		//ACTUAL CODE
-		public function updateFearVector(neighboringEntities:Vector.<Entity>):void
+		public function updateFearVector():void
 		{
-			
+			var newFearFector:Point = null;
+			for each (var enemy in _hitList)
+			{
+				newFearFector += enemy.centerPoint().subtract(_centerPoint) * Lookup.entityFactionMatrix[_type][enemy.type()] * (enemy.getHealth / 100) * Math.exp(distanceFromEntity(enemy) / 100); 
+			}
+			fearVector = (fearVector + newFearFector) * 1/2;
 		}
 		public function attackEntity(enemy:Entity, timeDelta:Number):void
 		{
