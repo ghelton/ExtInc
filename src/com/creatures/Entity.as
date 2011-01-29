@@ -101,13 +101,13 @@ package com.creatures
 		
 		public function attackEntity(enemy:Entity, timeDelta:Number):void
 		{
-			var healthChange:Number = timeDelta * Lookup.entityDamageMatrix[_type][enemy.type];
+			var healthChange:Number = Lookup.entityDamageMatrix[_type][enemy.type];
 			if((_health + healthChange) < 0)
 			{
 				_health = 0;
-				enemy.dispatchEvent(new EntityEvent(EntityEvent.KILLED));
+				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			} else {
-				_health += timeDelta * Lookup.entityDamageMatrix[_type][enemy.type];	
+				_health += Lookup.entityDamageMatrix[_type][enemy.type];	
 			}
 		}
 		
@@ -119,7 +119,6 @@ package com.creatures
 		
 		public function moveTick():void
 		{
-			trace('moving');
 			var deltaTime:Number = _masterTime - _lastMoveTime;
 			if(_attackWasBenefitial)
 			{
@@ -137,16 +136,6 @@ package com.creatures
 			_lastMoveTime = _masterTime;
 		}
 		
-<<<<<<< HEAD
-		protected function updatePosition():void
-		{
-			trace('image x ' + _image.x);
-			_image.x = _centerPoint.x - (_image.width * 0.5);
-			_image.y = _centerPoint.y - (_image.height * 0.5);	
-		}
-		
-=======
->>>>>>> 9d6e5c4e9f75de84083d866cd9f921e7151d3a16
 		public function attackTick():void
 		{
 			var distance:Number = 0;

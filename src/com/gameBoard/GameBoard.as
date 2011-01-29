@@ -38,7 +38,7 @@ package com.gameBoard
 		private var _startPoint:Point;
 		private function onAttackDown(e:Event):void 
 		{
-			trace('attack down');
+//			trace('attack down');
 			_startPoint = new Point(mouseX, mouseY);
 			_weapon = new Firebomb(_startPoint, 30);
 			_weapons.push(_weapon);
@@ -48,7 +48,6 @@ package com.gameBoard
 		}
 		private function onAttackUp(e:Event):void
 		{
-			trace('attack up');
 			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
 			stage.removeEventListener(MouseEvent.MOUSE_UP, onAttackUp);
 			
