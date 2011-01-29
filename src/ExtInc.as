@@ -1,7 +1,12 @@
 package
 {
+	import attacks.Firebomb;
+	
 	import flash.display.Sprite;
 	import flash.text.engine.TabAlignment;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.geom.Point;
 	
 	import gameBoard.GameBoard;
 	import gameBoard.Tile;
@@ -12,6 +17,8 @@ package
 	 * @author G$
 	 * @since Jan 28, 2011
 	 */
+	//[SWF(width="1024", height="768", version_major="10", frameRate="24")]
+	
 	public class ExtInc extends Sprite
 	{
 		private var _theGrid:Vector.<Vector.<Tile>>;
@@ -52,6 +59,8 @@ package
 			gameBoard = new GameBoard(buildGameBoard());
 			
 			addChild(gameBoard);
+			/*stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;*/
 		}
 		
 		//--------------------------------------
