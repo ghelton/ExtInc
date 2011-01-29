@@ -1,4 +1,4 @@
-package characters
+package creatures
 {
 	import flash.display.Sprite;
 	import flash.geom.Point;
