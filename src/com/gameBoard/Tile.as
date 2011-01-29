@@ -13,7 +13,7 @@ package com.gameBoard
 			
 			with(graphics)
 			{
-				beginFill(uint(Math.random() * 0xFFFFFF), 1.0);
+				beginFill(uint(Math.random() * 0x00FFFF), 1.0);
 				drawRect(0, 0, TILE_WIDTH, TILE_HEIGHT);
 				endFill();
 			}

@@ -12,7 +12,7 @@ package com.gameBoard
 	{
 		private var _masterTimer:Timer;
 		private var _grid:Vector.<Vector.<Tile>>;
-		internal var entities:Vector.<Entity>;
+		internal static var entities:Vector.<Entity>;
 		
 		
 		public function GameBoard($theGrid:Vector.<Vector.<Tile>>)
@@ -58,9 +58,9 @@ package com.gameBoard
 		public function tick():void
 		{
 			var entity:Entity;
-			Entity._masterTime = (getTimer() / 1000);
+			Entity.setMasterTime(getTimer() / 1000);
 			for each(entity in entities) {
-//				entity.updateFearVector(
+				EntityController.updateFearVector(entity);
 				entity.attackTick();
 			}
 			

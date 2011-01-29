@@ -14,6 +14,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
 	import flash.text.engine.TabAlignment;
+	import flash.utils.getTimer;
 	
 	
 	/**
@@ -29,8 +30,8 @@ package
 		private var _theGrid:Vector.<Vector.<Tile>>;
 		private var gameBoard:GameBoard;
 		
-		private static const GRID_WIDTH:uint = 10;
-		private static const GRID_HEIGHT:uint = 10;
+		private static const GRID_WIDTH:uint = 25;
+		private static const GRID_HEIGHT:uint = 25;
 		private function buildGameBoard():Vector.<Vector.<Tile>>
 		{
 			var widthCount:uint;
@@ -61,6 +62,7 @@ package
 		//--------------------------------------
 		public function ExtInc()
 		{
+			Entity.setMasterTime(getTimer() / 1000);
 			gameBoard = new GameBoard(buildGameBoard());
 			
 			addChild(gameBoard);
