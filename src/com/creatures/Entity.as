@@ -125,6 +125,11 @@ package com.creatures
 			{
 				
 			} else {
+				if(fearVector.x < 0.0001 && fearVector.y < .0001)
+				{
+					return;
+				}
+				
 				_centerPoint.x += fearVector.x * deltaTime * Lookup.entitySpeedArray[_type];
 				_centerPoint.y += fearVector.y * deltaTime * Lookup.entitySpeedArray[_type];
 				updatePosition();
@@ -145,7 +150,7 @@ package com.creatures
 		public function attackTick():void
 		{
 			var distance:Number = 0;
-			var closestDistance:Number = 10000;
+			var closestDistance:Number = Number.POSITIVE_INFINITY;
 			var closestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			if(!canAttack())
@@ -159,7 +164,7 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if(!(Lookup.entityFactionMatrix[enemy.type] == Lookup.entityFactionMatrix[_type] == 0) && distance <= closestDistance)
+				if(!(Lookup.entityDamageMatrix[enemy.type] == Lookup.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= Lookup.entityRangeArray[_type])
 				{
 					closestEntity = enemy;
 					closestDistance = distance;
@@ -171,8 +176,8 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(enemy, deltaTime);
-			enemy.riposte(this);
+			attackEntity(closestEntity, deltaTime);
+			closestEntity.riposte(this);
 		}
 		
 		public function riposte(attacker:Entity):void
@@ -182,8 +187,6 @@ package com.creatures
 				attackEntity(attacker, _masterTime - _lastAttackTime);
 			}	
 		}
-		
-		
 		
 		public function updateFearVector():void
 		{
