@@ -7,10 +7,11 @@ package creatures
 	public class Entity extends EventDispatcher
 	{
 		public var fearVector:Point;
-		private var _hitList:Vector.<Entity>;
-		private var _image:Sprite;
-		private var _health:Number; //uint maybe?
-		private var _centerPoint:Point;
+		
+		protected var _hitList:Vector.<Entity>;
+		protected var _image:Sprite;
+		protected var _health:Number; //uint maybe?
+		protected var _centerPoint:Point;
 		public function Entity($graphic:Sprite, $health:Number, $point:Point)
 		{
 			_image = $graphic;
@@ -22,8 +23,16 @@ package creatures
 		{
 			_centerPoint.x += fearVector.x * stepTime;
 			_centerPoint.y += fearVector.y * stepTime;
-			_image.x = _centerPoint.x;
-			_image.y = _centerPoint.y;
+			updatePosition();
 		}
+		
+		protected function updatePosition():void
+		{
+			_image.x = _centerPoint.x - (_image.width * 0.5);
+			_image.y = _centerPoint.y - (_image.height * 0.5);
+			
+		}
+		
+		
 	}
 }

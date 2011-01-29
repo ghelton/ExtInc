@@ -1,6 +1,6 @@
 package creatures
 {
-	public class Creature
+	public class Creature extends 
 	{
 		public function Creature()
 		{
