@@ -110,7 +110,7 @@ package com.lookup
 		public static const entityDamageMatrix:Object = 
 			{
 				PANDA:{ 
-					PANDA:5, SEAL:0, TIGER:0, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:15, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:15, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100
 				},
 				SEAL:{
 					PANDA:0, SEAL:0, TIGER:-5, COMMANDO:-50, MARINE:-30, FIRE:-100, TREE:5, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:-100
@@ -144,6 +144,7 @@ package com.lookup
 				}
 			};
 		
+		//range
 		public static const entityRangeArray:Object = 
 			{
 				PANDA:			30,
@@ -159,6 +160,7 @@ package com.lookup
 				MINE:			30
 			};
 		
+		//rate of fire, attacks per second
 		public static const entityROFArray:Object = 
 			{
 				PANDA:			1,
@@ -167,36 +169,21 @@ package com.lookup
 				COMMANDO:		1,
 				MARINE:			1,
 				FIRE:			1,
-				TREE:			1,
-				PANDA_BAIT:		1,
-				SEAL_BAIT:		1,
-				TIGER_BAIT:		1,
+				TREE:			0,
+				PANDA_BAIT:		0,
+				SEAL_BAIT:		0,
+				TIGER_BAIT:		0,
 				MINE:			1
 			};
 		
+		//
 		public static const entitySpeedArray:Object = 
 			{
-				PANDA:			1,
+				PANDA:			2,
 				SEAL:			1,
-				TIGER:			1,
-				COMMANDO:		1,
-				MARINE:			1,
-				FIRE:			1,
-				TREE:			1,
-				PANDA_BAIT:		1,
-				SEAL_BAIT:		1,
-				TIGER_BAIT:		1,
-				MINE:			1
-			};
-		
-		//Health regen per second
-		public static const entityRegenArray:Object = 
-			{
-				PANDA:			0,
-				SEAL:			0,
-				TIGER:			0,
-				COMMANDO:		0,
-				MARINE:			0,
+				TIGER:			4,
+				COMMANDO:		4,
+				MARINE:			3,
 				FIRE:			0,
 				TREE:			0,
 				PANDA_BAIT:		0,
@@ -205,6 +192,23 @@ package com.lookup
 				MINE:			0
 			};
 		
+		//Health regen per second
+		public static const entityRegenArray:Object = 
+			{
+				PANDA:			-1,
+				SEAL:			-1,
+				TIGER:			-1,
+				COMMANDO:		-10,
+				MARINE:			-20,
+				FIRE:			-10,
+				TREE:			5,
+				PANDA_BAIT:		0,
+				SEAL_BAIT:		0,
+				TIGER_BAIT:		0,
+				MINE:			0
+			};
+		
+		//toolz
 		public static const toolStats:Object =
 			{
 				PANDA_BAIT_TOOL:	{cooldown:5, cost:100},
