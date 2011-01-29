@@ -1,6 +1,6 @@
 package com.creatures
 {
-	import com.lookup.Lookup;
+	import com.lookup.AskJon;
 	
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
@@ -28,7 +28,7 @@ package com.creatures
 		private var _health:Number; //uint maybe?
 		private var _centerPoint:Point;
 		
-		private static const TEMP_ENTITY_SIZE:Number = 5;
+		protected static const TEMP_ENTITY_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
 		private var _lastAttackTime:Number;
@@ -45,14 +45,17 @@ package com.creatures
 			_centerPoint = $point;
 			_lastAttackTime = _masterTime;
 			
-			var tempGraphic:Sprite = new Sprite();
-			with(tempGraphic.graphics)
+			if(_image == null)
 			{
-				beginFill(0xFF0000, 0.8);
-				drawCircle(0, 0, TEMP_ENTITY_SIZE);
-				endFill();
+				var tempGraphic:Sprite = new Sprite();
+				with(tempGraphic.graphics)
+				{
+					beginFill(AskJon.colorOf[type], 0.8);
+					drawCircle(0, 0, TEMP_ENTITY_SIZE);
+					endFill();
+				}
+				_image = tempGraphic;
 			}
-			_image = tempGraphic;
 			updatePosition();
 			
 			_attackWasBenefitial = false;
@@ -88,7 +91,7 @@ package com.creatures
 		//HELPERS
 		public function canAttack():Boolean
 		{
-			return _health > 0 && ((Lookup.entityROFArray[_type] + _lastAttackTime) < _masterTime);
+			return _health > 0 && ((AskJon.entityROFArray[_type] + _lastAttackTime) < _masterTime);
 		}
 		
 		public function distanceFromEntity(other:Entity):Number
@@ -101,14 +104,14 @@ package com.creatures
 		
 		public function attackEntity(enemy:Entity, timeDelta:Number):void
 		{
-			var healthChange:Number = Lookup.entityDamageMatrix[_type][enemy.type];
+			var healthChange:Number = AskJon.entityDamageMatrix[_type][enemy.type];
 			if((_health + healthChange) < 0)
 			{
 				trace("DEAD");
 				_health = 0;
 				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			} else {
-				_health += Lookup.entityDamageMatrix[_type][enemy.type];	
+				_health += AskJon.entityDamageMatrix[_type][enemy.type];	
 			}
 		}
 		
@@ -130,8 +133,8 @@ package com.creatures
 					return;
 				}
 				
-				_centerPoint.x += fearVector.x * deltaTime * Lookup.entitySpeedArray[_type];
-				_centerPoint.y += fearVector.y * deltaTime * Lookup.entitySpeedArray[_type];
+				_centerPoint.x += fearVector.x * deltaTime * AskJon.entitySpeedArray[_type];
+				_centerPoint.y += fearVector.y * deltaTime * AskJon.entitySpeedArray[_type];
 				updatePosition();
 			}
 			_lastMoveTime = _masterTime;
@@ -154,7 +157,7 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if(!(Lookup.entityDamageMatrix[enemy.type] == Lookup.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= Lookup.entityRangeArray[_type])
+				if(!(AskJon.entityDamageMatrix[enemy.type] == AskJon.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= AskJon.entityRangeArray[_type])
 				{
 					closestEntity = enemy;
 					closestDistance = distance;
@@ -189,7 +192,7 @@ package com.creatures
 				{					
 					continue;
 				}
-				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
+				scale = AskJon.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				
