@@ -121,40 +121,41 @@ package com.lookup
 		public static const entityDamageMatrix:Object = 
 			{
 				PANDA:{ 
-					PANDA:5, SEAL:0, TIGER:0, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:15, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:100
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:15, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100
 				},
 				SEAL:{
-					PANDA:0, SEAL:0, TIGER:-5, COMMANDO:-50, MARINE:-30, FIRE:-100, TREE:5, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:100
+					PANDA:0, SEAL:0, TIGER:-5, COMMANDO:-50, MARINE:-30, FIRE:-100, TREE:5, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:-100
 				},
 				TIGER:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-40, MARINE:-25, FIRE:-90, TREE:0, PANDA_BAIT:-5, SEAL_BAIT:3, TIGER_BAIT:8, MINE:100
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-40, MARINE:-25, FIRE:-90, TREE:0, PANDA_BAIT:-5, SEAL_BAIT:3, TIGER_BAIT:8, MINE:-100
 				},
 				COMMANDO:{
-					PANDA:-30, SEAL:-10, TIGER:-40, COMMANDO:-10, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-30, SEAL:-10, TIGER:-40, COMMANDO:-80, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				MARINE:{
 					PANDA:-35, SEAL:-20, TIGER:-60, COMMANDO:-10, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				FIRE:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:10, SEAL:10, TIGER:5, COMMANDO:0, MARINE:0, FIRE:0, TREE:20, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				TREE:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-5, SEAL:-10, TIGER:0, COMMANDO:0, MARINE:0, FIRE:-30, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				PANDA_BAIT:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:25, SEAL:25, TIGER:25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				SEAL_BAIT:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:25, SEAL:25, TIGER:25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				TIGER_BAIT:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:25, SEAL:25, TIGER:25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				MINE:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:100, SEAL:100, TIGER:100, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				}
 			};
 		
+		//range
 		public static const entityRangeArray:Object = 
 			{
 				PANDA:			30,
@@ -170,6 +171,7 @@ package com.lookup
 				MINE:			30
 			};
 		
+		//rate of fire, attacks per second
 		public static const entityROFArray:Object = 
 			{
 				PANDA:			1,
@@ -178,44 +180,46 @@ package com.lookup
 				COMMANDO:		1,
 				MARINE:			1,
 				FIRE:			1,
-				TREE:			1,
-				PANDA_BAIT:		1,
-				SEAL_BAIT:		1,
-				TIGER_BAIT:		1,
+				TREE:			0,
+				PANDA_BAIT:		0,
+				SEAL_BAIT:		0,
+				TIGER_BAIT:		0,
 				MINE:			1
 			};
 		
+		//
 		public static const entitySpeedArray:Object = 
 			{
-				PANDA:			1,
+				PANDA:			2,
 				SEAL:			1,
-				TIGER:			1,
-				COMMANDO:		1,
-				MARINE:			1,
-				FIRE:			1,
-				TREE:			1,
-				PANDA_BAIT:		1,
-				SEAL_BAIT:		1,
-				TIGER_BAIT:		1,
-				MINE:			1
+				TIGER:			4,
+				COMMANDO:		4,
+				MARINE:			3,
+				FIRE:			0,
+				TREE:			0,
+				PANDA_BAIT:		0,
+				SEAL_BAIT:		0,
+				TIGER_BAIT:		0,
+				MINE:			0
 			};
 		
 		//Health regen per second
 		public static const entityRegenArray:Object = 
 			{
-				PANDA:			0.0,
-				SEAL:			0.0,
-				TIGER:			0.0,
-				COMMANDO:		1.0,
-				MARINE:			0.0,
-				FIRE:			0.0,
-				TREE:			0.0,
+				PANDA:			-1.0,
+				SEAL:			-1.0,
+				TIGER:			-1.0,
+				COMMANDO:		-10.0,
+				MARINE:			-20.0,
+				FIRE:			-10.0,
+				TREE:			5.0,
 				PANDA_BAIT:		0.0,
 				SEAL_BAIT:		0.0,
 				TIGER_BAIT:		0.0,
 				MINE:			0.0
 			};
 		
+		//toolz
 		public static const toolStats:Object =
 			{
 				PANDA_BAIT_TOOL:	{cooldown:5, cost:100},

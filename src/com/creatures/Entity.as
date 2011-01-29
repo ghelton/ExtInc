@@ -31,9 +31,9 @@ package com.creatures
 		protected static const TEMP_ENTITY_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
-		private var _lastAttackTime:Number;
-		private var _lastMoveTime:Number;
-		private var _lastRegenTime:Number;
+		private var _lastAttackTime:Number = 0;
+		private var _lastMoveTime:Number = 0;
+		private var _lastRegenTime:Number = 0;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
@@ -44,7 +44,6 @@ package com.creatures
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
-			_lastAttackTime = _masterTime;
 			
 			if(_image == null)
 			{
