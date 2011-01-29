@@ -32,7 +32,7 @@ package
 		private var _theGrid:Vector.<Vector.<Tile>>;
 		private var gameBoard:GameBoard;
 		
-		private static const GRID_WIDTH:uint = 31;
+		private static const GRID_WIDTH:uint = 32;
 		private static const GRID_HEIGHT:uint = 21;
 		private function buildGameBoard():Vector.<Vector.<Tile>>
 		{
@@ -65,6 +65,7 @@ package
 
 		private var _bg:Loader;
 		private var _gameBoardMask:Loader;
+		private var _
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
@@ -80,6 +81,7 @@ package
 			_gameBoardMask.load(new URLRequest(CHROME + 'gameBoardMask.swf'));
 			addChild(_gameBoardMask);
 			
+			// - GAME BOARD -
 			Entity.setMasterTime(getTimer() / 1000);
 			gameBoard = new GameBoard(buildGameBoard());
 			gameBoard.mask = _gameBoardMask;
@@ -94,6 +96,9 @@ package
 				testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
 				gameBoard.addEntity(new Entity(null, 100, testPoint, Lookup.COMMANDO));
 			}
+			
+			// - STATUS BAR -
+			
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
