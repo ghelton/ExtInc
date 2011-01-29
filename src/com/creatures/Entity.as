@@ -15,6 +15,11 @@ package com.creatures
 		{
 			_masterTime = masterTime;
 		}
+		
+		public function setHitList(list:Vector.<Entity>):void
+		{
+			_hitList = list;
+		}
 
 		public var fearVector:Point = new Point();
 		private var _type:String;
@@ -153,6 +158,24 @@ package com.creatures
 			{
 				attackEntity(attacker, _masterTime - _lastAttackTime);
 			}	
+		}
+		
+		
+		
+		public function updateFearVector():void
+		{
+			var scale:Number;
+			var newFearFector:Point = new Point();
+			for each (var enemy:Entity in _hitList)
+			{
+				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
+				newFearFector = newFearFector.add(enemy.centerPoint.subtract(centerPoint)); 
+				newFearFector.x *= scale;
+				newFearFector.y *= scale;
+			}
+			fearVector = (fearVector.add(newFearFector));
+			fearVector.x *= 0.5;
+			fearVector.y *= 0.5;
 		}
 	}
 }

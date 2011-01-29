@@ -59,8 +59,8 @@ package com.gameBoard
 		{
 			var entity:Entity;
 			Entity.setMasterTime(getTimer() / 1000);
-			for each(entity in entities) {
-				EntityController.updateFearVector(entity);
+			for each(entity in entities) 
+			{
 				entity.attackTick();
 			}
 			
@@ -70,6 +70,7 @@ package com.gameBoard
 		
 		public function addEntity(newEntity:Entity):void
 		{
+			newEntity.setHitList(entities);
 			entities.push(newEntity);
 			_entityLayer.addChild(newEntity.getGraphic());
 		}
@@ -82,7 +83,10 @@ package com.gameBoard
 		
 		private function mainLoop(e:Event):void
 		{
-			
+			for each(var entity:Entity in entities) 
+			{
+				entity.updateFearVector();
+			}
 			tick();
 		}
 	}
