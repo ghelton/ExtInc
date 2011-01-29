@@ -10,6 +10,11 @@ package com.creatures
 	public class Entity extends EventDispatcher
 	{
 		public static var _masterTime:Number;
+		
+		public static function setMasterTime(masterTime:Number):void
+		{
+			_masterTime = masterTime;
+		}
 
 		public var fearVector:Point;
 		private var _type:String;
@@ -21,13 +26,13 @@ package com.creatures
 		private static const TEMP_ENTITY_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
-		private var _lastAttackTime:int;
-		private var _lastMoveTime:int;
+		private var _lastAttackTime:Number;
+		private var _lastMoveTime:Number;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
 			super();
-			
+			_type = $type;
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
@@ -40,6 +45,7 @@ package com.creatures
 				endFill();
 			}
 			_image = tempGraphic;
+			updatePosition();
 			
 			_attackWasBenefitial = false;
 		}
@@ -49,6 +55,7 @@ package com.creatures
 		{
 			return _image;
 		}
+
 		public function setMasterTime(masterTime:Number):void
 		{
 			_masterTime = masterTime;
@@ -85,13 +92,20 @@ package com.creatures
 		//ACTUAL CODE
 		public function updateFearVector():void
 		{
+			var scale:Number;
 			var newFearFector:Point = null;
-			for each (var enemy in _hitList)
+			for each (var enemy:Entity in _hitList)
 			{
-				newFearFector += enemy.centerPoint().subtract(_centerPoint) * Lookup.entityFactionMatrix[_type][enemy.type()] * (enemy.getHealth / 100) * Math.exp(distanceFromEntity(enemy) / 100); 
+				scale = Lookup.entityFactionMatrix[_type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(distanceFromEntity(enemy)) * 0.01;
+				newFearFector = newFearFector.add(enemy.centerPoint.subtract(_centerPoint)); 
+				newFearFector.x *= scale;
+				newFearFector.y *= scale;
 			}
-			fearVector = (fearVector + newFearFector) * 1/2;
+			fearVector = (fearVector.add(newFearFector));
+			fearVector.x *= 0.5;
+			fearVector.y *= 0.5;
 		}
+		
 		public function attackEntity(enemy:Entity, timeDelta:Number):void
 		{
 			
@@ -99,22 +113,16 @@ package com.creatures
 		
 		public function moveTick():void
 		{
+			var deltaTime:Number = _lastMoveTime - _masterTime;
 			if(_attackWasBenefitial)
 			{
 				
 			} else {
-				_centerPoint.x += fearVector.x * _lastMoveTime;
-				_centerPoint.y += fearVector.y * _lastMoveTime;
-				_image.x = _centerPoint.x;
-				_image.y = _centerPoint.y;	
+				_centerPoint.x += fearVector.x * deltaTime;
+				_centerPoint.y += fearVector.y * deltaTime;
+				updatePosition();
 			}
-		}
-		
-		public function tick(stepTime:Number):void
-		{
-			_centerPoint.x += fearVector.x * stepTime;
-			_centerPoint.y += fearVector.y * stepTime;
-			updatePosition();
+			_lastMoveTime = _masterTime;
 		}
 		
 		protected function updatePosition():void

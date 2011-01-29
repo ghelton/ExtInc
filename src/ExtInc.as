@@ -65,15 +65,15 @@ package
 			
 			addChild(gameBoard);
 			
-			/*var testPoint:Point;
+			var testPoint:Point;
 			for(var count:int = 10; count >= 0; count--)
 			{
 				testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
-				gameBoard.addEntity(new Entity(null, 100, testPoint, count));
-			}*/
+				gameBoard.addEntity(new Entity(null, 100, testPoint, Lookup.COMMANDO));
+			}
 			
-			/*stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;*/
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 			
 			var player:PlayerData = new PlayerData();
 			var tool:Tool = player.getTool(Lookup.MINES_TOOL);
