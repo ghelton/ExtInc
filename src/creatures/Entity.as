@@ -27,6 +27,7 @@ package creatures
 				drawCircle(0, 0, TEMP_ENTITY_SIZE);
 				endFill();
 			}
+			_image = tempGraphic;
 			
 			super();
 		}
