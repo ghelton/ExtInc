@@ -112,6 +112,12 @@ package com.creatures
 			}
 		}
 		
+		private function regenerate():void
+		{
+			var deltaTime:Number = _masterTime - _lastAttackTime;
+			_health += deltaTime * Lookup.entityRegenArray[_type];
+		}
+		
 		protected function updatePosition():void
 		{
 			_image.x = _centerPoint.x - (_image.width * 0.5);
@@ -138,6 +144,9 @@ package com.creatures
 			var closestDistance:Number = Number.POSITIVE_INFINITY;
 			var closestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
+			
+			regenerate();
+			
 			if(!canAttack())
 			{
 				return;
