@@ -1,10 +1,13 @@
 package creatures
 {
+	
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
-	public class Entity extends EventDispatcher
+	import utils.Element;
+	
+	public class Entity extends Element
 	{
 		public var fearVector:Point;
 		private var _hitList:Vector.<Entity>;
@@ -16,6 +19,13 @@ package creatures
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
+			
+			super();
+		}
+		
+		public function get centerPoint():Point
+		{
+			return _centerPoint.clone();
 		}
 		public function updateFearVector(neighboringEntities:Vector.<Entity>)
 		{
