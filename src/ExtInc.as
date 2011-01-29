@@ -59,6 +59,7 @@ package
 			gameBoard = new GameBoard(buildGameBoard());
 			
 			addChild(gameBoard);
+//			gameBoard.addEntity(
 			/*stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;*/
 		}

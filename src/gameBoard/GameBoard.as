@@ -18,11 +18,15 @@ package gameBoard
 		{
 			entities = new Vector.<Entity>();
 			_grid = $theGrid;
+			drawGrid();
+			addChild(_tileLayer);
+			addChild(_entityLayer);
 		}
 		
 		private var _tileLayer:Sprite = new Sprite();
 		private var _entityLayer:Sprite = new Sprite();
 		
+		private static const OVERLAP_BUFFER:Number = 0.25;
 		private function drawGrid():void
 		{
 			var drawPoint:Point = new Point();
@@ -34,9 +38,9 @@ package gameBoard
 					_tileLayer.addChild(tile);
 					tile.x = drawPoint.x;
 					tile.y = drawPoint.y;
-					drawPoint.y += tile.height;
+					drawPoint.y += tile.height - OVERLAP_BUFFER;
 				}
-				drawPoint.x += tile.width;
+				drawPoint.x += tile.width - OVERLAP_BUFFER;
 				drawPoint.y = 0;
 			}
 		}
