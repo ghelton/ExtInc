@@ -15,6 +15,11 @@ package com.creatures
 		{
 			_masterTime = masterTime;
 		}
+		
+		public function setHitList(list:Vector.<Entity>):void
+		{
+			_hitList = list;
+		}
 
 		public var fearVector:Point = new Point();
 		private var _type:String;
@@ -38,6 +43,7 @@ package com.creatures
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
+			_lastAttackTime = _masterTime;
 			
 			var tempGraphic:Sprite = new Sprite();
 			with(tempGraphic.graphics)
@@ -82,7 +88,7 @@ package com.creatures
 		//HELPERS
 		public function canAttack():Boolean
 		{
-			return (Lookup.entityROFArray[_type] + _lastAttackTime) < _masterTime;
+			return _health > 0 && ((Lookup.entityROFArray[_type] + _lastAttackTime) < _masterTime);
 		}
 		
 		public function distanceFromEntity(other:Entity):Number
@@ -95,7 +101,20 @@ package com.creatures
 		
 		public function attackEntity(enemy:Entity, timeDelta:Number):void
 		{
-			
+			var healthChange:Number = timeDelta * Lookup.entityDamageMatrix[_type][enemy.type];
+			if((_health + healthChange) < 0)
+			{
+				_health = 0;
+				enemy.dispatchEvent(new EntityEvent(EntityEvent.KILLED));
+			} else {
+				_health += timeDelta * Lookup.entityDamageMatrix[_type][enemy.type];	
+			}
+		}
+		
+		protected function updatePosition():void
+		{
+			_image.x = _centerPoint.x - (_image.width * 0.5);
+			_image.y = _centerPoint.y - (_image.height * 0.5);	
 		}
 		
 		public function moveTick():void
@@ -105,23 +124,17 @@ package com.creatures
 			{
 				
 			} else {
-				_centerPoint.x += fearVector.x * deltaTime;
-				_centerPoint.y += fearVector.y * deltaTime;
+				_centerPoint.x += fearVector.x * deltaTime * Lookup.entitySpeedArray[_type];
+				_centerPoint.y += fearVector.y * deltaTime * Lookup.entitySpeedArray[_type];
 				updatePosition();
 			}
 			_lastMoveTime = _masterTime;
 		}
 		
-		protected function updatePosition():void
-		{
-			_image.x = _centerPoint.x - (_image.width * 0.5);
-			_image.y = _centerPoint.y - (_image.height * 0.5);	
-		}
-		
 		public function attackTick():void
 		{
 			var distance:Number = 0;
-			var closestDistance:Number = 0;
+			var closestDistance:Number = 10000;
 			var closestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			if(!canAttack())
@@ -130,8 +143,12 @@ package com.creatures
 			}
 			for each (var enemy:Entity in _hitList)
 			{
+				if(enemy === this)
+				{
+					continue;
+				}
 				distance = distanceFromEntity(enemy);
-				if(distance <= closestDistance)
+				if(!(Lookup.entityFactionMatrix[enemy.type] == Lookup.entityFactionMatrix[_type] == 0) && distance <= closestDistance)
 				{
 					closestEntity = enemy;
 					closestDistance = distance;
@@ -142,7 +159,7 @@ package com.creatures
 			{
 				return;
 			}
-			
+			_lastAttackTime = _masterTime;
 			attackEntity(enemy, deltaTime);
 			enemy.riposte(this);
 		}
@@ -153,6 +170,28 @@ package com.creatures
 			{
 				attackEntity(attacker, _masterTime - _lastAttackTime);
 			}	
+		}
+		
+		
+		
+		public function updateFearVector():void
+		{
+			var scale:Number;
+			var newFearFector:Point = new Point();
+			for each (var enemy:Entity in _hitList)
+			{
+				if(enemy === this)
+				{					
+					continue;
+				}
+				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
+				newFearFector = newFearFector.add(enemy.centerPoint.subtract(centerPoint)); 
+				newFearFector.x *= scale;
+				newFearFector.y *= scale;
+			}
+			fearVector = (fearVector.add(newFearFector));
+			fearVector.x *= 0.5;
+			fearVector.y *= 0.5;
 		}
 	}
 }

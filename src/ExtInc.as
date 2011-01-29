@@ -58,9 +58,10 @@ package
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
+		private var _player:PlayerData;
+
 		private var _bg:Loader;
 		private var _gameBoardMask:Loader;
-		
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
@@ -93,18 +94,11 @@ package
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
-			
-			/*var player:PlayerData = new PlayerData();
-			var tool:Tool = player.getTool(Lookup.MINES);
-			tool.addEventListener(ToolEvent.TOOL_AVAILABLE, onTool, false, 0, true);
-			tool.useTool();*/
-			
 		}
 		
 		//--------------------------------------
 		// PROTECTED & PRIVATE METHODS
 		//--------------------------------------	
-		
 		
 		//--------------------------------------
 		// PUBLIC METHODS
@@ -113,12 +107,7 @@ package
 		
 		//--------------------------------------
 		// EVENT HANDLERS
-		//--------------------------------------							
-		
-		private function onTool(e:ToolEvent):void
-		{
-			trace("yay tools!");
-		}
+		//--------------------------------------
 		
 	}
 }
