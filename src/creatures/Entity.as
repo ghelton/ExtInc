@@ -29,12 +29,27 @@ package creatures
 		{
 			return _centerPoint.clone();
 		}
+<<<<<<< HEAD
 		
 		public function get type():int
 		{
 			return _type;
 		}
 		
+=======
+		public function updateFearVector(neighboringEntities:Vector.<Entity>)
+		{
+			
+		}
+		public function attackEntity(enemy:Entity, timeDelta:Number)
+		{
+			
+		}
+		public function distanceFromEntity(other:Entity)
+		{
+			return other._centerPoint.subtract(_centerPoint).length;
+		}
+>>>>>>> 8c9bfe54987709a5bf930efc5274f52899d465f0
 		public function tick(stepTime:Number):void
 		{
 			_centerPoint.x += fearVector.x * stepTime;
