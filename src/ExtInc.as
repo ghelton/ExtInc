@@ -10,6 +10,8 @@ package
 	
 	import gameBoard.GameBoard;
 	import gameBoard.Tile;
+	import player.PlayerData;
+	
 	
 	/**
 	 * [Description]
@@ -62,6 +64,8 @@ package
 //			gameBoard.addEntity(
 			/*stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;*/
+			
+			var player:PlayerData = new PlayerData();
 		}
 		
 		//--------------------------------------

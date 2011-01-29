@@ -6,13 +6,35 @@ package player
 
 	public class PlayerData
 	{
-		private var tools:Vector.<Tool>;
+		private var _tools:Vector.<Tool>;
 		public var money:int;
 		
-		public function PlayerData($startingMoney:int)
+		public function PlayerData()
 		{
-			money = $startingMoney;
-			tools = new Vector.<Tool>(3, true);
+			money = Lookup.playersStartingData.money;
+			_tools = new Vector.<Tool>(6, true);
+			
+			var tool:Tool;
+			for(var i:int = 0; i < _tools.length; i++)
+			{
+				tool = new Tool(i + 300);
+				_tools[i] = tool;
+			}
+		}
+		
+		public function getTool(id:int):Tool
+		{
+			var tool:Tool;
+			for(var i:int = 0; i < _tools.length; i++)
+			{
+				tool = _tools[i];
+				if(tool.type == id)
+				{
+					return tool;
+				}
+			}
+			
+			return null;
 		}
 	}
 }

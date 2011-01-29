@@ -123,16 +123,19 @@ package lookup
 				MONEY:		250
 			};
 		
-		public static const toolCooldowns:Object =
+		public static const toolStats:Object =
 			{
-				BAIT:		5,
-				FIRE:		10,
-				MINES:		8,
-				MARINES:	5
+				PANDA_BAIT_REG:	{cooldown:5, cost:100},
+				SEAL_BAIT_REG:	{cooldown:5, cost:100},
+				TIGER_BAIT_REG:	{cooldown:5, cost:100},
+				FIRE:			{cooldown:5, cost:100},
+				MINES:			{cooldown:5, cost:100},
+				MARINES:		{cooldown:5, cost:100}
 			};
 		
 		public function Lookup()
 		{
+			
 		}
 	}
 }
