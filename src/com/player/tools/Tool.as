@@ -16,7 +16,7 @@ package com.player.tools
 		
 		public function Tool($type:String)
 		{
-			var stats:Object = Lookup.toolStats;
+			var stats:Object = Lookup.toolStats[$type];
 			_cooldown = stats.cooldown;
 			_cost = stats.cost;
 			_type = $type;
@@ -45,6 +45,11 @@ package com.player.tools
 		public function get type():String
 		{
 			return _type;
+		}
+		
+		public function get cost():int
+		{
+			return _cost;
 		}
 	}
 }

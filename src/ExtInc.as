@@ -56,6 +56,7 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
+		private var _player:PlayerData;
 		
 		//--------------------------------------
 		// CONSTRUCTOR
@@ -76,17 +77,11 @@ package
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
-			
-			var player:PlayerData = new PlayerData();
-			var tool:Tool = player.getTool(Lookup.MINES_TOOL);
-			tool.addEventListener(ToolEvent.TOOL_AVAILABLE, onTool, false, 0, true);
-			tool.useTool();
 		}
 		
 		//--------------------------------------
 		// PROTECTED & PRIVATE METHODS
 		//--------------------------------------	
-		
 		
 		//--------------------------------------
 		// PUBLIC METHODS
@@ -99,7 +94,8 @@ package
 		
 		private function onTool(e:ToolEvent):void
 		{
-			trace("yay tools!");
+			trace("money: " + _player.money);
+			tools();
 		}
 		
 	}

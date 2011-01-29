@@ -135,11 +135,6 @@ package com.lookup
 				MINE:			1
 			};
 		
-		public static const playersStartingData:Object = 
-			{
-				MONEY:		250
-			};
-		
 		public static const toolStats:Object =
 			{
 				PANDA_BAIT_TOOL:	{cooldown:5, cost:100},
