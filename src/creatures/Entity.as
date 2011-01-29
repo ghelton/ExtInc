@@ -1,9 +1,12 @@
 package creatures
 {
+	
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	public class Entity
+	import utils.Element;
+	
+	public class Entity extends Element
 	{
 		private var _image:Sprite;
 		private var _health:Number; //uint maybe?
@@ -13,6 +16,13 @@ package creatures
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
+			
+			super();
+		}
+		
+		public function get centerPoint():Point
+		{
+			return _centerPoint.clone();
 		}
 	}
 }

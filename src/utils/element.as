@@ -1,5 +1,5 @@
 
-package com.fiddyCubes.core.toolkit.ui
+package utils
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -11,7 +11,7 @@ package com.fiddyCubes.core.toolkit.ui
 	 * @author #####[YOUR NAME]######
 	 * @since  Sep 6, 2010
 	 */
-	public class UIElement extends Sprite
+	public class Element extends Sprite
 	{
 		
 		//--------------------------------------
@@ -27,7 +27,7 @@ package com.fiddyCubes.core.toolkit.ui
 		//--------------------------------------
 		//  CONSTRUCTOR
 		//--------------------------------------
-		public function UIElement()
+		public function Element()
 		{
 			super();
 			
