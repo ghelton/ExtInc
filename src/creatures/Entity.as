@@ -1,9 +1,10 @@
 package creatures
 {
 	import flash.display.Sprite;
+	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
-	public class Entity
+	public class Entity extends EventDispatcher
 	{
 		private var _image:Sprite;
 		private var _health:Number; //uint maybe?
@@ -13,6 +14,11 @@ package creatures
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
+		}
+		
+		public function tick(stepTime:Number):void
+		{
+			
 		}
 	}
 }
