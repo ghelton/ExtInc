@@ -82,7 +82,7 @@ package
 			addChild(_gameBoardMask);
 			
 			// - GAME BOARD -
-			Entity.setMasterTime(getTimer() / 1000);
+			Entity.setMasterTime(Number(getTimer()) / 1000.0);
 			gameBoard = new GameBoard(buildGameBoard());
 			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);

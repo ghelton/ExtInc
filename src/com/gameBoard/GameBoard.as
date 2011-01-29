@@ -40,7 +40,7 @@ package com.gameBoard
 		{
 //			trace('attack down');
 			_startPoint = new Point(mouseX, mouseY);
-			_weapon = new Firebomb(_startPoint, 30);
+			_weapon = new Firebomb(_startPoint, 4);
 			_weapons.push(_weapon);
 			
 			_tileLayer.removeEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
@@ -118,7 +118,7 @@ package com.gameBoard
 		public function tick():void
 		{
 			var entity:Entity;
-			Entity.setMasterTime(getTimer() / 1000);
+			Entity.setMasterTime(Number(getTimer()) / 1000.0);
 			for each(entity in entities) 
 			{
 				entity.attackTick();
@@ -137,6 +137,7 @@ package com.gameBoard
 		}
 		public function removeEntity(deadEntity:Entity):void
 		{
+			deadEntity.getGraphic().alpha = 0.1;
 			var index:int = entities.lastIndexOf(deadEntity);
 			deadEntity.removeEventListener(EntityEvent.KILLED, tangoDown);
 			if(index >= 0) {
@@ -144,12 +145,21 @@ package com.gameBoard
 			}
 		}
 		
+		private var _updater:uint = 0;
 		private function mainLoop(e:Event):void
 		{
-			for each(var entity:Entity in entities) 
-			{
+			for each(var entity:Entity in entities)
 				entity.updateFearVector();
-			}
+//			var lastCheck:uint = _updater + uint(entities.length / 24);
+//			if(lastCheck >= entities.length)
+//				lastCheck = entities.length - 1;
+//				
+//			for(_updater; _updater < lastCheck; _updater++)
+//				entities[_updater].updateFearVector();
+//			
+//			if(_updater >= lastCheck)
+//				_updater = 0;
+			
 			tick();
 		}
 	}
