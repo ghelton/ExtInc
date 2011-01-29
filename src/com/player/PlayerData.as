@@ -1,7 +1,6 @@
 package com.player
 {
 	import com.lookup.Lookup;
-	
 	import com.player.tools.Tool;
 
 	public class PlayerData
@@ -12,17 +11,15 @@ package com.player
 		public function PlayerData()
 		{
 			money = Lookup.playersStartingData.money;
-			_tools = new Vector.<Tool>(6, true);
-			
-			var tool:Tool;
+			var ids:Array = [Lookup.PANDA_BAIT_TOOL, Lookup.FIRE_TOOL, Lookup.MARINES_TOOL, Lookup.COMMANDO_TOOL, Lookup.SEAL_BAIT_TOOL, Lookup.TIGER_BAIT_TOOL, Lookup.MINES_TOOL];
+			_tools = new Vector.<Tool>(ids.length, true);
 			for(var i:int = 0; i < _tools.length; i++)
 			{
-				tool = new Tool(i + 400);
-				_tools[i] = tool;
+				_tools[i] = new Tool(ids[i]);
 			}
 		}
 		
-		public function getTool(id:int):Tool
+		public function getTool(id:String):Tool
 		{
 			var tool:Tool;
 			for(var i:int = 0; i < _tools.length; i++)

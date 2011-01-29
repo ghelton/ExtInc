@@ -1,20 +1,20 @@
 package com.player.tools
 {
+	import com.lookup.Lookup;
+	
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	
-	import com.lookup.Lookup;
 
 	public class Tool extends EventDispatcher
 	{
 		private var _cooldown:int;
 		private var _cost:int;
-		private var _type:int;
+		private var _type:String;
 		
 		private var _cooldownTimer:Timer;
 		
-		public function Tool($type:int)
+		public function Tool($type:String)
 		{
 			var stats:Object = Lookup.toolStats;
 			_cooldown = stats.cooldown;
@@ -42,7 +42,7 @@ package com.player.tools
 			dispatchEvent(new ToolEvent(_type, ToolEvent.TOOL_AVAILABLE));
 		}
 		
-		public function get type():int
+		public function get type():String
 		{
 			return _type;
 		}
