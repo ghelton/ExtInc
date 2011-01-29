@@ -99,7 +99,7 @@ package com.creatures
 		
 		//ACTUAL CODE
 		
-		public function attackEntity(enemy:Entity, timeDelta:Number):void
+		public function attackEntity(enemy:Entity):void
 		{
 			var healthChange:Number = Lookup.entityDamageMatrix[_type][enemy.type];
 			if((_health + healthChange) < 0)
@@ -161,7 +161,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(closestEntity, deltaTime);
+			attackEntity(closestEntity);
 			closestEntity.riposte(this);
 		}
 		
@@ -169,7 +169,7 @@ package com.creatures
 		{
 			if(canAttack())
 			{
-				attackEntity(attacker, _masterTime - _lastAttackTime);
+				attackEntity(attacker);
 			}	
 		}
 		
@@ -184,7 +184,7 @@ package com.creatures
 				{					
 					continue;
 				}
-				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
+				scale = Lookup.entityFearMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				
