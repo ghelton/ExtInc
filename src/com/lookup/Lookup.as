@@ -31,6 +31,45 @@ package com.lookup
 		public static const MARINES_TOOL:String			= 'MARINES_TOOL';
 		public static const COMMANDO_TOOL:String		= 'COMMANDO_TOOL';
 		
+		//Inclination for an entity type to move towards or away from another entity type
+		public static const entityFearMatrix:Object = 
+			{
+				PANDA:{ 
+					PANDA:-0.1, SEAL:0.0, TIGER:0.1, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.6, TREE:0.2, PANDA_BAIT:0.8, SEAL_BAIT:-0.2, TIGER_BAIT:0.3, MINE:0
+				},
+				SEAL:{
+					PANDA:0.0, SEAL:0.2, TIGER:-0.2, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.4, TREE:0.1, PANDA_BAIT:0.2, SEAL_BAIT:0.5, TIGER_BAIT:-0.3, MINE:0
+				},
+				TIGER:{
+					PANDA:-0.1, SEAL:0.3, TIGER:0, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.7, TREE:0.1, PANDA_BAIT:-0.1, SEAL_BAIT:0.2, TIGER_BAIT:1, MINE:0
+				},
+				COMMANDO:{
+					PANDA:0.9, SEAL:0.9, TIGER:0.9, COMMANDO:1, MARINE:0, FIRE:0, TREE:0.2, PANDA_BAIT:0.2, SEAL_BAIT:0.2, TIGER_BAIT:0.2, MINE:0
+				},
+				MARINE:{
+					PANDA:0.0, SEAL:0.0, TIGER:0, COMMANDO:0, MARINE:-0.5, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+				},
+				FIRE:{
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+				},
+				TREE:{
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+				},
+				PANDA_BAIT:{
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+				},
+				SEAL_BAIT:{
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+				},
+				TIGER_BAIT:{
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+				},
+				MINE:{
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+				}
+			};
+		
+		//Ranking of agression order for one entity. Values used to determine attack priority. A value of zero indicates an entity will not attack another entity.
 		public static const entityFactionMatrix:Object = 
 			{
 				PANDA:{ 
