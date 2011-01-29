@@ -189,6 +189,22 @@ package com.lookup
 				MINE:			1
 			};
 		
+		//Health regen per second
+		public static const entityRegenArray:Object = 
+			{
+				PANDA:			0,
+				SEAL:			0,
+				TIGER:			0,
+				COMMANDO:		0,
+				MARINE:			0,
+				FIRE:			0,
+				TREE:			0,
+				PANDA_BAIT:		0,
+				SEAL_BAIT:		0,
+				TIGER_BAIT:		0,
+				MINE:			0
+			};
+		
 		public static const toolStats:Object =
 			{
 				PANDA_BAIT_TOOL:	{cooldown:5, cost:100},
