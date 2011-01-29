@@ -148,16 +148,16 @@ package com.lookup
 		public static const entityRangeArray:Object = 
 			{
 				PANDA:			30,
-				SEAL:			30,
-				TIGER:			30,
-				COMMANDO:		30,
-				MARINE:			30,
-				FIRE:			30,
-				TREE:			30,
-				PANDA_BAIT:		30,
-				SEAL_BAIT:		30,
-				TIGER_BAIT:		30,
-				MINE:			30
+				SEAL:			10,
+				TIGER:			35,
+				COMMANDO:		80,
+				MARINE:			55,
+				FIRE:			10,
+				TREE:			10,
+				PANDA_BAIT:		10,
+				SEAL_BAIT:		10,
+				TIGER_BAIT:		10,
+				MINE:			20
 			};
 		
 		//rate of fire, attacks per second
