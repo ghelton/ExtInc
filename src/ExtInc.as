@@ -58,8 +58,7 @@ package
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
-		private var testTypes:Array = [AskJon.COMMANDO, AskJon.SEAL, AskJon.PANDA, AskJon.MARINE];
-//		private var testColors:Array = [0xFF0000, 0x0FF000, 0x00FF00, 0x000FF0];
+		private var testTypes:Array = [AskJon.COMMANDO, AskJon.SEAL, AskJon.PANDA, AskJon.MARINE, AskJon.PANDA];
 		
 		private var _player:PlayerData;
 

@@ -25,7 +25,7 @@ package com.creatures
 		private var _type:String;
 		private var _hitList:Vector.<Entity>;
 		private var _image:Sprite;
-		private var _health:Number; //uint maybe?
+		private var _health:Number;
 		private var _centerPoint:Point;
 		
 		protected static const TEMP_ENTITY_SIZE:Number = 5;
@@ -212,8 +212,7 @@ package com.creatures
 				{					
 					continue;
 				}
-				scale = AskJon.entityFearMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
-
+				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				
