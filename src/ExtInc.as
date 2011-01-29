@@ -89,7 +89,7 @@ package
 			gameBoard.y = _gameBoardMask.y = 40;
 			
 			var testPoint:Point;
-			for(var count:int = 2; count >= 0; count--)
+			for(var count:int = 10; count >= 0; count--)
 			{
 				testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
 				gameBoard.addEntity(new Entity(null, 100, testPoint, Lookup.COMMANDO));

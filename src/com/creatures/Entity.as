@@ -180,17 +180,18 @@ package com.creatures
 		public function updateFearVector():void
 		{
 			var scale:Number;
-			var newFearFector:Point = new Point();
+			var newFearFector:Point;
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
 				{					
 					continue;
 				}
+				newFearFector = enemy._centerPoint.subtract(_centerPoint);
 				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
 				newFearFector.x *= scale;
 				newFearFector.y *= scale;
-				newFearFector = newFearFector.add(enemy._centerPoint.subtract(_centerPoint)); 
+				newFearFector = newFearFector.add(newFearFector); 
 			}
 			fearVector = (fearVector.add(newFearFector));
 			fearVector.x *= 0.5;
