@@ -9,10 +9,12 @@ package
 	import com.player.tools.Tool;
 	import com.player.tools.ToolEvent;
 	
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
+	import flash.net.URLRequest;
 	import flash.text.engine.TabAlignment;
 	import flash.utils.getTimer;
 	
@@ -30,8 +32,8 @@ package
 		private var _theGrid:Vector.<Vector.<Tile>>;
 		private var gameBoard:GameBoard;
 		
-		private static const GRID_WIDTH:uint = 25;
-		private static const GRID_HEIGHT:uint = 25;
+		private static const GRID_WIDTH:uint = 31;
+		private static const GRID_HEIGHT:uint = 21;
 		private function buildGameBoard():Vector.<Vector.<Tile>>
 		{
 			var widthCount:uint;
@@ -50,23 +52,41 @@ package
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
+		private static var CHROME:String = 'chrome/';
 		
 		
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
+		private var testTypes:Array = [Lookup.COMMANDO, Lookup.SEAL, Lookup.PANDA, Lookup.MARINE];
+		private var testColors:Array = [0xFF0000, 0x0FF000, 0x00FF00, 0x000FF0];
 		
 		private var _player:PlayerData;
-		
+
+		private var _bg:Loader;
+		private var _gameBoardMask:Loader;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
 		public function ExtInc()
 		{
+			// - BG -
+			_bg = new Loader();
+			_bg.load(new URLRequest(CHROME + 'MainBg.png'));
+			addChild(_bg);
+			
+			// - MASK -
+			_gameBoardMask = new Loader();
+			_gameBoardMask.load(new URLRequest(CHROME + 'gameBoardMask.swf'));
+			addChild(_gameBoardMask);
+			
 			Entity.setMasterTime(getTimer() / 1000);
 			gameBoard = new GameBoard(buildGameBoard());
-			
+			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
+			
+			gameBoard.x = _gameBoardMask.x = 55; 
+			gameBoard.y = _gameBoardMask.y = 40;
 			
 			var testPoint:Point;
 			for(var count:int = 10; count >= 0; count--)
