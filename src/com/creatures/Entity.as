@@ -1,10 +1,10 @@
 package com.creatures
 {
+	import com.lookup.Lookup;
+	
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
-	
-	import com.lookup.Lookup;
 	
 	
 	public class Entity extends EventDispatcher
@@ -55,7 +55,17 @@ package com.creatures
 		{
 			return _image;
 		}
-			
+
+		public function setMasterTime(masterTime:Number):void
+		{
+			_masterTime = masterTime;
+		}
+		
+		public function getHealth():Number
+		{
+			return _health;
+		}
+		
 		public function get centerPoint():Point
 		{
 			return _centerPoint.clone();
@@ -78,11 +88,24 @@ package com.creatures
 			return other._centerPoint.subtract(_centerPoint).length;
 		}
 		
+		
 		//ACTUAL CODE
-		public function updateFearVector(neighboringEntities:Vector.<Entity>):void
+		public function updateFearVector():void
 		{
-			
+			var scale:Number;
+			var newFearFector:Point = null;
+			for each (var enemy:Entity in _hitList)
+			{
+				scale = Lookup.entityFactionMatrix[_type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(distanceFromEntity(enemy)) * 0.01;
+				newFearFector = newFearFector.add(enemy.centerPoint.subtract(_centerPoint)); 
+				newFearFector.x *= scale;
+				newFearFector.y *= scale;
+			}
+			fearVector = (fearVector.add(newFearFector));
+			fearVector.x *= 0.5;
+			fearVector.y *= 0.5;
 		}
+		
 		public function attackEntity(enemy:Entity, timeDelta:Number):void
 		{
 			

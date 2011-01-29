@@ -76,7 +76,7 @@ package com.gameBoard
 		private function mainLoop(e:Event):void
 		{
 			
-			tick
+			tick();
 		}
 	}
 }
