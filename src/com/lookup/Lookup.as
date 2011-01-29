@@ -29,7 +29,7 @@ package com.lookup
 		public static const FIRE_TOOL:String			= '503';
 		public static const MINES_TOOL:String			= '504';
 		public static const MARINES_TOOL:String			= '505';
-		public static const COMMANDO_TOOL:String			= '505';
+		public static const COMMANDO_TOOL:String		= '506';
 		
 		public static const entityFactionMatrix:Object = 
 			{
