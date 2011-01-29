@@ -9,7 +9,7 @@ package creatures
 	{
 		public function SealBait($graphic:Sprite, $health:Number, $point:Point)
 		{
-			super($graphic, $health, $point, Lookup.SEAL_BAIT_REG);
+			super($graphic, $health, $point, Lookup.SEAL_BAIT);
 		}
 	}
 }

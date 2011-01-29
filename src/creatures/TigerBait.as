@@ -9,7 +9,7 @@ package creatures
 	{
 		public function TigerBait($graphic:Sprite, $health:Number, $point:Point)
 		{
-			super($graphic, $health, $point, Lookup.TIGER_BAIT_REG);
+			super($graphic, $health, $point, Lookup.TIGER_BAIT);
 		}
 	}
 }
