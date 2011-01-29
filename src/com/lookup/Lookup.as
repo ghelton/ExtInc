@@ -135,6 +135,21 @@ package com.lookup
 				MINE:			1
 			};
 		
+		public static const entitySpeedArray:Object = 
+			{
+				PANDA:			1,
+				SEAL:			1,
+				TIGER:			1,
+				COMMANDO:		1,
+				MARINE:			1,
+				FIRE:			1,
+				TREE:			1,
+				PANDA_BAIT:		1,
+				SEAL_BAIT:		1,
+				TIGER_BAIT:		1,
+				MINE:			1
+			};
+		
 		public static const toolStats:Object =
 			{
 				PANDA_BAIT_TOOL:	{cooldown:5, cost:100},

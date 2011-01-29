@@ -90,13 +90,7 @@ package
 		
 		//--------------------------------------
 		// EVENT HANDLERS
-		//--------------------------------------							
-		
-		private function onTool(e:ToolEvent):void
-		{
-			trace("money: " + _player.money);
-			tools();
-		}
+		//--------------------------------------
 		
 	}
 }
