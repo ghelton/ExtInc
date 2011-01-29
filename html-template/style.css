@@ -1,0 +1,12 @@
+body {
+	background: #000000;
+}
+
+.center {
+	margin: 0 auto;
+	display: block;
+}
+
+#header {
+	margin-bottom: 10px;
+}
