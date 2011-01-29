@@ -3,33 +3,33 @@ package com.lookup
 	public class Lookup
 	{
 		//Animals
-		public static const PANDA:String 				= '100';
-		public static const SEAL:String 				= '101';
-		public static const TIGER:String 				= '102';
+		public static const PANDA:String 				= 'PANDA';
+		public static const SEAL:String 				= 'SEAL';
+		public static const TIGER:String 				= 'TIGER';
 		
 		//Units
-		public static const COMMANDO:String 			= '200';
-		public static const MARINE:String 				= '201';
-		public static const MINE:String					= '202';
+		public static const COMMANDO:String 			= 'COMMANDO';
+		public static const MARINE:String 				= 'MARINE';
+		public static const MINE:String					= 'MINE';
 		
 		//Environmental
-		public static const TREE:String 				= '300';
-		public static const FIRE:String					= '301';
+		public static const TREE:String 				= 'TREE';
+		public static const FIRE:String					= 'FIRE';
 		
 		//ENTITIES
-		public static const PANDA_BAIT:String			= '400';
-		public static const SEAL_BAIT:String			= '401';
-		public static const TIGER_BAIT:String			= '402';
+		public static const PANDA_BAIT:String			= 'PANDA_BAIT';
+		public static const SEAL_BAIT:String			= 'SEAL_BAIT';
+		public static const TIGER_BAIT:String			= 'TIGER_BAIT';
 		
 		
 		//TOOLS
-		public static const PANDA_BAIT_TOOL:String		= '500';
-		public static const SEAL_BAIT_TOOL:String		= '501';
-		public static const TIGER_BAIT_TOOL:String		= '502';
-		public static const FIRE_TOOL:String			= '503';
-		public static const MINES_TOOL:String			= '504';
-		public static const MARINES_TOOL:String			= '505';
-		public static const COMMANDO_TOOL:String		= '506';
+		public static const PANDA_BAIT_TOOL:String		= 'PANDA_BAIT_TOOL';
+		public static const SEAL_BAIT_TOOL:String		= 'SEAL_BAIT_TOOL';
+		public static const TIGER_BAIT_TOOL:String		= 'TIGER_BAIT_TOOL';
+		public static const FIRE_TOOL:String			= 'FIRE_TOOL';
+		public static const MINES_TOOL:String			= 'MINES_TOOL';
+		public static const MARINES_TOOL:String			= 'MARINES_TOOL';
+		public static const COMMANDO_TOOL:String		= 'COMMANDO_TOOL';
 		
 		public static const entityFactionMatrix:Object = 
 			{
@@ -43,7 +43,7 @@ package com.lookup
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				COMMANDO:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:1, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				MARINE:{
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
