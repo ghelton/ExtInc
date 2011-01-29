@@ -33,12 +33,13 @@ package com.creatures
 		
 		private var _lastAttackTime:Number;
 		private var _lastMoveTime:Number;
+		private var _lastRegenTime:Number;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
 			super();
 			
-			_lastMoveTime = _masterTime;
+			_lastRegenTime = _lastMoveTime = _masterTime;
 			_type = $type;
 			_image = $graphic;
 			_health = $health;
@@ -74,6 +75,8 @@ package com.creatures
 		
 		public function getHealth():Number
 		{
+			if(isNaN(_health))
+				trace("what the fuck");
 			return _health;
 		}
 		
@@ -102,17 +105,30 @@ package com.creatures
 		
 		//ACTUAL CODE
 		
-		public function attackEntity(enemy:Entity, timeDelta:Number):void
+		public function attackEntity(enemy:Entity):Number
 		{
 			var healthChange:Number = AskJon.entityDamageMatrix[_type][enemy.type];
+			
+			if(isNaN(healthChange))
+				trace("fuck yall");
+			if(isNaN(_health))
+				trace("fuck yall");
 			if((_health + healthChange) < 0)
 			{
-				trace("DEAD");
 				_health = 0;
 				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			} else {
-				_health += AskJon.entityDamageMatrix[_type][enemy.type];	
+				_health += healthChange;	
 			}
+			return healthChange;
+		}
+		
+		private function regenerate():void
+		{
+			var deltaTime:Number = _masterTime - _lastRegenTime;
+			var deltaHealth:Number = deltaTime * AskJon.entityRegenArray[_type];
+			_health += deltaHealth;
+			_lastRegenTime = _masterTime;
 		}
 		
 		protected function updatePosition():void
@@ -130,11 +146,13 @@ package com.creatures
 			} else {
 				if(fearVector.x < 0.01 && fearVector.y < .01)
 				{
+					_lastMoveTime = _masterTime;
 					return;
 				}
 				
 				_centerPoint.x += fearVector.x * deltaTime * AskJon.entitySpeedArray[_type];
 				_centerPoint.y += fearVector.y * deltaTime * AskJon.entitySpeedArray[_type];
+
 				updatePosition();
 			}
 			_lastMoveTime = _masterTime;
@@ -146,6 +164,9 @@ package com.creatures
 			var closestDistance:Number = Number.POSITIVE_INFINITY;
 			var closestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
+			
+			regenerate();
+			
 			if(!canAttack())
 			{
 				return;
@@ -169,7 +190,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(closestEntity, deltaTime);
+			_attackWasBenefitial = attackEntity(closestEntity) > 0; 
 			closestEntity.riposte(this);
 		}
 		
@@ -177,7 +198,7 @@ package com.creatures
 		{
 			if(canAttack())
 			{
-				attackEntity(attacker, _masterTime - _lastAttackTime);
+				attackEntity(attacker);
 			}	
 		}
 		
@@ -192,7 +213,8 @@ package com.creatures
 				{					
 					continue;
 				}
-				scale = AskJon.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
+				scale = AskJon.entityFearMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
+
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				

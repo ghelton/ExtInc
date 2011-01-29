@@ -1,9 +1,9 @@
 package com.creatures
 {
+	import com.lookup.AskJon;
+	
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	
-	import com.lookup.AskJon;
 	
 	public class Marine extends Entity
 	{
