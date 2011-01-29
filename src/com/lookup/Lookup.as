@@ -18,9 +18,9 @@ package com.lookup
 		public static const PANDA_BAIT:uint		= 400;
 		public static const SEAL_BAIT:uint		= 401;
 		public static const TIGER_BAIT:uint		= 402;
-		public static const FIRE:uint				= 403;
-		public static const MINES:uint				= 404;
-		public static const MARINES:uint			= 405;
+		public static const FIRE:uint			= 403;
+		public static const MINES:uint			= 404;
+		public static const MARINES:uint		= 405;
 		
 		public static const entityFactionMatrix:Object = 
 			{

@@ -17,7 +17,7 @@ package com.player
 			var tool:Tool;
 			for(var i:int = 0; i < _tools.length; i++)
 			{
-				tool = new Tool(i + 300);
+				tool = new Tool(i + 400);
 				_tools[i] = tool;
 			}
 		}

@@ -17,7 +17,7 @@ package com.creatures
 		}
 
 		public var fearVector:Point;
-		private var _type:int;
+		private var _type:String;
 		private var _hitList:Vector.<Entity>;
 		private var _image:Sprite;
 		private var _health:Number; //uint maybe?
@@ -29,7 +29,7 @@ package com.creatures
 		private var _lastAttackTime:Number;
 		private var _lastMoveTime:Number;
 		
-		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:int)
+		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
 			super();
 			
@@ -71,7 +71,7 @@ package com.creatures
 			return _centerPoint.clone();
 		}
 		
-		public function get type():int
+		public function get type():String
 		{
 			return _type;
 		}
