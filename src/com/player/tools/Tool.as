@@ -16,7 +16,7 @@ package com.player.tools
 		
 		public function Tool($type:int)
 		{
-			var stats:Object = Lookup.toolStats[$type];
+			var stats:Object = Lookup.toolStats;
 			_cooldown = stats.cooldown;
 			_cost = stats.cost;
 			_type = $type;

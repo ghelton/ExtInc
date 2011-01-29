@@ -29,6 +29,7 @@ package com.lookup
 		public static const FIRE_TOOL:String			= '503';
 		public static const MINES_TOOL:String			= '504';
 		public static const MARINES_TOOL:String			= '505';
+		public static const COMMANDO_TOOL:String			= '505';
 		
 		public static const entityFactionMatrix:Object = 
 			{
@@ -146,7 +147,8 @@ package com.lookup
 				TIGER_BAIT_TOOL:	{cooldown:5, cost:100},
 				FIRE_TOOL:			{cooldown:5, cost:100},
 				MINES_TOOL:			{cooldown:5, cost:100},
-				MARINES_TOOL:		{cooldown:5, cost:100}
+				MARINES_TOOL:		{cooldown:5, cost:100},
+				COMMANDO_TOOL:		{cooldown:5, cost:100}
 			};
 		
 		public function Lookup()

@@ -1,19 +1,19 @@
 package
 {
 	import com.attacks.Firebomb;
-	
 	import com.creatures.Entity;
+	import com.gameBoard.GameBoard;
+	import com.gameBoard.Tile;
+	import com.lookup.Lookup;
+	import com.player.PlayerData;
+	import com.player.tools.Tool;
+	import com.player.tools.ToolEvent;
 	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
 	import flash.text.engine.TabAlignment;
-	
-	import com.gameBoard.GameBoard;
-	import com.gameBoard.Tile;
-	
-	import com.player.PlayerData;
 	
 	
 	/**
@@ -65,14 +65,20 @@ package
 			
 			addChild(gameBoard);
 			
-			var testPoint:Point;
+			/*var testPoint:Point;
 			for(var count:int = 10; count >= 0; count--)
 			{
 				testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
-				gameBoard.addEntity(new Entity(null, 100, testPoint, 0));
-			}
+				gameBoard.addEntity(new Entity(null, 100, testPoint, count));
+			}*/
+			
 			/*stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;*/
+			
+			/*var player:PlayerData = new PlayerData();
+			var tool:Tool = player.getTool(Lookup.MINES);
+			tool.addEventListener(ToolEvent.TOOL_AVAILABLE, onTool, false, 0, true);
+			tool.useTool();*/
 		}
 		
 		//--------------------------------------
@@ -89,6 +95,10 @@ package
 		// EVENT HANDLERS
 		//--------------------------------------							
 		
+		private function onTool(e:ToolEvent):void
+		{
+			trace("yay tools!");
+		}
 		
 	}
 }
