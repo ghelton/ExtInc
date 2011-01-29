@@ -29,8 +29,7 @@ package attacks
 			var unitY:Number = vector.y / $numFires + $start.y;
 			for(var i:int = 0; i < $numFires; i++)
 			{
-				flame = new Fire(null, 10, new Point(unitX * i, unitY * i));
-				trace("x: " + unitX * i + ", y: " + unitY * i);
+				flame = new Fire(new Sprite(), 10, new Point(unitX * i, unitY * i));
 				_fires[i] = flame;
 			}
 		}
