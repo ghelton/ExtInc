@@ -9,10 +9,12 @@ package
 	import com.player.tools.Tool;
 	import com.player.tools.ToolEvent;
 	
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
+	import flash.net.URLRequest;
 	import flash.text.engine.TabAlignment;
 	import flash.utils.getTimer;
 	
@@ -50,22 +52,37 @@ package
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
+		private static var CHROME:String = 'chrome/';
 		
 		
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
-		
+		private var _bg:Loader;
+		private var _gameBoardMask:Loader;
 		
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
 		public function ExtInc()
 		{
+			// - BG -
+			_bg = new Loader();
+			_bg.load(new URLRequest(CHROME + 'MainBg.png'));
+			addChild(_bg);
+			
+			// - MASK -
+			_gameBoardMask = new Loader();
+			_gameBoardMask.load(new URLRequest(CHROME + 'gameBoardMask.swf'));
+			addChild(_gameBoardMask);
+			
 			Entity.setMasterTime(getTimer() / 1000);
 			gameBoard = new GameBoard(buildGameBoard());
-			
+			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
+			
+			gameBoard.x = _gameBoardMask.x = 55; 
+			gameBoard.y = _gameBoardMask.y = 40;
 			
 			var testPoint:Point;
 			for(var count:int = 10; count >= 0; count--)
@@ -81,6 +98,7 @@ package
 			var tool:Tool = player.getTool(Lookup.MINES);
 			tool.addEventListener(ToolEvent.TOOL_AVAILABLE, onTool, false, 0, true);
 			tool.useTool();*/
+			
 		}
 		
 		//--------------------------------------
