@@ -80,7 +80,7 @@ package com.lookup
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				COMMANDO:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-10, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				MARINE:{
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
@@ -107,17 +107,17 @@ package com.lookup
 		
 		public static const entityRangeArray:Object = 
 			{
-				PANDA:			1,
-				SEAL:			1,
-				TIGER:			1,
-				COMMANDO:		1,
-				MARINE:			1,
-				FIRE:			1,
-				TREE:			1,
-				PANDA_BAIT:		1,
-				SEAL_BAIT:		1,
-				TIGER_BAIT:		1,
-				MINE:			1
+				PANDA:			30,
+				SEAL:			30,
+				TIGER:			30,
+				COMMANDO:		30,
+				MARINE:			30,
+				FIRE:			30,
+				TREE:			30,
+				PANDA_BAIT:		30,
+				SEAL_BAIT:		30,
+				TIGER_BAIT:		30,
+				MINE:			30
 			};
 		
 		public static const entityROFArray:Object = 

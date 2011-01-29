@@ -43,6 +43,7 @@ package com.creatures
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
+			_lastAttackTime = _masterTime;
 			
 			var tempGraphic:Sprite = new Sprite();
 			with(tempGraphic.graphics)
@@ -133,7 +134,7 @@ package com.creatures
 		public function attackTick():void
 		{
 			var distance:Number = 0;
-			var closestDistance:Number = 0;
+			var closestDistance:Number = 10000;
 			var closestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			if(!canAttack())
@@ -142,6 +143,10 @@ package com.creatures
 			}
 			for each (var enemy:Entity in _hitList)
 			{
+				if(enemy === this)
+				{
+					continue;
+				}
 				distance = distanceFromEntity(enemy);
 				if(!(Lookup.entityFactionMatrix[enemy.type] == Lookup.entityFactionMatrix[_type] == 0) && distance <= closestDistance)
 				{
@@ -154,7 +159,7 @@ package com.creatures
 			{
 				return;
 			}
-			
+			_lastAttackTime = _masterTime;
 			attackEntity(enemy, deltaTime);
 			enemy.riposte(this);
 		}
@@ -175,6 +180,10 @@ package com.creatures
 			var newFearFector:Point = new Point();
 			for each (var enemy:Entity in _hitList)
 			{
+				if(enemy === this)
+				{					
+					continue;
+				}
 				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
 				newFearFector = newFearFector.add(enemy.centerPoint.subtract(centerPoint)); 
 				newFearFector.x *= scale;
