@@ -9,10 +9,12 @@ package
 	import com.player.tools.Tool;
 	import com.player.tools.ToolEvent;
 	
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
+	import flash.net.URLRequest;
 	import flash.text.engine.TabAlignment;
 	import flash.utils.getTimer;
 	
@@ -50,6 +52,7 @@ package
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
+		private static var CHROME:String = 'chrome/';
 		
 		
 		//--------------------------------------
@@ -58,15 +61,32 @@ package
 		private var testTypes:Array = [Lookup.COMMANDO, Lookup.SEAL, Lookup.PANDA, Lookup.MARINE];
 		private var testColors:Array = [0xFF0000, 0x0FF000, 0x00FF00, 0x000FF0];
 		
+		private var _player:PlayerData;
+
+		private var _bg:Loader;
+		private var _gameBoardMask:Loader;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
 		public function ExtInc()
 		{
+			// - BG -
+			_bg = new Loader();
+			_bg.load(new URLRequest(CHROME + 'MainBg.png'));
+			addChild(_bg);
+			
+			// - MASK -
+			_gameBoardMask = new Loader();
+			_gameBoardMask.load(new URLRequest(CHROME + 'gameBoardMask.swf'));
+			addChild(_gameBoardMask);
+			
 			Entity.setMasterTime(getTimer() / 1000);
 			gameBoard = new GameBoard(buildGameBoard());
-			
+			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
+			
+			gameBoard.x = _gameBoardMask.x = 55; 
+			gameBoard.y = _gameBoardMask.y = 40;
 			
 			var testPoint:Point;
 			for(var count:int = 1; count >= 0; count--)
@@ -77,17 +97,11 @@ package
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
-			
-			/*var player:PlayerData = new PlayerData();
-			var tool:Tool = player.getTool(Lookup.MINES);
-			tool.addEventListener(ToolEvent.TOOL_AVAILABLE, onTool, false, 0, true);
-			tool.useTool();*/
 		}
 		
 		//--------------------------------------
 		// PROTECTED & PRIVATE METHODS
 		//--------------------------------------	
-		
 		
 		//--------------------------------------
 		// PUBLIC METHODS
@@ -96,12 +110,7 @@ package
 		
 		//--------------------------------------
 		// EVENT HANDLERS
-		//--------------------------------------							
-		
-		private function onTool(e:ToolEvent):void
-		{
-			trace("yay tools!");
-		}
+		//--------------------------------------
 		
 	}
 }

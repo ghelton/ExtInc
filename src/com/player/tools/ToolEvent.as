@@ -6,15 +6,15 @@ package com.player.tools
 	{
 		public static const TOOL_AVAILABLE:String = "toolAvailable";
 		
-		private var _toolType:int;
+		private var _toolType:String;
 		
-		public function ToolEvent($toolType:int, type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function ToolEvent($toolType:String, type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			_toolType = $toolType;
 			super(type, bubbles, cancelable);
 		}
 		
-		public function get toolType():int
+		public function get toolType():String
 		{
 			return _toolType;
 		}
