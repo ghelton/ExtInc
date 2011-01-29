@@ -149,10 +149,6 @@ package com.lookup
 				TIGER_BAIT:		1,
 				MINE:			1
 			};
-		public static const playersStartingData:Object = 
-			{
-				MONEY:		250
-			};
 		
 		public static const toolStats:Object =
 			{
