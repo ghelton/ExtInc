@@ -92,16 +92,30 @@ package lookup
 		
 		public static const entityRangeArray:Object = 
 			{
-				PANDA:			0,
-				SEAL:			0,
-				TIGER:			0,
-				COMMANDO:		0,
-				MARINE:			0,
-				FIRE:			0,
-				TREE:			0,
-				PANDA_BAIT_REG:	0,
-				SEAL_BAIT_REG:	0,
-				TIGER_BAIT_REG:	0
+				PANDA:			1,
+				SEAL:			1,
+				TIGER:			1,
+				COMMANDO:		1,
+				MARINE:			1,
+				FIRE:			1,
+				TREE:			1,
+				PANDA_BAIT_REG:	1,
+				SEAL_BAIT_REG:	1,
+				TIGER_BAIT_REG:	1
+			};
+		
+		public static const entityROFArray:Object = 
+			{
+				PANDA:			1,
+				SEAL:			1,
+				TIGER:			1,
+				COMMANDO:		1,
+				MARINE:			1,
+				FIRE:			1,
+				TREE:			1,
+				PANDA_BAIT_REG:	1,
+				SEAL_BAIT_REG:	1,
+				TIGER_BAIT_REG:	1
 			};
 		
 		public static const playersStartingData:Object = 
