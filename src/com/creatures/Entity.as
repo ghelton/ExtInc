@@ -104,6 +104,7 @@ package com.creatures
 			var healthChange:Number = Lookup.entityDamageMatrix[_type][enemy.type];
 			if((_health + healthChange) < 0)
 			{
+				trace("DEAD");
 				_health = 0;
 				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			} else {
@@ -124,7 +125,7 @@ package com.creatures
 			{
 				
 			} else {
-				if(fearVector.x < 0.0001 && fearVector.y < .0001)
+				if(fearVector.x < 0.01 && fearVector.y < .01)
 				{
 					return;
 				}
@@ -180,7 +181,8 @@ package com.creatures
 		public function updateFearVector():void
 		{
 			var scale:Number;
-			var newFearFector:Point = new Point();
+			var newFearVector:Point = new Point();
+			var differenceVector:Point = new Point();
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
@@ -188,11 +190,15 @@ package com.creatures
 					continue;
 				}
 				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
-				newFearFector.x *= scale;
-				newFearFector.y *= scale;
-				newFearFector = newFearFector.add(enemy._centerPoint.subtract(_centerPoint)); 
+				
+				differenceVector = enemy._centerPoint.subtract(_centerPoint);
+				
+				differenceVector.x *= scale;
+				differenceVector.y *= scale;
+				
+				newFearVector = newFearVector.add(differenceVector); 
 			}
-			fearVector = (fearVector.add(newFearFector));
+			fearVector = (fearVector.add(newFearVector));
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;
 		}
