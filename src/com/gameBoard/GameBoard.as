@@ -3,6 +3,7 @@ package com.gameBoard
 	import com.creatures.Entity;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
@@ -21,6 +22,8 @@ package com.gameBoard
 			drawGrid();
 			addChild(_tileLayer);
 			addChild(_entityLayer);
+			
+			stage.addEventListener(Event.ENTER_FRAME, mainLoop);
 		}
 		
 		private var _tileLayer:Sprite = new Sprite();
@@ -45,11 +48,17 @@ package com.gameBoard
 			}
 		}
 		
-		public function tick(stepTime:Number):void
+		public function tick():void
 		{
+			var entity:Entity;
 			Entity._masterTime = (getTimer() / 1000);
-			for each(var entity:Entity in entities)
-				entity.tick(stepTime);
+			for each(entity in entities) {
+//				entity.updateFearVector(
+				entity.attackTick();
+			}
+			
+			for each(entity in entities)
+				entity.moveTick();
 		}
 		
 		public function addEntity(newEntity:Entity):void
@@ -62,6 +71,12 @@ package com.gameBoard
 			var index:int = entities.lastIndexOf(deadEntity);
 			if(index >= 0)
 				entities.splice(index, 1);
+		}
+		
+		private function mainLoop(e:Event):void
+		{
+			
+			tick
 		}
 	}
 }

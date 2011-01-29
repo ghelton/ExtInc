@@ -10,6 +10,11 @@ package com.creatures
 	public class Entity extends EventDispatcher
 	{
 		public static var _masterTime:Number;
+		
+		public static function setMasterTime(masterTime:Number):void
+		{
+			_masterTime = masterTime;
+		}
 
 		public var fearVector:Point;
 		private var _type:int;
@@ -21,8 +26,8 @@ package com.creatures
 		private static const TEMP_ENTITY_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
-		private var _lastAttackTime:int;
-		private var _lastMoveTime:int;
+		private var _lastAttackTime:Number;
+		private var _lastMoveTime:Number;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:int)
 		{
@@ -40,6 +45,7 @@ package com.creatures
 				endFill();
 			}
 			_image = tempGraphic;
+			updatePosition();
 			
 			_attackWasBenefitial = false;
 		}
@@ -48,10 +54,6 @@ package com.creatures
 		public function getGraphic():Sprite
 		{
 			return _image;
-		}
-		public function setMasterTime(masterTime:Number):void
-		{
-			_masterTime = masterTime;
 		}
 			
 		public function get centerPoint():Point
@@ -88,22 +90,16 @@ package com.creatures
 		
 		public function moveTick():void
 		{
+			var deltaTime:Number = _lastMoveTime - _masterTime;
 			if(_attackWasBenefitial)
 			{
 				
 			} else {
-				_centerPoint.x += fearVector.x * _lastMoveTime;
-				_centerPoint.y += fearVector.y * _lastMoveTime;
-				_image.x = _centerPoint.x;
-				_image.y = _centerPoint.y;	
+				_centerPoint.x += fearVector.x * deltaTime;
+				_centerPoint.y += fearVector.y * deltaTime;
+				updatePosition();
 			}
-		}
-		
-		public function tick(stepTime:Number):void
-		{
-			_centerPoint.x += fearVector.x * stepTime;
-			_centerPoint.y += fearVector.y * stepTime;
-			updatePosition();
+			_lastMoveTime = _masterTime;
 		}
 		
 		protected function updatePosition():void
