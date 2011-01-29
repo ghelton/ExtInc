@@ -148,15 +148,17 @@ package com.gameBoard
 		private var _updater:uint = 0;
 		private function mainLoop(e:Event):void
 		{
-			var lastCheck:uint = _updater + uint(entities.length / 24);
-			if(lastCheck >= entities.length)
-				lastCheck = entities.length - 1;
-				
-			for(_updater; _updater < lastCheck; _updater++)
-				entities[_updater].updateFearVector();
-			
-			if(_updater >= lastCheck)
-				_updater = 0;
+			for each(var entity:Entity in entities)
+				entity.updateFearVector();
+//			var lastCheck:uint = _updater + uint(entities.length / 24);
+//			if(lastCheck >= entities.length)
+//				lastCheck = entities.length - 1;
+//				
+//			for(_updater; _updater < lastCheck; _updater++)
+//				entities[_updater].updateFearVector();
+//			
+//			if(_updater >= lastCheck)
+//				_updater = 0;
 			
 			tick();
 		}
