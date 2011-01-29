@@ -118,7 +118,7 @@ package com.gameBoard
 		public function tick():void
 		{
 			var entity:Entity;
-			Entity.setMasterTime(getTimer() / 1000);
+			Entity.setMasterTime(Number(getTimer()) / 1000.0);
 			for each(entity in entities) 
 			{
 				entity.attackTick();

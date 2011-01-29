@@ -125,11 +125,6 @@ package com.creatures
 			{
 				
 			} else {
-				if(fearVector.x < 0.01 && fearVector.y < .01)
-				{
-					return;
-				}
-				
 				_centerPoint.x += fearVector.x * deltaTime * Lookup.entitySpeedArray[_type];
 				_centerPoint.y += fearVector.y * deltaTime * Lookup.entitySpeedArray[_type];
 				updatePosition();
