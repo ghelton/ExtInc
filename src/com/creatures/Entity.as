@@ -33,6 +33,7 @@ package com.creatures
 		
 		private var _lastAttackTime:Number;
 		private var _lastMoveTime:Number;
+		private var _lastRegenTime:Number;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
@@ -99,23 +100,24 @@ package com.creatures
 		
 		//ACTUAL CODE
 		
-		public function attackEntity(enemy:Entity):void
+		public function attackEntity(enemy:Entity):Number
 		{
 			var healthChange:Number = Lookup.entityDamageMatrix[_type][enemy.type];
 			if((_health + healthChange) < 0)
 			{
-				trace("DEAD");
 				_health = 0;
 				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			} else {
-				_health += Lookup.entityDamageMatrix[_type][enemy.type];	
+				_health += healthChange;	
 			}
+			return healthChange;
 		}
 		
 		private function regenerate():void
 		{
-			var deltaTime:Number = _masterTime - _lastAttackTime;
+			var deltaTime:Number = _masterTime - _lastRegenTime;
 			_health += deltaTime * Lookup.entityRegenArray[_type];
+			_lastRegenTime = _masterTime;
 		}
 		
 		protected function updatePosition():void
@@ -170,7 +172,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(closestEntity);
+			_attackWasBenefitial = attackEntity(closestEntity) > 0; 
 			closestEntity.riposte(this);
 		}
 		

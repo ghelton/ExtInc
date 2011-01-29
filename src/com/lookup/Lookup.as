@@ -195,7 +195,7 @@ package com.lookup
 				PANDA:			0,
 				SEAL:			0,
 				TIGER:			0,
-				COMMANDO:		0,
+				COMMANDO:		1,
 				MARINE:			0,
 				FIRE:			0,
 				TREE:			0,
