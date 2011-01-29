@@ -23,6 +23,13 @@ package com.gameBoard
 			addChild(_tileLayer);
 			addChild(_entityLayer);
 			
+			addEventListener(Event.ENTER_FRAME, init);
+		}
+		
+		private function init(e:Event):void
+		{
+			removeEventListener(Event.ENTER_FRAME, init);
+			
 			stage.addEventListener(Event.ENTER_FRAME, mainLoop);
 		}
 		

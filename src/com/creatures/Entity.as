@@ -32,7 +32,7 @@ package com.creatures
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
 			super();
-			
+			_type = $type;
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
