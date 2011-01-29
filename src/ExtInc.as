@@ -7,7 +7,11 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Point;
 	
+	import lookup.Lookup;
+	
 	import player.PlayerData;
+	import player.tools.Tool;
+	import player.tools.ToolEvent;
 	
 	
 	/**
@@ -40,6 +44,9 @@ package
 			stage.align = StageAlign.TOP_LEFT;*/
 			
 			var player:PlayerData = new PlayerData();
+			var tool:Tool = player.getTool(Lookup.MINES);
+			tool.addEventListener(ToolEvent.TOOL_AVAILABLE, onTool, false, 0, true);
+			tool.useTool();
 		}
 		
 		//--------------------------------------
@@ -56,6 +63,10 @@ package
 		// EVENT HANDLERS
 		//--------------------------------------							
 		
+		private function onTool(e:ToolEvent):void
+		{
+			trace("yay tools!");
+		}
 		
 	}
 }
