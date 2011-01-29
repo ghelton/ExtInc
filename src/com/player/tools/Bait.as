@@ -1,4 +1,4 @@
-package player.tools
+package com.player.tools
 {
 	public class Bait extends Tool
 	{

@@ -1,26 +1,26 @@
-package lookup
+package com.lookup
 {
 	public class Lookup
 	{
 		//Animals
-		public static const PANDA:int 				= 100;
-		public static const SEAL:int 				= 101;
-		public static const TIGER:int 				= 102;
+		public static const PANDA:uint 				= 100;
+		public static const SEAL:uint 				= 101;
+		public static const TIGER:uint 				= 102;
 		
 		//Units
-		public static const COMMANDO:int 			= 200;
-		public static const MARINE:int 				= 201;
+		public static const COMMANDO:uint 			= 200;
+		public static const MARINE:uint 				= 201;
 		
 		//Environmental
-		public static const TREE:int 				= 300;
+		public static const TREE:uint 				= 300;
 		
 		//TOOLS
-		public static const PANDA_BAIT_REG 			= 400;
-		public static const SEAL_BAIT_REG 			= 401;
-		public static const TIGER_BAIT_REG 			= 402;
-		public static const FIRE:int 				= 403;
-		public static const MINES:int				= 404;
-		public static const MARINES:int				= 405;
+		public static const PANDA_BAIT:uint		= 400;
+		public static const SEAL_BAIT:uint		= 401;
+		public static const TIGER_BAIT:uint		= 402;
+		public static const FIRE:uint			= 403;
+		public static const MINES:uint			= 404;
+		public static const MARINES:uint		= 405;
 		
 		public static const entityFactionMatrix:Object = 
 			{

@@ -1,8 +1,8 @@
-package player
+package com.player
 {
-	import lookup.Lookup;
+	import com.lookup.Lookup;
 	
-	import player.tools.Tool;
+	import com.player.tools.Tool;
 
 	public class PlayerData
 	{
@@ -17,7 +17,7 @@ package player
 			var tool:Tool;
 			for(var i:int = 0; i < _tools.length; i++)
 			{
-				tool = new Tool(i + 300);
+				tool = new Tool(i + 400);
 				_tools[i] = tool;
 			}
 		}
