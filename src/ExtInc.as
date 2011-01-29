@@ -30,8 +30,8 @@ package
 		private var _theGrid:Vector.<Vector.<Tile>>;
 		private var gameBoard:GameBoard;
 		
-		private static const GRID_WIDTH:uint = 25;
-		private static const GRID_HEIGHT:uint = 25;
+		private static const GRID_WIDTH:uint = 31;
+		private static const GRID_HEIGHT:uint = 21;
 		private function buildGameBoard():Vector.<Vector.<Tile>>
 		{
 			var widthCount:uint;
@@ -55,7 +55,8 @@ package
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
-		
+		private var testTypes:Array = [Lookup.COMMANDO, Lookup.SEAL, Lookup.PANDA, Lookup.MARINE];
+		private var testColors:Array = [0xFF0000, 0x0FF000, 0x00FF00, 0x000FF0];
 		
 		//--------------------------------------
 		// CONSTRUCTOR
@@ -68,7 +69,7 @@ package
 			addChild(gameBoard);
 			
 			var testPoint:Point;
-			for(var count:int = 10; count >= 0; count--)
+			for(var count:int = 1; count >= 0; count--)
 			{
 				testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
 				gameBoard.addEntity(new Entity(null, 100, testPoint, Lookup.COMMANDO));

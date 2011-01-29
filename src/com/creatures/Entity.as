@@ -105,6 +105,7 @@ package com.creatures
 		
 		public function moveTick():void
 		{
+			trace('moving');
 			var deltaTime:Number = _masterTime - _lastMoveTime;
 			if(_attackWasBenefitial)
 			{
@@ -119,6 +120,7 @@ package com.creatures
 		
 		protected function updatePosition():void
 		{
+			trace('image x ' + _image.x);
 			_image.x = _centerPoint.x - (_image.width * 0.5);
 			_image.y = _centerPoint.y - (_image.height * 0.5);	
 		}
@@ -169,9 +171,9 @@ package com.creatures
 			for each (var enemy:Entity in _hitList)
 			{
 				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
-				newFearFector = newFearFector.add(enemy.centerPoint.subtract(centerPoint)); 
 				newFearFector.x *= scale;
 				newFearFector.y *= scale;
+				newFearFector = newFearFector.add(enemy._centerPoint.subtract(_centerPoint)); 
 			}
 			fearVector = (fearVector.add(newFearFector));
 			fearVector.x *= 0.5;
