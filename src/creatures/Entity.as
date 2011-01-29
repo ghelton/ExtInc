@@ -14,5 +14,17 @@ package creatures
 			_health = $health;
 			_centerPoint = $point;
 		}
+		public function updateFearVector(neighboringEntities:Vector.<Entity>)
+		{
+			
+		}
+		public function attackEntity(enemy:Entity, timeDelta:Number)
+		{
+			
+		}
+		public function move(timeDelta:Number)
+		{
+			
+		}
 	}
 }
