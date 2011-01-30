@@ -21,6 +21,8 @@ package com.statusBar
 		public static const WELCOME:String = "Welcome";
 		public static const BAIT:String = "Bait - Use Bait to attract creatures";
 		public static const WEAPONS:String = "Weapons - Use your weapons to kill creatures";
+		public static const CASH_MONIES:String = "Money Money Money!!!!!";
+		public static const KILL_BOX:String = "KILL KILL KILL";
 		
 		//--------------------------------------
 		// VARIABLES

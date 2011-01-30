@@ -31,8 +31,10 @@ package com.statusBar
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
-		public static const BAIT:String = 'Bait';
-		public static const WEAPONS:String = 'Weapons';
+		public static const BAIT:String = 'BAIT';
+		public static const WEAPONS:String = 'WEAPONS';
+		public static const CASH_MONIES:String = 'CASH_MONIES';
+		public static const KILL_BOX:String = 'KILL_BOX';
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
@@ -56,7 +58,9 @@ package com.statusBar
 			var cashMoniesBg:StatusBox = new StatusBox(145, 98, cornerRadius);
 			cashMoniesBg.x = 105;
 			cashMoniesBg.y = 662;
+			cashMoniesBg.name = CASH_MONIES;
 			addChild(cashMoniesBg);
+			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
 			
 			var cashTitleLabel:TextField = new TextField();
 			cashTitleLabel.defaultTextFormat = Styles.PANEL_TF;
@@ -76,7 +80,9 @@ package com.statusBar
 			var killBoxBg:StatusBox = new StatusBox(165, 98, cornerRadius);
 			killBoxBg.x = 267;
 			killBoxBg.y = 662;
+			killBoxBg.name = KILL_BOX;
 			addChild(killBoxBg);
+			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
 			
 			var killBoxLabel:TextField = new TextField();
 			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
@@ -228,6 +234,22 @@ package com.statusBar
 		{
 			if(_currentTab != e.currentTarget.name)
 				e.currentTarget.gotoAndStop(1);
+		}
+		
+		private function onBoxRollover(e:MouseEvent):void
+		{
+			var message:String;
+			switch(e.currentTarget.name)
+			{
+				case CASH_MONIES :
+					message = OverlayEvent.CASH_MONIES;
+					break;
+				case KILL_BOX :
+					message = OverlayEvent.KILL_BOX;
+					break;
+				default :
+			}
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 		}
 		
 		//--------------------------------------
