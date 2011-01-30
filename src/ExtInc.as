@@ -31,7 +31,7 @@ package
 	 * @author G$
 	 * @since Jan 28, 2011
 	 */
-	[SWF(width="1024", height="768", version_major="10", frameRate="24")]
+	[SWF(width="1024", height="768", frameRate="24")]
 	
 	public class ExtInc extends Sprite
 	{
@@ -65,7 +65,7 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
-		private var testTypes:Array = [AskJon.TIGER, AskJon.COMMANDO, AskJon.SEAL, AskJon.MARINE];
+		private var testTypes:Array = [AskJon.COMMANDO, AskJon.MARINE];
 		
 		private var _player:PlayerData;
 
