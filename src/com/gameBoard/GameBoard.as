@@ -23,7 +23,7 @@ package com.gameBoard
 		internal static var entities:Vector.<Entity>;
 		
 		
-		public function GameBoard(_bg:UILoader, $type:Array) //$theGrid:Vector.<Vector.<Tile>>)
+		public function GameBoard(_bg:UILoader, $type:Array, $typeQuantities:Array = null, $typePositions:Array = null) //$theGrid:Vector.<Vector.<Tile>>)
 		{
 			entities = new Vector.<Entity>();
 //			_grid = $theGrid;

@@ -44,7 +44,6 @@ package com.creatures
 		{
 			super();
 			
-			_lastRegenTime = _lastMoveTime = _masterTime;
 			_type = $type;
 			_image = $graphic;
 			_health = $health;
@@ -52,16 +51,15 @@ package com.creatures
 			
 			if(_image == null)
 			{
-				var tempGraphic:Sprite = new Sprite();
-				with(tempGraphic.graphics)
-				{
-					beginFill(AskJon.colorOf[type], 0.8);
-					drawCircle(0, 0, PLACEHOLDER_SIZE);
-					endFill();
-				}
-				_image = tempGraphic;
+				_image = new Sprite();
 			}
 			
+			with(_image.graphics)
+			{
+				beginFill(AskJon.colorOf[type], 0.8);
+				drawCircle(0, 0, PLACEHOLDER_SIZE);
+				endFill();
+			}
 			_attackWasBenefitial = false;
 			
 			if(_image is UILoader)
@@ -78,6 +76,7 @@ package com.creatures
 		}
 		private function init(e:Event = null):void
 		{
+			_lastRegenTime = _lastMoveTime = _masterTime;
 //			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
 			updatePosition();
 		}
