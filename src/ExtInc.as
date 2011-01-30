@@ -150,6 +150,7 @@ package
 			addEventListener(OverlayEvent.SHOW_MESSAGE, onOverlayEvent);
 			addEventListener(OverlayEvent.SHOW_ERROR_MESSAGE, onOverlayEvent);
 			addEventListener(AttackEvent.PURCHASED, onToolPurchased);
+//			addEventListener(AttackEvent.DEATH, onDeath);
 			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
 			
 			// - TOOL LAYER -
@@ -178,6 +179,19 @@ package
 //			e.stopImmediatePropagation();
 			_mouseTool.destruct();
 			removeChild(_mouseTool);
+		}
+		
+		private function onDead(e:AttackEvent):void
+		{
+			if(e.bombType != playerData.target)
+			{
+				playerData.money += 1;
+			} else {
+				playerData.money += 10;
+				playerData.killCount--;
+			}
+			
+			_statusBar.updateKillCount(playerData.killCount);
 		}
 		//--------------------------------------
 		// PUBLIC METHODS
