@@ -17,7 +17,7 @@ package com.creatures
 //				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
 //				endFill();
 //			}
-			var seal:UILoader = new UILoader('../src/assets/Seal.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+			var seal:UILoader = new UILoader('assets/Seal.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
 			super(seal, $health, $point, AskTony.SEAL);
 		}

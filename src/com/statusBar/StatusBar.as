@@ -42,6 +42,7 @@ package com.statusBar
 		// VARIABLES
 		//--------------------------------------
 		private var _cashLabel:TextField;
+		private var _killLabel:TextField;
 		private var _animalFace:Loader;
 		private var _baitTool:BaitButton;
 		private var _weaponTool:WeaponButton;
@@ -94,14 +95,13 @@ package com.statusBar
 			addChild(killBoxBg);
 			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 			
-			var killBoxLabel:TextField = new TextField();
-			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
-			killBoxLabel.multiline = true;
-			killBoxLabel.width = 60;
-			killBoxLabel.x = 20;
-			killBoxLabel.y = 15;
-			killBoxLabel.text = "Kill\n100";
-			killBoxBg.addChild(killBoxLabel);
+			_killLabel = new TextField();
+			_killLabel.defaultTextFormat = Styles.PANEL_TF_L;
+			_killLabel.multiline = true;
+			_killLabel.width = 60;
+			_killLabel.x = 20;
+			_killLabel.y = 15;
+			killBoxBg.addChild(_killLabel);
 			
 			_animalFace = new Loader();
 			_animalFace.x = 80;
@@ -162,7 +162,8 @@ package com.statusBar
 			var weapons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
 			weapons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].iconUrl));
 			weapons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].iconUrl));
-			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+//			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			
@@ -214,7 +215,8 @@ package com.statusBar
 			fullScreenButton.addEventListener(MouseEvent.CLICK, onFsClick);
 			fullScreenButton.buttonMode = true;
 			
-			updateTarget(AskTony.PANDA);
+			updateTarget(ExtInc.playerData.target);
+			updateKillCount(ExtInc.playerData.killCount);
 			updateTabs(WEAPONS);
 		}
 		
@@ -283,7 +285,8 @@ package com.statusBar
 			var message:String;
 			if(ExtInc.playerData.money >= AskTony.toolInfo[tool].cost)
 			{
-				updateCash(-AskTony.toolInfo[tool].cost);
+				ExtInc.playerData.money -= AskTony.toolInfo[tool].cost;
+				updateCash(ExtInc.playerData.money);
 				message = AskTony.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 				var event:AttackEvent = new AttackEvent(AttackEvent.PURCHASED, AskTony.toolInfo[tool].attackType, new Point(0,0));
@@ -293,12 +296,6 @@ package com.statusBar
 				message = OverlayEvent.BROKE;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, message));
 			}
-		}
-		
-		private function updateCash(diff:int):void
-		{
-			ExtInc.playerData.money += diff;
-			_cashLabel.text = '$' + ExtInc.playerData.money.toString();
 		}
 		
 		private function showOverlay(name:String):void
@@ -338,7 +335,15 @@ package com.statusBar
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
+		public function updateKillCount(newKillCount:uint):void
+		{
+			_killLabel.text = 'Kill\n' + newKillCount;
+		}
 		
+		public function updateCash(newCash:uint):void
+		{
+			_cashLabel.text = '$' + newCash;
+		}
 		
 		//--------------------------------------
 		// EVENT HANDLERS

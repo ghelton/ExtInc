@@ -5,6 +5,7 @@ package
 	import com.UI.UILoader;
 	import com.attacks.Attack;
 	import com.attacks.AttackEvent;
+	import com.audio.CoreAudioManager;
 	import com.creatures.Entity;
 	import com.fonts.Transponder;
 	import com.gameBoard.GameBoard;
@@ -78,6 +79,7 @@ package
 		private var _statusBar:StatusBar;
 		private var _statusOverlay:StatusOverlay;
 		private var _mouseTool:MouseTool;
+		private var _audioManager:CoreAudioManager;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
@@ -87,6 +89,9 @@ package
 			
 //			Font.registerFont(com.fonts.Transponder);
 //			traceFonts();
+			_audioManager = new CoreAudioManager('audio/', 'music/');
+			_audioManager.backgroundSongs = ['FunkyAssBitch.mp3'];
+			_audioManager.playRandomBackground();
 			loadGame();	
 		}
 		
@@ -106,7 +111,7 @@ package
 		private function loadGame():void
 		{
 			// - PLAYER DATA -
-			playerData = new PlayerData(3000);
+			playerData = new PlayerData(10000);
 			
 			// - BG -
 			_bg = new Loader();
@@ -125,7 +130,7 @@ package
 			
 			// - GAME BOARD -
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
-			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), AskTony.startingQuantities );//buildGameBoard());
+			gameBoard = new GameBoard( new UILoader("assets/terrain.swf"), AskTony.startingQuantities );//buildGameBoard());
 			screen.addChild(gameBoard);
 			
 			gameBoard.x = _screenMask.x = 54; 
@@ -145,6 +150,7 @@ package
 			addEventListener(OverlayEvent.SHOW_MESSAGE, onOverlayEvent);
 			addEventListener(OverlayEvent.SHOW_ERROR_MESSAGE, onOverlayEvent);
 			addEventListener(AttackEvent.PURCHASED, onToolPurchased);
+			addEventListener(AttackEvent.DEATH, onDeath);
 			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
 			
 			// - TOOL LAYER -
@@ -173,6 +179,20 @@ package
 //			e.stopImmediatePropagation();
 			_mouseTool.destruct();
 			removeChild(_mouseTool);
+		}
+		
+		private function onDeath(e:AttackEvent):void
+		{
+			if(e.bombType != playerData.target)
+			{
+				playerData.money += 500;
+			} else {
+				playerData.money += 1500;
+				playerData.killCount--;
+			}
+			
+			_statusBar.updateCash(playerData.money);
+			_statusBar.updateKillCount(playerData.killCount);
 		}
 		//--------------------------------------
 		// PUBLIC METHODS

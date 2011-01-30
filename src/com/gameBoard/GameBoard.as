@@ -144,7 +144,10 @@ package com.gameBoard
 		private function onSplit(e:EntityEvent):void
 		{
 			if(entities.length < 40)
-				createEntity(e.entity.centerPoint.add(new Point(Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE)), e.entity.type);
+			{
+				var entity:Entity = e.entity;
+				createEntity(entity.centerPoint.add(new Point(Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE)), entity.type, entity.getHealth());
+			}
 //			explode(e.entity.centerPoint);
 		}
 //		private function onAttackUp(e:Event):void
@@ -236,26 +239,31 @@ package com.gameBoard
 					entities[count].attackTick();
 			}
 			
-			for(count = (_attacks.length - 1); count >= 0; count--)
+			for(count = (_attacks.length - 1); count >= 0; count--) {
 				_attacks[count].tick();
+			}
 			
 			var index:int;
 			for(count = _deadList.length - 1; count >= 0; count--)
 			{
 				index = entities.lastIndexOf(_deadList[count]);
-				if(index >= 0) entities.splice(index, 1);
+				if(index >= 0) 
+				{
+					dispatchEvent(new AttackEvent(AttackEvent.DEATH, entities[index].type, entities[index].centerPoint));
+					entities.splice(index, 1);
+				}
 			}
 			_deadList.length = 0;
 			
 			for(count = 0; count < entities.length; count++)
 				entities[count].moveTick();
 		}
-		public function createEntity(point:Point, type:String):void
+		public function createEntity(point:Point, type:String, health:int = 100):void
 		{
 			var contructor:* = AskTony.classLookup[type];
 			if(contructor != null)
 			{
-				var entity:Entity = new contructor(100, point);
+				var entity:Entity = new contructor(health, point);
 				addEntity(entity);
 			}
 		}
