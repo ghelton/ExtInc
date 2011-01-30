@@ -268,7 +268,6 @@ package com.UI
 		override protected function init(event:Event):void
 		{
 			_loader = new Loader();
-			_loader.visible = false;
 			addChild(_loader);
 			if(_url != "")
 			{
@@ -278,7 +277,7 @@ package com.UI
 		
 		override protected function draw():void
 		{
-//			_loader.visible = true;
+			visible = true;
 			if(LoadComplete)
 			{
 				super.draw();

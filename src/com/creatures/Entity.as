@@ -45,7 +45,7 @@ package com.creatures
 			super();
 			
 			_type = $type;
-			_image = $graphic;
+//			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
 			
@@ -156,8 +156,8 @@ package com.creatures
 			_centerPoint.y %= bounds.height;
 			var $bounds:Rectangle = _image.getBounds(_image.parent);
 
-			_image.x = (_centerPoint.x - (_image.width * 0.5));
-			_image.y = (_centerPoint.y - (_image.height * 0.5));	
+			_image.x = (_centerPoint.x - ($bounds.width * 0.5));
+			_image.y = (_centerPoint.y - ($bounds.height * 0.5));	
 		}
 		
 		public function moveTick():void
