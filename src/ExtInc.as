@@ -23,6 +23,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.text.Font;
@@ -163,6 +164,7 @@ package
 		{
 			gameBoard.setAttackType(e.bombType);
 			gameBoard.addEventListener(AttackEvent.IN_FLIGHT, onAttackInFlight);
+			
 			_mouseTool = new MouseTool(AskTony.toolInfo[e.bombType].url);
 			addChild(_mouseTool);
 		}
@@ -172,7 +174,6 @@ package
 			_mouseTool.destruct();
 			removeChild(_mouseTool);
 		}
-		
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------

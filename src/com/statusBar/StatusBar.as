@@ -60,6 +60,7 @@ package com.statusBar
 			var cornerRadius:uint = 56;
 			
 			// - CASH MONIES -
+			
 			var cashMoniesBg:StatusBox = new StatusBox(145, 98, cornerRadius);
 			cashMoniesBg.x = 105;
 			cashMoniesBg.y = 662;
@@ -72,17 +73,18 @@ package com.statusBar
 			cashTitleLabel.defaultTextFormat = Styles.PANEL_TF;
 			cashTitleLabel.width = 145;
 			cashTitleLabel.y = 15;
-			cashTitleLabel.text = "Money";
+			cashTitleLabel.text = "-Money-";
 			cashMoniesBg.addChild(cashTitleLabel);
 			
 			_cashLabel = new TextField();
 			_cashLabel.defaultTextFormat = Styles.PANEL_TF;
 			_cashLabel.width = 145;
 			_cashLabel.y = 50;
-			_cashLabel.text = ExtInc.playerData.money.toString();
+			_cashLabel.text = '$' + ExtInc.playerData.money.toString();
 			cashMoniesBg.addChild(_cashLabel);
 			
 			// - KILL BOX -
+			
 			var killBoxBg:StatusBox = new StatusBox(165, 98, cornerRadius);
 			killBoxBg.x = 267;
 			killBoxBg.y = 662;
@@ -95,24 +97,25 @@ package com.statusBar
 			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
 			killBoxLabel.multiline = true;
 			killBoxLabel.width = 60;
-			killBoxLabel.x = 15;
+			killBoxLabel.x = 20;
 			killBoxLabel.y = 15;
 			killBoxLabel.text = "Kill\n100";
 			killBoxBg.addChild(killBoxLabel);
 			
 			_animalFace = new Loader();
 			_animalFace.x = 80;
-			_animalFace.y = 20;
+			_animalFace.y = 25;
 			killBoxBg.addChild(_animalFace);
 			
 			// - TOOL BOX -
+			
 			_baitTool = new BaitButton();
 			_baitTool.name = BAIT;
 			_baitTool.addEventListener(MouseEvent.CLICK, onTabClick, false, 0, true);
 			_baitTool.addEventListener(MouseEvent.MOUSE_OVER, onTabOver, false, 0, true);
 			_baitTool.addEventListener(MouseEvent.MOUSE_OUT, onTabOut, false, 0, true);
 			_baitTool.x = 445;
-			_baitTool.y = 662;
+			_baitTool.y = 712;
 			_baitTool.buttonMode = true;
 			_baitTool.mouseChildren = false;
 			addChild(_baitTool);
@@ -123,7 +126,7 @@ package com.statusBar
 			_weaponTool.addEventListener(MouseEvent.MOUSE_OVER, onTabOver, false, 0, true);
 			_weaponTool.addEventListener(MouseEvent.MOUSE_OUT, onTabOut, false, 0, true);
 			_weaponTool.x = 445;
-			_weaponTool.y = 712;
+			_weaponTool.y = 662;
 			_weaponTool.buttonMode = true;
 			_weaponTool.mouseChildren = false;
 			addChild(_weaponTool);
@@ -198,6 +201,7 @@ package com.statusBar
 			}
 			
 			// - FS BUTTON -
+			
 			var fullScreenButton:StatusBox = new StatusBox(25, 25, cornerRadius);
 			fullScreenButton.x = 950;
 			fullScreenButton.y = 700;
@@ -287,7 +291,7 @@ package com.statusBar
 		private function updateCash(diff:int):void
 		{
 			ExtInc.playerData.money += diff;
-			_cashLabel.text = ExtInc.playerData.money.toString();
+			_cashLabel.text = '$' + ExtInc.playerData.money.toString();
 		}
 		
 		private function showOverlay(name:String):void

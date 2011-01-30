@@ -31,15 +31,15 @@ package com.Style
 		//--------------------------------------
 		// FONTS
 		//--------------------------------------
-		public static const TRANSPONDER:String = 'Transponder';
+		public static const TRANSPONDER:String = 'TransponderAOE';
 		
 		//--------------------------------------
 		// TEXT FORMAT
 		//--------------------------------------
-		public static const PANEL_TF:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
-		public static const PANEL_TF_L:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.LEFT);
-		public static const OVERLAY_TF:TextFormat = new TextFormat('Arial', 20, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
-		public static const OVERLAY_ERROR_TF:TextFormat = new TextFormat('Arial', 20, REALLY_RED, null, null, null, null, null, TextFormatAlign.CENTER);
+		public static const PANEL_TF:TextFormat = new TextFormat(TRANSPONDER, 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
+		public static const PANEL_TF_L:TextFormat = new TextFormat(TRANSPONDER, 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.LEFT);
+		public static const OVERLAY_TF:TextFormat = new TextFormat(TRANSPONDER, 20, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
+		public static const OVERLAY_ERROR_TF:TextFormat = new TextFormat(TRANSPONDER, 20, REALLY_RED, null, null, null, null, null, TextFormatAlign.CENTER);
 		
 		//--------------------------------------
 		// FILTERS

@@ -6,6 +6,7 @@ package com.gameBoard
 	import com.creatures.Entity;
 	import com.creatures.EntityEvent;
 	import com.lookup.AskTony;
+	import com.statusBar.OverlayEvent;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -72,9 +73,43 @@ package com.gameBoard
 				addChild(_entityLayer);
 			}
 			addEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(MouseEvent.ROLL_OVER, onGameRollOver);
 		}
 		
 		// EVENT LISTENERS
+		
+		private function onGameRollOver(e:MouseEvent):void
+		{
+			if(!attackType)
+				return;
+			
+			notifyTool();
+		}
+		
+		private function notifyTool():void
+		{
+			var message:String;
+			
+			switch(attackType)
+			{
+				case AskTony.BOOMBA_TOOL :
+				case AskTony.MINES_TOOL :
+					message = OverlayEvent.PLACE_WEAPON;
+					break;
+				case AskTony.FIRE_TOOL:
+					message = OverlayEvent.POINT_A;
+					break;
+				case AskTony.PANDA_BAIT_TOOL :
+				case AskTony.SEAL_BAIT_TOOL :
+				case AskTony.TIGER_BAIT_TOOL :
+					message = OverlayEvent.PLACE_BAIT;
+					break;
+				default:
+					break;
+			}
+			
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+		}
 		
 		//_weapons vector to track timing centrally from gameboard
 		private var _attacks:Vector.<Attack> = new Vector.<Attack>();
@@ -140,6 +175,7 @@ package com.gameBoard
 				if(index >= 0)
 					_attacks.splice(index, 1);
 			}
+			attackType = null;
 		}
 		private function tangoDown(e:EntityEvent):void
 		{

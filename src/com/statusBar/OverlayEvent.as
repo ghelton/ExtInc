@@ -26,6 +26,10 @@ package com.statusBar
 		public static const KILL_BOX:String = "Kill the ";
 		public static const PURCHASED:String = "purchased!";
 		public static const BROKE:String = "You're Broke!";
+		public static const PLACE_WEAPON:String = "Place your weapon";
+		public static const PLACE_BAIT:String = "Place your bait";
+		public static const POINT_A:String = "Napalm - Place starting point";
+		public static const POINT_B:String = "Napalm - Place end point";
 		
 		//--------------------------------------
 		// VARIABLES
@@ -38,7 +42,7 @@ package com.statusBar
 		public function OverlayEvent(type:String, $message:String)
 		{
 			message = $message;
-			super(type, false, false);
+			super(type, true, false);
 		}
 		
 		//--------------------------------------

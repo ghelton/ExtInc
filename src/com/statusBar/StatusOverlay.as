@@ -62,6 +62,7 @@ package com.statusBar
 		public function changeMessage(newMessage:String, newFormat:TextFormat):void
 		{
 			trace('changeMessage: ' + newMessage);
+			newFormat.letterSpacing = 2;
 			_message.defaultTextFormat = newFormat;
 			_message.text = newMessage;
 			visible = true;
