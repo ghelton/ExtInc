@@ -307,7 +307,7 @@ package com.statusBar
 					message = OverlayEvent.CASH_MONIES;
 					break;
 				case KILL_BOX :
-					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomCompliment() + " " + AskTony.classInfo[_currentAnimal].name + "s";
+					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomCompliment() + " " + AskTony.classInfo[_currentAnimal].name + "s" +  " " + OverlayEvent.getRandomReason();
 					break;
 				case BAIT :
 					message = OverlayEvent.BAIT;
