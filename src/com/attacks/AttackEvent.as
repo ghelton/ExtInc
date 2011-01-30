@@ -11,6 +11,7 @@ package com.attacks
 		public static const FIRE:String = 'FIRE';
 		public static const IN_FLIGHT:String = 'IN_FLIGHT';
 		public static const FINISHED:String = 'FINISHED';
+		public static const DEATH:String = 'DEATH';
 		
 		
 		public var toolType:String;
