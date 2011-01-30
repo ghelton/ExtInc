@@ -44,6 +44,7 @@ package com.statusBar
 		private var _weaponTool:WeaponButton;
 		
 		private static var _currentTab:String = BAIT;
+		private static var _currentAnimal:String;
 		
 		//--------------------------------------
 		// CONSTRUCTOR
@@ -60,6 +61,7 @@ package com.statusBar
 			cashMoniesBg.y = 662;
 			cashMoniesBg.name = CASH_MONIES;
 			addChild(cashMoniesBg);
+			cashMoniesBg.mouseChildren = false;
 			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
 			
 			var cashTitleLabel:TextField = new TextField();
@@ -81,6 +83,7 @@ package com.statusBar
 			killBoxBg.x = 267;
 			killBoxBg.y = 662;
 			killBoxBg.name = KILL_BOX;
+			killBoxBg.mouseChildren = false;
 			addChild(killBoxBg);
 			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
 			
@@ -144,18 +147,17 @@ package com.statusBar
 				toolBoxBg.addChild(box);
 			}
 			
-//			var box:Shape;
-//			var boxIndent:uint = 45;
-//			for (var i:uint = 0; i < 5; i++)
-//			{
-//				box = new Shape();
-//				box.graphics.lineStyle(1, Styles.REALLY_GREEN, 1, true);
-//				box.graphics.beginFill(0x000000);
-//				box.graphics.drawRect(boxIndent + i * 79, 30, 38, 40);
-//				box.graphics.endFill();
-//				box.filters = [Styles.SCREEN_GLOW];
-//				toolBoxBg.addChild(box);
-//			}
+			var icon:Loader;
+			boxIndent = 45;
+			for (var j:uint = 0; j < 5; j++)
+			{
+				icon = new Loader();
+				icon.load(new URLRequest('chrome/weapons/mine.swf'));
+				icon.x = boxIndent + j * 74;
+				icon.y = 30;
+				icon.filters = [Styles.SCREEN_GLOW];
+				toolBoxBg.addChild(icon);
+			}
 			
 			
 			addChild(toolBoxBg);
@@ -169,7 +171,7 @@ package com.statusBar
 			fullScreenButton.buttonMode = true;
 			
 			updateTarget(AskJon.PANDA);
-			updateTabs(BAIT);
+			updateTabs(WEAPONS);
 		}
 		
 		//--------------------------------------
@@ -187,6 +189,7 @@ package com.statusBar
 		
 		private function updateTarget(target:String):void
 		{
+			_currentAnimal = target;
 			switch(target)
 			{
 				case AskJon.PANDA :
@@ -245,7 +248,7 @@ package com.statusBar
 					message = OverlayEvent.CASH_MONIES;
 					break;
 				case KILL_BOX :
-					message = OverlayEvent.KILL_BOX;
+					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomInsult() + " " + _currentAnimal;
 					break;
 				default :
 			}
