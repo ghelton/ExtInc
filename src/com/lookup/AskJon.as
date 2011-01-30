@@ -256,14 +256,14 @@ package com.lookup
 		//toolz
 		public static const toolInfo:Object =
 			{
-				PANDA_BAIT_TOOL:	{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
-				SEAL_BAIT_TOOL:		{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
-				TIGER_BAIT_TOOL:	{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
-				FIRE_TOOL:			{cooldown:5, cost:2000, url:'chrome/weapons/napalm.swf'},
-				MINES_TOOL:			{cooldown:5, cost:1000, url:'chrome/weapons/mine.swf'},
-				MARINES_TOOL:		{cooldown:5, cost:3000, url:'chrome/weapons/marines.swf'},
-				BOOMBA_TOOL:		{cooldown:5, cost:5000, url:'chrome/weapons/boomba.swf'},
-				COMMANDO_TOOL:		{cooldown:5, cost:7000, url:'chrome/weapons/mine.swf'}
+				PANDA_BAIT_TOOL:	{name: 'Panda Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf'},
+				SEAL_BAIT_TOOL:		{name: 'Seal Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf'},
+				TIGER_BAIT_TOOL:	{name: 'Tiger Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf'},
+				FIRE_TOOL:			{name: 'Napalm', cooldown:5, cost:2000, iconUrl:'chrome/tools/icons/napalm.swf', url:'chrome/tools/mine.swf'},
+				MINES_TOOL:			{name: 'Mines', cooldown:5, cost:1000, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf'},
+				MARINES_TOOL:		{name: 'Marines', cooldown:5, cost:3000, iconUrl:'chrome/tools/icons/marines.swf', url:'chrome/tools/mine.swf'},
+				BOOMBA_TOOL:		{name: 'Boomba', cooldown:5, cost:5000, iconUrl:'chrome/tools/icons/boomba.swf', url:'chrome/tools/mine.swf'},
+				COMMANDO_TOOL:		{name: 'Commando', cooldown:5, cost:7000, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf'}
 			};
 		
 		public static const classInfo:Object =

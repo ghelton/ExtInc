@@ -17,6 +17,7 @@ package com.statusBar
 		// CONSTANTS
 		//--------------------------------------
 		public static const SHOW_MESSAGE:String = "SHOW_MESSAGE";
+		public static const SHOW_ERROR_MESSAGE:String = "SHOW_ERROR_MESSAGE";
 		
 		public static const WELCOME:String = "Welcome";
 		public static const BAIT:String = "Bait - Use Bait to attract creatures";
@@ -28,6 +29,8 @@ package com.statusBar
 		public static const COMMANDO_TOOL:String = " - Commando";
 		public static const MARINES_TOOL:String = " - Marines";
 		public static const BOOMBA_TOOL:String = " - Boomba";
+		public static const PURCHASED:String = "purchased!";
+		public static const BROKE:String = "You're Broke!";
 		
 		//--------------------------------------
 		// VARIABLES

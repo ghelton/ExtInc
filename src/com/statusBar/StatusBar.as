@@ -2,6 +2,7 @@
 package com.statusBar
 {
 	import com.Style.Styles;
+	import com.attacks.AttackEvent;
 	import com.lookup.AskJon;
 	
 	import flash.display.Loader;
@@ -13,6 +14,7 @@ package com.statusBar
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -149,9 +151,9 @@ package com.statusBar
 			}
 			
 			var icons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
-			icons.push(new ToolButtonData(AskJon.MINES_TOOL, AskJon.toolInfo[AskJon.MINES_TOOL].url));
-			icons.push(new ToolButtonData(AskJon.FIRE_TOOL, AskJon.toolInfo[AskJon.FIRE_TOOL].url));
-			icons.push(new ToolButtonData(AskJon.BOOMBA_TOOL, AskJon.toolInfo[AskJon.BOOMBA_TOOL].url));
+			icons.push(new ToolButtonData(AskJon.MINES_TOOL, AskJon.toolInfo[AskJon.MINES_TOOL].iconUrl));
+			icons.push(new ToolButtonData(AskJon.FIRE_TOOL, AskJon.toolInfo[AskJon.FIRE_TOOL].iconUrl));
+			icons.push(new ToolButtonData(AskJon.BOOMBA_TOOL, AskJon.toolInfo[AskJon.BOOMBA_TOOL].iconUrl));
 			
 			var icon:ToolButton;
 			boxIndent = 45;
@@ -239,6 +241,24 @@ package com.statusBar
 		private function onToolClick(e:MouseEvent):void
 		{
 			trace('tool clicked: ' + e.currentTarget.name);
+			var tool:String = e.currentTarget.name;
+			var message:String;
+			if(ExtInc.playerData.money >= AskJon.toolInfo[tool].cost)
+			{
+				updateCash(-AskJon.toolInfo[tool].cost);
+				message = AskJon.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
+				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+				parent.dispatchEvent(new AttackEvent(AttackEvent.PURCHASED, tool, new Point(0,0))); 
+			} else {
+				message = OverlayEvent.BROKE;
+				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, message));
+			}
+		}
+		
+		private function updateCash(diff:int):void
+		{
+			ExtInc.playerData.money += diff;
+			_cashLabel.text = ExtInc.playerData.money.toString();
 		}
 		
 		private function showOverlay(name:String):void

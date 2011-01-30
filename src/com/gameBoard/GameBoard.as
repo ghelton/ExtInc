@@ -17,7 +17,7 @@ package com.gameBoard
 
 	public class GameBoard extends Sprite
 	{
-		public static var attackType:String = AskJon.MINE;
+		public static var attackType:String = null;
 		public function setAttackType($type:String):void
 		{
 			if($type != null)
@@ -103,6 +103,7 @@ package com.gameBoard
 		{
 			_entityLayer.mouseChildren = true;
 			_attack = null;
+			dispatchEvent(new AttackEvent(attack.type, attack.bombType, attack.bombPosition));
 		}
 		private function fireAttack($attack:AttackEvent):void 
 		{
