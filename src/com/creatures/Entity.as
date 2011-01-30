@@ -1,8 +1,10 @@
 package com.creatures
 {
+	import com.UI.UILoader;
 	import com.lookup.AskJon;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -30,7 +32,8 @@ package com.creatures
 		private var _health:Number;
 		private var _centerPoint:Point;
 		
-		protected static const TEMP_ENTITY_SIZE:Number = 5;
+		protected static const TEMP_ENTITY_SIZE:Number = 30;
+		protected static const PLACEHOLDER_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
 		private var _lastAttackTime:Number = 0;
@@ -53,14 +56,30 @@ package com.creatures
 				with(tempGraphic.graphics)
 				{
 					beginFill(AskJon.colorOf[type], 0.8);
-					drawCircle(0, 0, TEMP_ENTITY_SIZE);
+					drawCircle(0, 0, PLACEHOLDER_SIZE);
 					endFill();
 				}
 				_image = tempGraphic;
 			}
-			updatePosition();
 			
 			_attackWasBenefitial = false;
+			
+			if(_image is UILoader)
+				(_image as UILoader).onComplete = loaderInit;
+			else
+				_image.addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		private function loaderInit(e:Event):void
+		{
+			if(_image.stage)
+				init(e);
+			else
+				_image.addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		private function init(e:Event = null):void
+		{
+//			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
+			updatePosition();
 		}
 		
 		//GETTERS AND SETTERS
@@ -136,6 +155,7 @@ package com.creatures
 		{
 			_centerPoint.x %= bounds.width;
 			_centerPoint.y %= bounds.height;
+			var $bounds:Rectangle = _image.getBounds(_image.parent);
 			_image.x = (_centerPoint.x - (_image.width * 0.5));
 			_image.y = (_centerPoint.y - (_image.height * 0.5));	
 		}

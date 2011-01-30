@@ -12,6 +12,7 @@ package com.gameBoard
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 
@@ -22,17 +23,32 @@ package com.gameBoard
 		internal static var entities:Vector.<Entity>;
 		
 		
-		public function GameBoard(_bg:UILoader) //$theGrid:Vector.<Vector.<Tile>>)
+		public function GameBoard(_bg:UILoader, $type:Array) //$theGrid:Vector.<Vector.<Tile>>)
 		{
 			entities = new Vector.<Entity>();
 //			_grid = $theGrid;
 //			drawGrid();
+			_bg.onComplete = onBgLoadComplete;
+			_tileLayer.addChild(_bg);
 			addChild(_tileLayer);
-			addChild(_entityLayer);
-			_entityLayer.addChild(_bg);
 			
-			Entity.bounds = _tileLayer.getBounds(this);
-			
+			function onBgLoadComplete(e:Event):void {
+				
+				var count:int;
+				var testPoint:Point;
+				for each(var enemyType:String in $type)			{
+					for(count = 10; count >= 0; count--)
+					{
+						testPoint = new Point(Math.random() * _bg.width, Math.random() * _bg.height);
+						createEntity(testPoint, enemyType);
+						//					gameBoard.addEntity(new Entity(null, 100, testPoint, enemyType));
+					}
+				}
+				
+				var bound:Rectangle = _tileLayer.getBounds(this);
+				Entity.bounds = bound;
+				addChild(_entityLayer);
+			}
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
@@ -85,7 +101,6 @@ package com.gameBoard
 		private function init(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
 			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
 			
 			addEventListener(Event.ENTER_FRAME, mainLoop);

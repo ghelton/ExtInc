@@ -51,7 +51,7 @@ package com.UI
 		{
 			super();
 			
-			addEventListener(Event.ADDED_TO_STAGE, initComplete, false, 999, true);
+			addEventListener(Event.ADDED_TO_STAGE, initComplete, false, 0, true);
 		}
 		
 		//--------------------------------------
@@ -76,9 +76,9 @@ package com.UI
 		
 		private function initComplete(e:Event):void
 		{
-			//do not override unless you're creating another base UI class
 			removeEventListener(Event.ADDED_TO_STAGE, initComplete);
 			init(e);
+			addedToStage(e);
 			draw();
 			_drawn = true;
 		}
@@ -97,19 +97,29 @@ package com.UI
 			//initializes children, adds children to stage, instantiates timers
 		}
 		
-		protected function deinit():void
+		protected function removedFromStage(e:Event):void
 		{
+			// - removes EventListeners, stops & resets timers, cleans up mem intensive objects
+			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
+			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
+		}
+		
+		protected function addedToStage(e:Event):void
+		{
+			// - adds EventListeners, plays timers, 
+			removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
+			addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage, false, 0, true);
+			//sub classes must call redraw manually if it is needed
+		}
+		
+		public function destruct():void
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
+			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 			// calls destruct on children
 			// does not remove children from stage
 			// destruction of super class happens after calling destruct on children
-		}
-		
-		public final function destruct():void
-		{
-			//prepares for deinit
-			_drawn = false;
-			deinit();
-			if(parent)
+			if(parent != null)
 				parent.removeChild(this);
 		}
 		
@@ -124,13 +134,12 @@ package com.UI
 		
 		protected function clear():void
 		{
-			//clears graphics
+			graphics.clear();
 		}
 		
 		protected function draw():void
 		{
 			// positions children, render current state, draws graphics
 		}
-		
 	}
 }
