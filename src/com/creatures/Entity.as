@@ -156,6 +156,7 @@ package com.creatures
 			_centerPoint.x %= bounds.width;
 			_centerPoint.y %= bounds.height;
 			var $bounds:Rectangle = _image.getBounds(_image.parent);
+
 			_image.x = (_centerPoint.x - (_image.width * 0.5));
 			_image.y = (_centerPoint.y - (_image.height * 0.5));	
 		}
@@ -185,7 +186,7 @@ package com.creatures
 		{
 			var distance:Number = 0;
 			var closestDistance:Number = Number.POSITIVE_INFINITY;
-			var closestEntity:Entity = null;
+			var bestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			
 			regenerate();
@@ -194,16 +195,6 @@ package com.creatures
 			{
 				return;
 			}
-			var self:Entity = this;
-			var myType:String = type;
-			function compareFactionRisk(x:Entity, y:Entity):Number
-			{
-				return Number(AskJon.entityFactionMatrix[myType][x.type] - AskJon.entityFactionMatrix[myType][y.type]);
-			}
-//			trace("I am a " + _type + " and my hit list is " + _hitList);
-			var sortedHitList:Vector.<Entity> = _hitList.slice();
-			sortedHitList.sort(compareFactionRisk);
-//			trace("My biggest targets are at the end of this list " + sortedHitList);
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
@@ -211,20 +202,22 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if(!(AskJon.entityDamageMatrix[enemy.type] == AskJon.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= AskJon.entityRangeArray[_type])
+				if( AskJon.entityFactionMatrix[_type][enemy.type] > 0
+					&& (distance <= closestDistance && distance <= AskJon.entityRangeArray[_type])
+					&& (bestEntity === null || AskJon.entityFactionMatrix[_type][enemy.type] >= AskJon.entityFactionMatrix[_type][bestEntity.type]))
 				{
-					closestEntity = enemy;
+					bestEntity = enemy;
 					closestDistance = distance;
 				}
 			}
 			
-			if(closestEntity === null)
+			if(bestEntity === null)
 			{
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			_attackWasBenefitial = attackEntity(closestEntity) > 0; 
-			closestEntity.riposte(this);
+			_attackWasBenefitial = attackEntity(bestEntity) > 0; 
+			bestEntity.riposte(this);
 		}
 		
 		public function riposte(attacker:Entity):void
@@ -238,6 +231,7 @@ package com.creatures
 		public function updateFearVector():void
 		{
 			var scale:Number;
+			var bestVector:Point = new Point();
 			var newFearVector:Point = new Point();
 			var differenceVector:Point;
 			for each (var enemy:Entity in _hitList)
@@ -246,16 +240,22 @@ package com.creatures
 				{					
 					continue;
 				}
+				//trace(AskJon.entityFearMatrix[type][enemy.type] + "    " + (.25 + .75 * (enemy.getHealth() * 1/100)) + "    " + Math.exp(-distanceFromEntity(enemy) * 1/100));
 				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
-				
+				differenceVector.normalize(1);
 				differenceVector.x *= scale;
 				differenceVector.y *= scale;
-				
-				newFearVector = newFearVector.add(differenceVector); 
+				//trace(scale);
+				if(scale > 0 && scale > bestVector.length)
+				{
+					bestVector = differenceVector;
+				} else if(scale < 0) {
+					newFearVector = newFearVector.add(differenceVector); 				
+				}
 			}
-			fearVector = (fearVector.add(newFearVector));
+			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;
 		}
