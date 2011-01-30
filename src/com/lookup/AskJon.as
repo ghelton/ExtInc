@@ -191,11 +191,11 @@ package com.lookup
 		//
 		public static const entitySpeedArray:Object = 
 			{
-				PANDA:			2,
-				SEAL:			1,
-				TIGER:			4,
-				COMMANDO:		4,
-				MARINE:			3,
+				PANDA:			20,
+				SEAL:			10,
+				TIGER:			40,
+				COMMANDO:		40,
+				MARINE:			30,
 				FIRE:			0,
 				TREE:			0,
 				PANDA_BAIT:		0,
