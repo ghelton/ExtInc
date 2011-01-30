@@ -56,9 +56,8 @@ package com.lookup
 		
 		public static const startingQuantities:Object =
 			{
-				TIGER: 			0,//orange
 				PANDA: 			5,//gray
-				TIGER: 			1,//orange
+				TIGER: 			2,//orange
 				SEAL: 			5,//blue gray
 				COMMANDO:		0,//dark green
 				MARINE:			0,//pink
@@ -74,7 +73,7 @@ package com.lookup
 		public static const entityFearMatrix:Object = 
 			{
 				PANDA:{ 
-					PANDA:-.2, SEAL:0.0, TIGER:-0.2, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.8, TREE:1.0, PANDA_BAIT:1, SEAL_BAIT:-0.2, TIGER_BAIT:1, MINE:0
+					PANDA:-0.2, SEAL:0.0, TIGER:-0.2, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.8, TREE:1.0, PANDA_BAIT:1, SEAL_BAIT:-0.2, TIGER_BAIT:1, MINE:0
 				},
 				SEAL:{
 					PANDA:0.0, SEAL:-0.2, TIGER:-0.5, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.8, TREE:1, PANDA_BAIT:0.5, SEAL_BAIT:1, TIGER_BAIT:-0.3, MINE:0
@@ -188,7 +187,7 @@ package com.lookup
 					PANDA:-25, SEAL:-25, TIGER:-25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				TIGER_BAIT:{
-					PANDA:-25, SEAL:-25, TIGER:-50, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
+					PANDA:-25, SEAL:-25, TIGER:-25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				MINE:{
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
