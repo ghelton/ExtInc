@@ -3,8 +3,6 @@ package com.statusBar
 {
 	import com.Style.Styles;
 	import com.creatures.Marine;
-	import com.greensock.TweenNano;
-	import com.greensock.easing.Quad;
 	
 	import flash.display.Bitmap;
 	import flash.display.BlendMode;
