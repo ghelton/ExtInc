@@ -6,7 +6,7 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	public class Tiger extends Entity
+	public class Tiger extends Creature
 	{
 		public function Tiger($health:Number, $point:Point)
 		{

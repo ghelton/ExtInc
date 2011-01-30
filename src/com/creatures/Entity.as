@@ -6,12 +6,14 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	
 	public class Entity extends EventDispatcher
 	{
+		private static const MAXIMUM_ROTATION_DELTA:Number = 10;
 		public static var _masterTime:Number;
 		public static var bounds:Rectangle;
 		
@@ -36,11 +38,10 @@ package com.creatures
 		
 		protected static const TEMP_ENTITY_SIZE:Number = 50;
 		protected static const PLACEHOLDER_SIZE:Number = 5;
-		private var _attackWasBenefitial:Boolean;
 		
 		private var _lastAttackTime:Number = 0;
-		private var _lastMoveTime:Number = 0;
-		private var _lastRegenTime:Number = 0;
+		private var _lastMoveTime:Number = _masterTime;
+		private var _lastRegenTime:Number = _masterTime;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
@@ -62,24 +63,35 @@ package com.creatures
 					endFill();
 				}
 			}
-			_attackWasBenefitial = false;
 			
-			if(_image is UILoader)
+			if(_image is UILoader) {
+				function loaderInit(e:Event):void
+				{
+					if(_image.stage)
+						init(e);
+					else
+						_image.addEventListener(Event.ADDED_TO_STAGE, init);
+				}
 				(_image as UILoader).onComplete = loaderInit;
-			else
-				_image.addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		private function loaderInit(e:Event):void
-		{
-			if(_image.stage)
-				init(e);
+			}
 			else
 				_image.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		private function init(e:Event = null):void
 		{
+			_image.removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			_lastRegenTime = _lastMoveTime = _masterTime;
+			
+			var centerContainer:Sprite = new Sprite();
 //			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
+			centerContainer.rotation = _image.rotation;
+			_image.rotation = 0;
+			_image.x = -_image.width * 0.5;
+			_image.y = -_image.height * 0.5;
+			_image.parent.addChild(centerContainer);
+			centerContainer.addChild(_image);
+			_image = centerContainer;
 			updatePosition();
 		}
 		
@@ -96,8 +108,6 @@ package com.creatures
 		
 		public function getHealth():Number
 		{
-			if(isNaN(_health))
-				trace("what the fuck");
 			return _health;
 		}
 		
@@ -139,11 +149,25 @@ package com.creatures
 			if((_health) < 0)
 			{
 				_health = 0;
-				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
-			} 
+				killed();
+			}
 			else if(_health >= 200)
-				dispatchEvent(new EntityEvent(EntityEvent.SPLIT, this));
+				split();
 		}
+		
+		private var _killedEvent:EntityEvent = new EntityEvent(EntityEvent.KILLED, this);
+		protected function killed():void
+		{
+			if(_killedEvent != null)
+				dispatchEvent(_killedEvent);
+			
+		}
+		protected function split():void
+		{
+			dispatchEvent(new EntityEvent(EntityEvent.SPLIT, this));
+			
+		}
+		
 		private function regenerate():void
 		{
 			var deltaTime:Number = _masterTime - _lastRegenTime;
@@ -157,54 +181,49 @@ package com.creatures
 			_centerPoint.x %= bounds.width;
 			_centerPoint.y %= bounds.height;
 			
-			var $bounds:Rectangle = _image.getBounds(_image.parent);
-			
 			_image.x = (_centerPoint.x);
 			_image.y = (_centerPoint.y);	
 		}
 		
+		private static const MINIMUM_SAFE_DISTANCE:Number = 15;
 		public function moveTick():void
 		{
-			var deltaTime:Number = _masterTime - _lastMoveTime;
-			if(_attackWasBenefitial)
+				
+			if(fearVector.x < 0.01 && fearVector.y < .01)
 			{
-				
-			} else {
-				if(fearVector.x < 0.01 && fearVector.y < .01)
-				{
-					_lastMoveTime = _masterTime;
-					return;
-				}
-				
-				var deltaVector:Point = new Point(fearVector.x * deltaTime * _speed
-													, fearVector.y * deltaTime * _speed);
-				
-				_centerPoint.x += deltaVector.x;
-				_centerPoint.y += deltaVector.y;
-
-				
-				var targetRotation:Number = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
-				//			_image.rotation += Math.min(Math.max(-15,(targetRotation - _image.rotation) * 0.5), 15);
-				_image.rotation = targetRotation;
-				
-				var vectLength:Number;
-				var checkVect:Point;
-				var dot:Number;
-				for each(var entity:Entity in _hitList)
-				{
-					if(entity === this)
-						continue
-					checkVect = entity._centerPoint.subtract(_centerPoint);
-					vectLength = checkVect.length;
-					if(vectLength < _image.width)
-					{
-						checkVect.normalize((vectLength - _image.width));
-						_centerPoint = _centerPoint.add(checkVect);
-					}
-				}
-				
-				updatePosition();
+				_lastMoveTime = _masterTime;
+				return;
 			}
+			var deltaTime:Number = _masterTime - _lastMoveTime;
+			
+			var deltaVector:Point = new Point(fearVector.x * deltaTime * _speed
+												, fearVector.y * deltaTime * _speed);
+			var targetPoint:Point = _centerPoint.add(deltaVector);
+			
+
+			var vectLength:Number;
+			var checkVect:Point;
+			var dot:Number;
+			for each(var entity:Entity in _hitList)
+			{
+				if(entity === this)
+					continue
+				checkVect = entity._centerPoint.subtract(targetPoint);
+				vectLength = checkVect.length;
+				if(vectLength < MINIMUM_SAFE_DISTANCE)
+				{
+					checkVect.normalize((vectLength - MINIMUM_SAFE_DISTANCE));
+					targetPoint = targetPoint.add(checkVect);
+				}
+			}
+			
+			deltaVector = targetPoint.subtract(_centerPoint);
+			var targetRotation:Number = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
+			_image.rotation += Math.min(Math.max(-MAXIMUM_ROTATION_DELTA,(targetRotation - _image.rotation) * 0.5), MAXIMUM_ROTATION_DELTA);
+			//			_image.rotation = targetRotation;
+			_centerPoint = targetPoint;
+			
+			updatePosition();
 			_lastMoveTime = _masterTime;
 		}
 		
@@ -216,7 +235,6 @@ package com.creatures
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			
 			regenerate();
-			
 			if(!canAttack())
 			{
 				return;
@@ -242,7 +260,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			_attackWasBenefitial = attackEntity(bestEntity) > 0; 
+			attackEntity(bestEntity) > 0;
 			bestEntity.riposte(this);
 		}
 		
@@ -266,14 +284,12 @@ package com.creatures
 				{					
 					continue;
 				}
-				//trace(AskJon.entityFearMatrix[type][enemy.type] + "    " + (.25 + .75 * (enemy.getHealth() * 1/100)) + "    " + Math.exp(-distanceFromEntity(enemy) * 1/100));
-				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
+				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				differenceVector.normalize(1);
 				differenceVector.x *= scale;
 				differenceVector.y *= scale;
-				//trace(scale);
 				if(scale > 0 && scale > bestVector.length)
 				{
 					bestVector = differenceVector;
