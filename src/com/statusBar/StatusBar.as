@@ -69,7 +69,7 @@ package com.statusBar
 			cashMoniesBg.name = CASH_MONIES;
 			addChild(cashMoniesBg);
 			cashMoniesBg.mouseChildren = false;
-			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onCashMoniesRollover);
 			
 			var cashTitleLabel:TextField = new TextField();
 			cashTitleLabel.defaultTextFormat = Styles.PANEL_TF;
@@ -93,7 +93,7 @@ package com.statusBar
 			killBoxBg.name = KILL_BOX;
 			killBoxBg.mouseChildren = false;
 			addChild(killBoxBg);
-			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onKillBoxRollover);
 			
 			_killLabel = new TextField();
 			_killLabel.defaultTextFormat = Styles.PANEL_TF_L;
@@ -264,7 +264,7 @@ package com.statusBar
 		private function onTabOver(e:MouseEvent):void
 		{
 			e.currentTarget.gotoAndStop(2);
-			showOverlay(e.currentTarget.name);
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.MESSAGE, e.currentTarget.name));
 		}
 		
 		private function onTabOut(e:MouseEvent):void
@@ -273,63 +273,38 @@ package com.statusBar
 				e.currentTarget.gotoAndStop(1);
 		}
 		
+		private function onKillBoxRollover(e:MouseEvent):void
+		{
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.KILL_BOX));
+		}
+		
+		private function onCashMoniesRollover(e:MouseEvent):void
+		{
+			//parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.CASH_MONIES, e.currentTarget.name));
+		}
+		
 		private function onIconRollover(e:MouseEvent):void
 		{
-			showOverlay(e.currentTarget.name);
+			if(e.currentTarget.name != "Coming Soon")
+				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WEAPON_TOOL_TIP, e.currentTarget.name));
 		}
 		
 		private function onToolClick(e:MouseEvent):void
 		{
 			trace('tool clicked: ' + e.currentTarget.name);
 			var tool:String = e.currentTarget.name;
-			var message:String;
 			if(ExtInc.playerData.money >= AskTony.toolInfo[tool].cost)
 			{
 				ExtInc.playerData.money -= AskTony.toolInfo[tool].cost;
 				updateCash(ExtInc.playerData.money);
-				message = AskTony.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
-				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+				
+				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.PURCHASED, tool));
 				var event:AttackEvent = new AttackEvent(AttackEvent.PURCHASED, AskTony.toolInfo[tool].attackType, new Point(0,0));
 				event.toolType = tool;
 				parent.dispatchEvent(event); 
 			} else {
-				message = OverlayEvent.BROKE;
-				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, message));
+				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, OverlayEvent.BROKE));
 			}
-		}
-		
-		private function showOverlay(name:String):void
-		{
-			var message:String;
-			switch(name)
-			{
-				case CASH_MONIES :
-					message = OverlayEvent.CASH_MONIES;
-					break;
-				case KILL_BOX :
-					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomCompliment() + " " + AskTony.classInfo[_currentAnimal].name + "s";
-					break;
-				case BAIT :
-					message = OverlayEvent.BAIT;
-					break;
-				case WEAPONS :
-					message = OverlayEvent.WEAPONS;
-					break;
-				case AskTony.MINES_TOOL :
-				case AskTony.MARINES_TOOL :
-				case AskTony.COMMANDO_TOOL :
-				case AskTony.FIRE_TOOL :
-				case AskTony.BOOMBA_TOOL :
-				case AskTony.TIGER_BAIT_TOOL :
-				case AskTony.SEAL_BAIT_TOOL :
-				case AskTony.PANDA_BAIT_TOOL :
-					message = "$" + AskTony.toolInfo[name].cost + ' - ' + AskTony.toolInfo[name].name;
-					break;
-				default :
-					message = 'Coming Soon - More ways to dismember and treats to tantalize!';
-					break;
-			}
-			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 		}
 		
 		//--------------------------------------

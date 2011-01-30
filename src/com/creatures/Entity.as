@@ -256,7 +256,7 @@ package com.creatures
 			}
 			else
 				newRotation += deltaRotation;
-			trace('delta ' + deltaRotation);
+//			trace('delta ' + deltaRotation);
 //			trace('targetRotation: ' + targetRotation + 'newRotation: ' + newRotation + ' image.Rotation ' + _image.rotation);
 
 			_image.rotation = newRotation;

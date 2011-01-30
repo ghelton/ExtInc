@@ -47,21 +47,6 @@ package
 		
 		private static const GRID_WIDTH:uint = 32;
 		private static const GRID_HEIGHT:uint = 21;
-		private function buildGameBoard():Vector.<Vector.<Tile>>
-		{
-			var widthCount:uint;
-			var grid:Vector.<Vector.<Tile>> = new Vector.<Vector.<Tile>>(GRID_WIDTH, true);
-			var active:Vector.<Tile>;
-			for(var column:uint = 0; column < GRID_WIDTH; column++)
-			{
-				active = grid[column] = new Vector.<Tile>(GRID_HEIGHT, true);
-				for(widthCount = 0; widthCount < GRID_HEIGHT; widthCount++)
-				{
-					active[widthCount] = new Tile();
-				}
-			}
-			return grid;
-		}
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
@@ -75,11 +60,13 @@ package
 		public static var playerData:PlayerData;
 
 		private var _bg:Loader;
+		private var _screen:Sprite;
 		private var _screenMask:Loader;
 		private var _statusBar:StatusBar;
 		private var _statusOverlay:StatusOverlay;
 		private var _mouseTool:MouseTool;
 		private var _audioManager:CoreAudioManager;
+		private var _playAgain:Sprite;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
@@ -111,7 +98,7 @@ package
 		private function loadGame():void
 		{
 			// - PLAYER DATA -
-			playerData = new PlayerData(10000);
+			playerData = new PlayerData();
 			
 			// - BG -
 			_bg = new Loader();
@@ -119,28 +106,23 @@ package
 			addChild(_bg);
 			
 			// - SCREEN -
-			var screen:Sprite = new Sprite();
-			addChild(screen);
+			_screen = new Sprite();
+			addChild(_screen);
 			
 			// - MASK -
 			_screenMask = new Loader();
 			_screenMask.load(new URLRequest(CHROME + 'gameBoardMask.swf'));
 			addChild(_screenMask);
-			screen.mask = _screenMask;
+			_screen.mask = _screenMask;
 			
 			// - GAME BOARD -
-			Entity.setMasterTime(Number(getTimer()) / 1000.0);
-			gameBoard = new GameBoard( new UILoader("assets/terrain.swf"), AskTony.startingQuantities );//buildGameBoard());
-			screen.addChild(gameBoard);
-			
-			gameBoard.x = _screenMask.x = 54; 
-			gameBoard.y = _screenMask.y = 39;
+			buildGameBoard();
 			
 			// - OVERLAY -
 			_statusOverlay = new StatusOverlay();
 			_statusOverlay.x = gameBoard.x;
 			_statusOverlay.y = 605;
-			screen.addChild(_statusOverlay);
+			_screen.addChild(_statusOverlay);
 			
 			// - STATUS BAR -
 			_statusBar = new StatusBar();
@@ -151,14 +133,27 @@ package
 			addEventListener(OverlayEvent.SHOW_ERROR_MESSAGE, onOverlayEvent);
 			addEventListener(AttackEvent.PURCHASED, onToolPurchased);
 			addEventListener(AttackEvent.DEATH, onDeath);
-			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
+			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.KILL_BOX));
 			
 			// - TOOL LAYER -
+			_playAgain = new Sprite();
+			addChild(_playAgain);
+			_playAgain.filters = [Styles.OVERLAY_DROP];
 		}
 		
 		//--------------------------------------
 		// PROTECTED & PRIVATE METHODS
 		//--------------------------------------
+		private function buildGameBoard():void
+		{
+			Entity.setMasterTime(Number(getTimer()) / 1000.0);
+			gameBoard = new GameBoard( new UILoader("assets/terrain.swf"), AskTony.startingQuantities );//buildGameBoard());
+			_screen.addChild(gameBoard);
+			
+			gameBoard.x = _screenMask.x = 54; 
+			gameBoard.y = _screenMask.y = 39;
+		}
+		
 		private function onOverlayEvent(e:OverlayEvent):void
 		{
 			if(e.type == OverlayEvent.SHOW_MESSAGE)
@@ -189,10 +184,39 @@ package
 			} else {
 				playerData.money += 1500;
 				playerData.killCount--;
+				if(playerData.killCount == 0)
+					killGame();
 			}
 			
 			_statusBar.updateCash(playerData.money);
 			_statusBar.updateKillCount(playerData.killCount);
+		}
+		
+		private function killGame():void
+		{
+			removeEventListener(AttackEvent.DEATH, onDeath);
+			
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded);
+			loader.load(new URLRequest('chrome/playAgain.swf'));
+			_playAgain.addChild(loader);
+		}
+		
+		private function onImageLoaded(e:Event):void
+		{
+			_playAgain.x = (stage.stageWidth - _playAgain.width) * .5;
+			_playAgain.y = (stage.stageHeight - _playAgain.height) * .5;
+			_playAgain.addEventListener(MouseEvent.CLICK, onPlayAgainClick);
+			_playAgain.mouseEnabled = true;
+			_playAgain.buttonMode = true;
+		}
+		
+		private function onPlayAgainClick(e:Event):void
+		{
+			removeChild(_playAgain);
+			playerData = new PlayerData();
+			_screen.removeChild(gameBoard);
+			buildGameBoard();
 		}
 		//--------------------------------------
 		// PUBLIC METHODS

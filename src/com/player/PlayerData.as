@@ -6,13 +6,12 @@ package com.player
 	public class PlayerData
 	{
 		private var _jerseyShore:Vector.<Tool>;
-		public var money:int;
+		public var money:int = 10000;
 		public var target:String = getTarget();
 		public var killCount:int = 15;
 		
-		public function PlayerData($money:int)
+		public function PlayerData()
 		{
-			money = $money;
 			var ids:Array = [AskTony.PANDA_BAIT_TOOL, AskTony.FIRE_TOOL, AskTony.MARINES_TOOL, AskTony.COMMANDO_TOOL, AskTony.SEAL_BAIT_TOOL, AskTony.TIGER_BAIT_TOOL, AskTony.MINES_TOOL];
 			_jerseyShore = new Vector.<Tool>(ids.length, true);
 			for(var i:int = 0; i < _jerseyShore.length; i++)
@@ -52,7 +51,7 @@ package com.player
 		private static function getTarget():String
 		{
 			var targets:Array = [AskTony.SEAL, AskTony.TIGER, AskTony.PANDA];
-			var target:String = targets[Math.floor(Math.random() * (1 + targets.length))];
+			var target:String = targets[Math.floor(Math.random() * (targets.length))];
 			return target;
 		}
 	}

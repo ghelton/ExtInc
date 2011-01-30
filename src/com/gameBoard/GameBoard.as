@@ -18,7 +18,7 @@ package com.gameBoard
 
 	public class GameBoard extends Sprite
 	{
-		public static var attackType:String = AskTony.PANDA_BAIT;
+		public static var attackType:String = null;
 		public function setAttackType($type:String):void
 		{
 			_entityLayer.mouseChildren = _entityLayer.mouseChildren = ($type == null);
@@ -88,28 +88,8 @@ package com.gameBoard
 		}
 		
 		private function notifyTool():void
-		{
-			var message:String;
-			
-			switch(attackType)
-			{
-				case AskTony.BOOMBA :
-				case AskTony.MINE :
-					message = OverlayEvent.PLACE_WEAPON;
-					break;
-				case AskTony.FIRE:
-					message = OverlayEvent.POINT_A;
-					break;
-				case AskTony.PANDA_BAIT :
-				case AskTony.SEAL_BAIT :
-				case AskTony.TIGER_BAIT :
-					message = OverlayEvent.PLACE_BAIT;
-					break;
-				default:
-					break;
-			}
-			
-			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+		{	
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WEAPON_TIP, attackType));
 		}
 		
 		//_weapons vector to track timing centrally from gameboard

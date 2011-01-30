@@ -1,6 +1,8 @@
 
 package com.statusBar
 {
+	import com.lookup.AskTony;
+	
 	import flash.events.Event;
 	
 	
@@ -19,11 +21,15 @@ package com.statusBar
 		public static const SHOW_MESSAGE:String = "SHOW_MESSAGE";
 		public static const SHOW_ERROR_MESSAGE:String = "SHOW_ERROR_MESSAGE";
 		
+		public static const MESSAGE:String = 'MESSAGE';
+		public static const WEAPON_TIP:String = 'WEAPON_TIP';
+		public static const WEAPON_TOOL_TIP:String = 'WEAPON_TOOL_TIP';
+		public static const KILL_BOX:String = "KILL_BOX";
+		
 		public static const WELCOME:String = "Welcome";
 		public static const BAIT:String = "Bait - Use Bait to attract creatures";
 		public static const WEAPONS:String = "Weapons - Use your weapons to kill creatures";
 		public static const CASH_MONIES:String = "Money Money Money!!!!!";
-		public static const KILL_BOX:String = "Kill the ";
 		public static const PURCHASED:String = "purchased!";
 		public static const BROKE:String = "You're Broke!";
 		public static const PLACE_WEAPON:String = "Place your weapon";
@@ -39,9 +45,41 @@ package com.statusBar
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
-		public function OverlayEvent(type:String, $message:String)
+		public function OverlayEvent(type:String, $target:String, $optionalName:String = '')
 		{
-			message = $message;
+			switch($target)
+			{
+				case MESSAGE :
+					message = $optionalName;
+					break;
+				case KILL_BOX :
+					message = "Kill the " + getRandomCompliment() + " " + AskTony.classInfo[ExtInc.playerData.target].name + "s";
+					break;
+				case WEAPON_TOOL_TIP :
+					message = "$" + AskTony.toolInfo[$optionalName].cost + ' - ' + AskTony.toolInfo[$optionalName].name;
+					break;
+				case WEAPON_TIP :
+					message = "$" + AskTony.toolInfo[$optionalName + "_TOOL"].cost + ' - ' + AskTony.toolInfo[$optionalName + "_TOOL"].name;
+					break;
+				case AskTony.BOOMBA :
+				case AskTony.MINE :
+					message = PLACE_WEAPON;
+					break;
+				case AskTony.FIRE:
+					message = POINT_A;
+					break;
+				case AskTony.PANDA_BAIT :
+				case AskTony.SEAL_BAIT :
+				case AskTony.TIGER_BAIT :
+					message = PLACE_BAIT;
+					break;
+				case PURCHASED :
+					message = AskTony.toolInfo[$optionalName].name + " " + OverlayEvent.PURCHASED;
+					break;
+				default :
+					message = 'Coming Soon - More ways to dismember and treats to tantalize!';
+					break;
+			}
 			super(type, true, false);
 		}
 		
