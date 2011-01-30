@@ -48,6 +48,7 @@ package com.creatures
 		{
 			super();
 			
+			_idleStartTime = _masterTime - (Math.random() * 5);
 			_type = $type;
 			_speed = Number(AskTony.entitySpeedArray[_type]);
 			if(!DISABLE_ASSETS)
@@ -364,6 +365,7 @@ package com.creatures
 			_lastAttackTime = _masterTime;
 			attackEntity(bestEntity);
 			bestEntity.riposte(this);
+			_idleStartTime = 0;
 		}
 		
 		public function riposte(attacker:Entity):void
@@ -394,7 +396,7 @@ package com.creatures
 					if(distance > Math.abs(AskTony.entityPredatorAgroRangeArray[_type] * AskTony.entityFearMatrix[_type][enemy.type]))
 						continue;
 					
-					scale = AskTony.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100));
+					scale = AskTony.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * ((2000 - distance ) / 2000);
 				} else {
 					if(distance > Math.abs(AskTony.entityPreyAgroRangeArray[_type] * AskTony.entityFearMatrix[_type][enemy.type]))
 						continue;
@@ -411,8 +413,8 @@ package com.creatures
 					newFearVector = newFearVector.add(differenceVector); 				
 				}
 			}
-			newFearVector.normalize(.5);
-			bestVector.normalize(.5);
+			newFearVector.normalize(.6);
+			bestVector.normalize(.4);
 			
 			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
