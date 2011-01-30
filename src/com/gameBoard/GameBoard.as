@@ -17,7 +17,7 @@ package com.gameBoard
 
 	public class GameBoard extends Sprite
 	{
-		public static var attackType:String = AskJon.MINE;
+		public static var attackType:String = AskJon.PANDA_BAIT;
 		public function setAttackType($type:String):void
 		{
 			if($type != null)
@@ -51,7 +51,7 @@ package com.gameBoard
 				var count:int;
 				var testPoint:Point;
 				for each(var enemyType:String in $type)			{
-					for(count = 12; count >= 0; count--)
+					for(count = 8; count >= 0; count--)
 					{
 						testPoint = new Point(Math.random() * _bg.width, Math.random() * _bg.height);
 						createEntity(testPoint, enemyType);

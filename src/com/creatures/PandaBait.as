@@ -7,9 +7,9 @@ package com.creatures
 	
 	public class PandaBait extends Entity
 	{
-		public function PandaBait($graphic:Sprite, $health:Number, $point:Point)
+		public function PandaBait($health:Number, $point:Point)
 		{
-			super($graphic, $health, $point, AskJon.PANDA_BAIT);
+			super(null, $health, $point, AskJon.PANDA_BAIT);
 		}
 	}
 }
