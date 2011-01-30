@@ -3,6 +3,7 @@ package com.statusBar
 {
 	import com.Style.Styles;
 	import com.attacks.AttackEvent;
+	import com.creatures.EntityEvent;
 	import com.lookup.AskTony;
 	
 	import flash.display.Loader;
@@ -281,7 +282,9 @@ package com.statusBar
 				updateCash(-AskTony.toolInfo[tool].cost);
 				message = AskTony.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
-				parent.dispatchEvent(new AttackEvent(AttackEvent.PURCHASED, tool, new Point(0,0))); 
+				var event:AttackEvent = new AttackEvent(AttackEvent.PURCHASED, AskTony.toolInfo[tool].attackType, new Point(0,0));
+				event.toolType = tool;
+				parent.dispatchEvent(event); 
 			} else {
 				message = OverlayEvent.BROKE;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, message));
