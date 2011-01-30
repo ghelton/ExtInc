@@ -15,11 +15,10 @@ package com.attacks
 		private var _numFires:uint;
 //		private var _fires:Vector.<Fire>;
 		
-		public function Firebomb($start:Point, $numFires:uint)
+		public function Firebomb($start:Point, $numFires:uint, $timeStagger:Number = 0.2)
 		{
 			_start = $start;
 			_numFires = $numFires;
-			
 		}
 		
 		private var _pathOffset:Point;

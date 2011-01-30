@@ -1,5 +1,6 @@
 package com.gameBoard
 {
+	import com.UI.UILoader;
 	import com.attacks.AttackEvent;
 	import com.attacks.Firebomb;
 	import com.creatures.Entity;
@@ -21,13 +22,16 @@ package com.gameBoard
 		internal static var entities:Vector.<Entity>;
 		
 		
-		public function GameBoard($theGrid:Vector.<Vector.<Tile>>)
+		public function GameBoard(_bg:UILoader) //$theGrid:Vector.<Vector.<Tile>>)
 		{
 			entities = new Vector.<Entity>();
-			_grid = $theGrid;
-			drawGrid();
+//			_grid = $theGrid;
+//			drawGrid();
 			addChild(_tileLayer);
 			addChild(_entityLayer);
+			_entityLayer.addChild(_bg);
+			
+			Entity.bounds = _tileLayer.getBounds(this);
 			
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
