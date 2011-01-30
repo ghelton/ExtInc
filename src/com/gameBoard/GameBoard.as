@@ -17,7 +17,7 @@ package com.gameBoard
 
 	public class GameBoard extends Sprite
 	{
-		public static var attackType:String = AskTony.TIGER_BAIT;
+		public static var attackType:String = AskTony.PANDA_BAIT;
 		public function setAttackType($type:String):void
 		{
 			_entityLayer.mouseChildren = _entityLayer.mouseChildren = ($type == null);
