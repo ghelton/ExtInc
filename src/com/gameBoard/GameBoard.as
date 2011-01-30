@@ -1,11 +1,10 @@
 package com.gameBoard
 {
 	import com.UI.UILoader;
+	import com.attacks.Attack;
 	import com.attacks.AttackEvent;
-	import com.attacks.Firebomb;
 	import com.creatures.Entity;
 	import com.creatures.EntityEvent;
-	import com.creatures.Fire;
 	import com.lookup.AskJon;
 	
 	import flash.display.Sprite;
@@ -18,10 +17,24 @@ package com.gameBoard
 
 	public class GameBoard extends Sprite
 	{
+		public static var attackType:String = AskJon.MINE;
+		public function setAttackType($type:String):void
+		{
+			if($type != null)
+			{
+				_entityLayer.mouseChildren = false;
+			}
+			attackType = $type;
+		}
+		
 		private var _masterTimer:Timer;
 		private var _grid:Vector.<Vector.<Tile>>;
 		private var entities:Vector.<Entity>;
 		
+		public function explode(target:Point):void
+		{
+			
+		}
 		
 		public function GameBoard(_bg:UILoader, $type:Array, $typeQuantities:Array = null, $typePositions:Array = null) //$theGrid:Vector.<Vector.<Tile>>)
 		{
@@ -31,13 +44,14 @@ package com.gameBoard
 			_bg.onComplete = onBgLoadComplete;
 			_tileLayer.addChild(_bg);
 			addChild(_tileLayer);
+//			addChild(_hitArea);
 			
 			function onBgLoadComplete(e:Event):void {
 				
 				var count:int;
 				var testPoint:Point;
 				for each(var enemyType:String in $type)			{
-					for(count = 10; count >= 0; count--)
+					for(count = 12; count >= 0; count--)
 					{
 						testPoint = new Point(Math.random() * _bg.width, Math.random() * _bg.height);
 						createEntity(testPoint, enemyType);
@@ -46,6 +60,7 @@ package com.gameBoard
 				}
 				
 				var bound:Rectangle = _tileLayer.getBounds(this);
+				_entityLayer.mouseEnabled = _entityLayer.mouseChildren = false;
 				Entity.bounds = bound;
 				addChild(_entityLayer);
 			}
@@ -54,43 +69,57 @@ package com.gameBoard
 		
 		// EVENT LISTENERS
 		
-		private var _weapons:Vector.<Firebomb> = new Vector.<Firebomb>();
-		private var _weapon:Firebomb;
+		//_weapons vector to track timing centrally from gameboard
+		private var _attacks:Vector.<Attack> = new Vector.<Attack>();
+		private var _attack:Attack;
 		private var _startPoint:Point;
-		private function onAttackDown(e:Event):void 
+		private function onAttackClick(e:Event):void 
 		{
-//			trace('attack down');
-			_startPoint = new Point(mouseX, mouseY);
-			_weapon = new Firebomb(_startPoint, 4);
-			_weapons.push(_weapon);
-			
-			_tileLayer.removeEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, onAttackUp);
+			if(attackType != null)
+			{
+				if(_attack == null)
+				{
+					_attack = new Attack(1, attackType);
+					_attacks.push(_attack);
+					_attack.addEventListener(AttackEvent.IN_FLIGHT, clearAttack);
+					_attack.addEventListener(AttackEvent.FIRE, fireAttack);
+					_attack.addEventListener(AttackEvent.FINISHED, finishAttack);
+					_attack.drop(new Point(mouseX, mouseY));
+				}
+				else
+				{
+					_attack.dropAgain(new Point(mouseX, mouseY));
+				}
+			}
 		}
-		private function onAttackUp(e:Event):void
+//		private function onAttackUp(e:Event):void
+//		{
+//			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackClick);
+//			stage.removeEventListener(MouseEvent.MOUSE_UP, onAttackUp);
+//			
+//			_weapon.drop(new Point(mouseX, mouseY));
+//		}
+		private function clearAttack(attack:AttackEvent):void 
 		{
-			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
-			stage.removeEventListener(MouseEvent.MOUSE_UP, onAttackUp);
-			
-			_weapon.addEventListener(AttackEvent.FIRE, fireAttack);
-			_weapon.addEventListener(AttackEvent.FINISHED, finishAttack);
-			_weapon.drop(new Point(mouseX, mouseY));
+			_entityLayer.mouseChildren = true;
+			_attack = null;
 		}
-		private function fireAttack(attack:AttackEvent):void 
+		private function fireAttack($attack:AttackEvent):void 
 		{
-			addEntity(attack.bomb);
+			createEntity($attack.bombPosition, $attack.bombType);
 		}
 		private function finishAttack(attack:AttackEvent):void
 		{
-			var weapon:Firebomb = attack.weapon;
+			var weapon:Attack = attack.weapon;
 			if(weapon != null)
 			{
+				weapon.removeEventListener(AttackEvent.IN_FLIGHT, clearAttack);
 				weapon.removeEventListener(AttackEvent.FIRE, fireAttack);
 				weapon.removeEventListener(AttackEvent.FINISHED, finishAttack);
 				
-				var index:int = _weapons.lastIndexOf(weapon);
+				var index:int = _attacks.lastIndexOf(weapon);
 				if(index >= 0)
-					_weapons.splice(index, 1);
+					_attacks.splice(index, 1);
 			}
 		}
 		private function tangoDown(e:EntityEvent):void
@@ -101,7 +130,7 @@ package com.gameBoard
 		private function init(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackDown);
+			_tileLayer.addEventListener(MouseEvent.CLICK, onAttackClick);
 			
 			addEventListener(Event.ENTER_FRAME, mainLoop);
 		}
@@ -114,7 +143,9 @@ package com.gameBoard
 		//UTILITY AND DRAW
 		
 		private var _tileLayer:Sprite = new Sprite();
-		private var _entityLayer:Sprite = new Sprite();
+		private var _entityLayer:Sprite = new Sprite();		
+//		private var _hitArea:Sprite = new Sprite();
+
 		
 		private static const OVERLAP_BUFFER:Number = 0.25;
 		private function drawGrid():void
@@ -135,14 +166,25 @@ package com.gameBoard
 			}
 		}
 		
+		private var _deadList:Vector.<Entity> = new Vector.<Entity>();
 		public function tick():void
 		{
 			var count:int;
 			var entity:Entity;
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
 			
-			for(count = entities.length - 1; count >= 0; count--)
-				entities[count].attackTick();
+			for(count = (entities.length - 1); count >= 0; count--)
+			{
+				if(entities.length > count)
+					entities[count].attackTick();
+			}
+			var index:int;
+			for(count = _deadList.length - 1; count >= 0; count--)
+			{
+				index = entities.lastIndexOf(_deadList[count]);
+				if(index >= 0) entities.splice(index, 1);
+			}
+			_deadList.length = 0;
 			
 			for(count = 0; count < entities.length; count++)
 				entities[count].moveTick();
@@ -156,7 +198,7 @@ package com.gameBoard
 				addEntity(entity);
 			}
 		}
-		public function addEntity(newEntity:Entity):void
+		private function addEntity(newEntity:Entity):void
 		{
 			newEntity.addEventListener(EntityEvent.KILLED, tangoDown);
 			newEntity.setHitList(entities);
@@ -170,10 +212,8 @@ package com.gameBoard
 //			graphic.scaleX = graphic.scaleY = 0.5;
 			var index:int = entities.lastIndexOf(deadEntity);
 			deadEntity.removeEventListener(EntityEvent.KILLED, tangoDown);
-			if(index >= 0) 
-			{
-				entities.splice(index, 1);
-			}
+			
+			_deadList.push(deadEntity);
 		}
 		
 		private var _updater:uint = 0;

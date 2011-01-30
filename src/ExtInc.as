@@ -1,7 +1,7 @@
 package
 {
 	import com.UI.UILoader;
-	import com.attacks.Firebomb;
+	import com.attacks.Attack;
 	import com.creatures.Entity;
 	import com.fonts.Transponder;
 	import com.gameBoard.GameBoard;
@@ -66,7 +66,7 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
-		private var testTypes:Array = [AskJon.TIGER, AskJon.MARINE];
+		private var testTypes:Array = [AskJon.TIGER, AskJon.SEAL, AskJon.PANDA];
 		
 		private var _player:PlayerData;
 

@@ -131,7 +131,7 @@ package com.lookup
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-40, MARINE:-25, FIRE:-90, TREE:0, PANDA_BAIT:-5, SEAL_BAIT:3, TIGER_BAIT:8, MINE:-100
 				},
 				COMMANDO:{
-					PANDA:-30, SEAL:-10, TIGER:-40, COMMANDO:-80, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-30, SEAL:-10, TIGER:0, COMMANDO:-80, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
 				},
 				MARINE:{
 					PANDA:-35, SEAL:-20, TIGER:-60, COMMANDO:-10, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
@@ -162,7 +162,7 @@ package com.lookup
 				PANDA:			30,
 				SEAL:			10,
 				TIGER:			35,
-				COMMANDO:		25,
+				COMMANDO:		250,
 				MARINE:			80,
 				FIRE:			60,
 				TREE:			10,
@@ -178,7 +178,7 @@ package com.lookup
 				PANDA:			1,
 				SEAL:			1,
 				TIGER:			1,
-				COMMANDO:		1,
+				COMMANDO:		0.5,
 				MARINE:			1,
 				FIRE:			1,
 				TREE:			0,
@@ -194,7 +194,7 @@ package com.lookup
 				PANDA:			20,
 				SEAL:			10,
 				TIGER:			100,
-				COMMANDO:		40,
+				COMMANDO:		160,
 				MARINE:			30,
 				FIRE:			0,
 				TREE:			0,
@@ -242,7 +242,7 @@ package com.lookup
 				PANDA:			200,
 				SEAL:			200,
 				TIGER:			200,
-				COMMANDO:		200,
+				COMMANDO:		2000,
 				MARINE:			200,
 				FIRE:			200,
 				TREE:			200,
@@ -292,6 +292,21 @@ package com.lookup
 				SEAL_BAIT:		0x0AABB0,
 				TIGER_BAIT:		0xAABB00,
 				MINE:			0xCC00DD
+			}
+			
+		public static const offsets:Object =
+			{
+				PANDA: 			{x:0, y:0},
+				TIGER: 			{x:0, y:0},
+				SEAL: 			{x:-23, y:-28},
+				COMMANDO:		{x:0, y:0},
+				MARINE:			{x:0, y:0},
+				FIRE:			{x:-70, y:-90},
+				TREE:			{x:0, y:0},
+				PANDA_BAIT:		{x:0, y:0},
+				SEAL_BAIT:		{x:0, y:0},
+				TIGER_BAIT:		{x:0, y:0},
+				MINE:			{x:0, y:0}
 			}
 		public function AskJon()
 		{

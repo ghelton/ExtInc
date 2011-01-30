@@ -3,20 +3,24 @@ package com.attacks
 	import com.creatures.Fire;
 	
 	import flash.events.Event;
+	import flash.geom.Point;
 	
 	public class AttackEvent extends Event
 	{
 		public static const FIRE:String = 'FIRE';
+		public static const IN_FLIGHT:String = 'IN_FLIGHT';
 		public static const FINISHED:String = 'FINISHED';
 		
 		
-		public var weapon:Firebomb;
-		public var bomb:Fire;
-		public function AttackEvent(type:String, projectile:Fire = null, launcher:Firebomb = null)
+		public var bombType:String;
+		public var bombPosition:Point;
+		public var weapon:Attack;
+		public function AttackEvent(type:String, $bombType:String, $bombPosition:Point, launcher:Attack = null)
 		{
 			super(type, false, false);
-			bomb = projectile;
 			weapon = launcher; 
+			bombType = $bombType;
+			bombPosition = $bombPosition;
 		}
 	}
 }

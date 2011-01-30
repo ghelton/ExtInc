@@ -6,7 +6,7 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	public class Seal extends Creature
+	public class Seal extends AnimatedEntity
 	{
 		public function Seal($health:Number, $point:Point)
 		{

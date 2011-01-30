@@ -13,6 +13,7 @@ package com.creatures
 	
 	public class Entity extends EventDispatcher
 	{
+		private static const DISABLE_ASSETS:Boolean = false;
 		private static const MAXIMUM_ROTATION_DELTA:Number = 10;
 		public static var _masterTime:Number;
 		public static var bounds:Rectangle;
@@ -49,7 +50,8 @@ package com.creatures
 			
 			_type = $type;
 			_speed = Number(AskJon.entitySpeedArray[_type]);
-			_image = $graphic;
+			if(!DISABLE_ASSETS)
+				_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
 			
@@ -64,10 +66,9 @@ package com.creatures
 				}
 			}
 			
-			_target = _image;
 			if(_image is UILoader) 
 			{
-				(_image as UILoader).onComplete = loaderInit;
+				(_image).addEventListener(Event.COMPLETE, loaderInit);// = loaderInit;
 			}
 			else
 				_image.addEventListener(Event.ADDED_TO_STAGE, init);
@@ -84,22 +85,18 @@ package com.creatures
 		{
 			_image.removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-//			var centerContainer:Sprite = new Sprite();
+			var offsets:Object = AskJon.offsets[_type];
+			var centerContainer:Sprite = new Sprite();
 ////			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
-//			centerContainer.rotation = _image.rotation;
-//			centerTarget();
-//			_image.rotation = 0;
-//			_image.parent.addChild(centerContainer);
-//			centerContainer.addChild(_image);
-//			_image = centerContainer;
+			centerContainer.rotation = _image.rotation;
+			_image.rotation = 0;
+			_image.x = offsets.x;
+			_image.y = offsets.y;
+			_image.parent.addChild(centerContainer);
+			centerContainer.addChild(_image);
+			_image = centerContainer;
+			
 			updatePosition();
-		}
-		private var _target:Sprite;
-		private function centerTarget():void
-		{
-//			var bounds:Rectangle = _target.getBounds(_target.parent);
-			_target.x = -_target.width * 0.5;
-			_target.y = -_target.height * 0.5;
 		}
 		
 		//GETTERS AND SETTERS
@@ -167,7 +164,11 @@ package com.creatures
 //			_killedEvent:EntityEvent = new EntityEvent(EntityEvent.KILLED, this);
 
 //			if(_killedEvent != null)
-				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
+			with(_image.graphics)
+			{
+				clear();
+			}
+			dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			
 		}
 		protected function split():void
@@ -196,12 +197,6 @@ package com.creatures
 		private static const MINIMUM_SAFE_DISTANCE:Number = 15;
 		public function moveTick():void
 		{
-				
-			if(fearVector.x < 0.01 && fearVector.y < .01)
-			{
-				_lastMoveTime = _masterTime;
-				return;
-			}
 			var deltaTime:Number = _masterTime - _lastMoveTime;
 			
 			var deltaVector:Point = new Point(fearVector.x * deltaTime * _speed
@@ -225,14 +220,23 @@ package com.creatures
 				}
 			}
 			
+			var targetRotation:Number;
 			deltaVector = targetPoint.subtract(_centerPoint);
-			var targetRotation:Number = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
+			if(deltaVector.length < 0.00001)
+				targetRotation = idle();
+			else
+				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
 			_image.rotation += Math.min(Math.max(-MAXIMUM_ROTATION_DELTA,(targetRotation - _image.rotation) * 0.5), MAXIMUM_ROTATION_DELTA);
 			//			_image.rotation = targetRotation;
 			_centerPoint = targetPoint;
 			
 			updatePosition();
 			_lastMoveTime = _masterTime;
+		}
+		
+		protected function idle():Number
+		{
+			return 0;
 		}
 		
 		public function attackTick():void

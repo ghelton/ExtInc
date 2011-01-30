@@ -6,7 +6,7 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	public class Panda extends Creature
+	public class Panda extends AnimatedEntity
 	{
 		public function Panda($health:Number, $point:Point)
 		{
