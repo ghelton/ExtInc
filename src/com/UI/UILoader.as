@@ -18,8 +18,6 @@
  */
 package com.UI
 {
-	import com.fiddyCubes.core.toolkit.utils.ScaleUtil;
-	
 	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -258,26 +256,23 @@ package com.UI
 			}
 			
 			//resize
-			switch(ScaleUtil.scaleLow(_width, _height))
+			if(_width < _height)
 			{
-				case _width :
-					if(_height != 0)
-					{
-						this.height = _height;
-					}
-					else
-						_height = loader.height;
-					break;
-				case _height :
-					if(_width != 0)
-					{
-						this.width = _width;
-					}
-					else
-						_width = loader.width;
-					break;
-				default :
-					break;
+				if(_height != 0)
+				{
+					this.height = _height;
+				}
+				else
+					_height = loader.height;
+			}
+			else
+			{
+				if(_width != 0)
+				{
+					this.width = _width;
+				}
+				else
+					_width = loader.width;
 			}
 		}
 		
