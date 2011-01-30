@@ -62,7 +62,7 @@ package com.statusBar
 		
 		public static function getRandomReason():String
 		{
-			var suffixes:Array = ['for science', 'for king and country', 'for SPARTA!!!', 'for the greater good', 'for no reason', 'for glue', 'so you can sleep', 'for mittens', 'out of spite'];
+			var suffixes:Array = ['for science', 'for king and country', 'for SPARTA!!!', 'for the greater good', 'for no reason', 'for glue', 'so you can sleep', 'for mittens', 'out of spite', 'for Ted Nugent'];
 			var suffix:int = Math.random() * (suffixes.length);
 			return suffixes[suffix];
 		}
