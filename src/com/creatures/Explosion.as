@@ -14,5 +14,22 @@ package com.creatures
 
 			super(fire, $health, $point, AskTony.EXPLOSION);
 		}
+		
+		
+		protected override function playAnimation(keyFrame:String):void
+		{
+			if(_movie != null && _currentAnimation != keyFrame && keyFrame != 'explode')
+			{
+				try
+				{
+					_movie.gotoAndPlay(keyFrame);
+				}
+				catch(e:*)
+				{
+					trace('unable to play ' + keyFrame);
+				}
+			}
+			_currentAnimation = keyFrame;
+		}
 	}
 }
