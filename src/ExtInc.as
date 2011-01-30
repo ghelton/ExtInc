@@ -140,7 +140,6 @@ package
 			// - STATUS MESSAGE -
 			addEventListener(OverlayEvent.SHOW_MESSAGE, onOverlayEvent);
 			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
-			
 		}
 		
 		//--------------------------------------

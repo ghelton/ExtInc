@@ -127,6 +127,7 @@ package com.statusBar
 			var toolBoxBg:StatusBox = new StatusBox(434, 98, cornerRadius);
 			toolBoxBg.x = 505;
 			toolBoxBg.y = 662;
+			addChild(toolBoxBg);
 			
 			var toolBoxLine:Shape = new Shape();
 			toolBoxLine.graphics.beginFill(Styles.REALLY_GREEN);
@@ -148,28 +149,26 @@ package com.statusBar
 			}
 			
 			var icons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
-			icons.push(new ToolButtonData('Mine', 'chrome/weapons/mine.swf'));
-			icons.push(new ToolButtonData('Mine 2', 'chrome/weapons/mine.swf'));
-			icons.push(new ToolButtonData('Mine 3', 'chrome/weapons/mine.swf'));
-			icons.push(new ToolButtonData('Mine 4', 'chrome/weapons/mine.swf'));
+			icons.push(new ToolButtonData(AskJon.MINES_TOOL, AskJon.toolInfo[AskJon.MINES_TOOL].url));
+			icons.push(new ToolButtonData(AskJon.FIRE_TOOL, AskJon.toolInfo[AskJon.FIRE_TOOL].url));
+			icons.push(new ToolButtonData(AskJon.BOOMBA_TOOL, AskJon.toolInfo[AskJon.BOOMBA_TOOL].url));
 			
 			var icon:ToolButton;
 			boxIndent = 45;
 			for each(var data:ToolButtonData in icons)
 			{
 				icon = new ToolButton(data);
-				icon.x = boxIndent + icons.indexOf(data) * 74;
-				icon.y = 30;
+				icon.x = boxIndent + icons.indexOf(data) * 74 + toolBoxBg.x;
+				icon.y = 30 + toolBoxBg.y;
 //				icon.filters = [Styles.SCREEN_GLOW];
 				icon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 				icon.addEventListener(MouseEvent.CLICK, onToolClick);
 				icon.mouseChildren = false;
 				icon.buttonMode = true;
-				toolBoxBg.addChild(icon);
+				addChild(icon);
 			}
 			
 			
-			addChild(toolBoxBg);
 			
 			// - FS BUTTON -
 			var fullScreenButton:StatusBox = new StatusBox(25, 25, cornerRadius);
@@ -199,12 +198,7 @@ package com.statusBar
 		private function updateTarget(target:String):void
 		{
 			_currentAnimal = target;
-			switch(target)
-			{
-				case AskJon.PANDA :
-					_animalFace.load(new URLRequest('chrome/panda.swf'));
-					break;
-			}
+			_animalFace.load(new URLRequest(AskJon.classInfo[target].url));
 		}
 		
 		private function updateTabs(targetTab:String):void
@@ -256,13 +250,28 @@ package com.statusBar
 					message = OverlayEvent.CASH_MONIES;
 					break;
 				case KILL_BOX :
-					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomInsult() + " " + _currentAnimal;
+					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomCompliment() + " " + AskJon.classInfo[_currentAnimal].name + "s";
 					break;
 				case BAIT :
 					message = OverlayEvent.BAIT;
 					break;
 				case WEAPONS :
 					message = OverlayEvent.WEAPONS;
+					break;
+				case AskJon.MINES_TOOL :
+					message = "$" + AskJon.toolInfo[AskJon.MINES_TOOL].cost + OverlayEvent.MINES_TOOL;
+					break;
+				case AskJon.MARINES_TOOL :
+					message = "$" + AskJon.toolInfo[AskJon.MARINES_TOOL].cost + OverlayEvent.MARINES_TOOL;
+					break;
+				case AskJon.COMMANDO_TOOL :
+					message = "$" + AskJon.toolInfo[AskJon.COMMANDO_TOOL].cost + OverlayEvent.COMMANDO_TOOL;
+					break;
+				case AskJon.FIRE_TOOL :
+					message = "$" + AskJon.toolInfo[AskJon.FIRE_TOOL].cost + OverlayEvent.FIRE_TOOL;
+					break;
+				case AskJon.BOOMBA_TOOL :
+					message = "$" + AskJon.toolInfo[AskJon.BOOMBA_TOOL].cost + OverlayEvent.BOOMBA_TOOL;
 					break;
 				default :
 			}

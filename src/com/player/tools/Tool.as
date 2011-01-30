@@ -16,7 +16,7 @@ package com.player.tools
 		
 		public function Tool($type:String)
 		{
-			var stats:Object = AskJon.toolStats[$type];
+			var stats:Object = AskJon.toolInfo[$type];
 			_cooldown = stats.cooldown;
 			_cost = stats.cost;
 			_type = $type;

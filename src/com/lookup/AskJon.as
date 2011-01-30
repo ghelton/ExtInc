@@ -42,6 +42,7 @@ package com.lookup
 		public static const MINES_TOOL:String			= 'MINES_TOOL';
 		public static const MARINES_TOOL:String			= 'MARINES_TOOL';
 		public static const COMMANDO_TOOL:String		= 'COMMANDO_TOOL';
+		public static const BOOMBA_TOOL:String			= 'BOOMBA_TOOL';
 		
 		//Inclination for an entity type to move towards or away from another entity type
 		public static const entityFearMatrix:Object = 
@@ -253,15 +254,23 @@ package com.lookup
 			};
 		
 		//toolz
-		public static const toolStats:Object =
+		public static const toolInfo:Object =
 			{
-				PANDA_BAIT_TOOL:	{cooldown:5, cost:100},
-				SEAL_BAIT_TOOL:		{cooldown:5, cost:100},
-				TIGER_BAIT_TOOL:	{cooldown:5, cost:100},
-				FIRE_TOOL:			{cooldown:5, cost:100},
-				MINES_TOOL:			{cooldown:5, cost:100},
-				MARINES_TOOL:		{cooldown:5, cost:100},
-				COMMANDO_TOOL:		{cooldown:5, cost:100}
+				PANDA_BAIT_TOOL:	{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
+				SEAL_BAIT_TOOL:		{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
+				TIGER_BAIT_TOOL:	{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
+				FIRE_TOOL:			{cooldown:5, cost:2000, url:'chrome/weapons/napalm.swf'},
+				MINES_TOOL:			{cooldown:5, cost:1000, url:'chrome/weapons/mine.swf'},
+				MARINES_TOOL:		{cooldown:5, cost:3000, url:'chrome/weapons/marines.swf'},
+				BOOMBA_TOOL:		{cooldown:5, cost:5000, url:'chrome/weapons/boomba.swf'},
+				COMMANDO_TOOL:		{cooldown:5, cost:7000, url:'chrome/weapons/mine.swf'}
+			};
+		
+		public static const classInfo:Object =
+			{
+				PANDA:	{name: "Panda", url:'chrome/classes/panda.swf'},
+				SEAL:	{name: "Seal", url:'chrome/classes/seal.swf'},
+				TIGER:	{name: "Tiger", url:'chrome/classes/tiger.swf'}
 			};
 		
 		public static const classLookup:Object =
