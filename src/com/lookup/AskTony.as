@@ -67,13 +67,13 @@ package com.lookup
 		public static const entityFearMatrix:Object = 
 			{
 				PANDA:{ 
-					PANDA:-.1, SEAL:0.0, TIGER:-0.2, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.8, TREE:1.0, PANDA_BAIT:1, SEAL_BAIT:-0.2, TIGER_BAIT:1, MINE:0
+					PANDA:-.2, SEAL:0.0, TIGER:-0.2, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.8, TREE:1.0, PANDA_BAIT:1, SEAL_BAIT:-0.2, TIGER_BAIT:1, MINE:0
 				},
 				SEAL:{
-					PANDA:0.0, SEAL:-0.2, TIGER:-0.2, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.8, TREE:1, PANDA_BAIT:0.5, SEAL_BAIT:1, TIGER_BAIT:-0.3, MINE:0
+					PANDA:0.0, SEAL:-0.2, TIGER:-0.5, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.8, TREE:1, PANDA_BAIT:0.5, SEAL_BAIT:1, TIGER_BAIT:-0.3, MINE:0
 				},
 				TIGER:{
-					PANDA:0.6, SEAL:0.6, TIGER:-0.2, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.8, TREE:0.3, PANDA_BAIT:-0.1, SEAL_BAIT:0.2, TIGER_BAIT:0.8, MINE:0
+					PANDA:0.6, SEAL:0.6, TIGER:-0.4, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.8, TREE:0.3, PANDA_BAIT:-0.1, SEAL_BAIT:0.2, TIGER_BAIT:0.8, MINE:0
 				},
 				COMMANDO:{
 					PANDA:0.4, SEAL:0.4, TIGER:0.4, COMMANDO:0.4, MARINE:0, FIRE:0, TREE:0.1, PANDA_BAIT:0.1, SEAL_BAIT:0.1, TIGER_BAIT:0.1, MINE:0
@@ -343,6 +343,8 @@ package com.lookup
 			}
 			
 		public static const splitHealth:int = 150;
+		public static const killCorrectAward:int = 500;
+		public static const killIncorrectAward:int = 500;
 			
 		
 		public function AskTony()

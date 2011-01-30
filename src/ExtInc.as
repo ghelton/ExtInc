@@ -111,7 +111,7 @@ package
 		private function loadGame():void
 		{
 			// - PLAYER DATA -
-			playerData = new PlayerData(10000);
+			playerData = new PlayerData(1000);
 			
 			// - BG -
 			_bg = new Loader();
@@ -185,9 +185,9 @@ package
 		{
 			if(e.bombType != playerData.target)
 			{
-				playerData.money += 500;
+				playerData.money += AskTony.killIncorrectAward;
 			} else {
-				playerData.money += 1500;
+				playerData.money += AskTony.killCorrectAward;
 				playerData.killCount--;
 			}
 			
