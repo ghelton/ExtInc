@@ -3,6 +3,7 @@ package com.lookup
 	import com.creatures.Commando;
 	import com.creatures.Fire;
 	import com.creatures.Marine;
+	import com.creatures.Mine;
 	import com.creatures.Panda;
 	import com.creatures.PandaBait;
 	import com.creatures.Seal;
@@ -242,8 +243,8 @@ package com.lookup
 				TREE:			Tree,
 				PANDA_BAIT:		PandaBait,
 				SEAL_BAIT:		SealBait,
-				TIGER_BAIT:		TigerBait
-//				MINE:			Mine
+				TIGER_BAIT:		TigerBait,
+				MINE:			Mine
 			}
 		
 		public static const colorOf:Object =
@@ -257,8 +258,8 @@ package com.lookup
 				TREE:			0x00CCA0,
 				PANDA_BAIT:		0x00AABB,
 				SEAL_BAIT:		0x0AABB0,
-				TIGER_BAIT:		0xAABB00
-				//				MINE:			Mine
+				TIGER_BAIT:		0xAABB00,
+				MINE:			0xCC00DD
 			}
 		public function AskJon()
 		{
