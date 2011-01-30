@@ -197,14 +197,26 @@ package com.creatures
 		}
 		
 		private static const MINIMUM_SAFE_DISTANCE:Number = 15;
+		private var _idleStartTime:Number = 0;
+		
 		public function moveTick():void
 		{
 			var deltaTime:Number = _masterTime - _lastMoveTime;
 			
-			var deltaVector:Point = new Point(fearVector.x * deltaTime * _speed
-												, fearVector.y * deltaTime * _speed);
-			var targetPoint:Point = _centerPoint.add(deltaVector);
+			var deltaVector:Point;
 			
+			
+			var wayPointDirection:Point = null;
+		
+			if(_waypoint !== null) {
+				wayPointDirection = _waypoint.subtract(_centerPoint);
+				wayPointDirection.normalize(1);
+				deltaVector = new Point(wayPointDirection.x * deltaTime * _speed, wayPointDirection.y * deltaTime * _speed);
+			} else {
+				deltaVector = new Point(fearVector.x * deltaTime * _speed, fearVector.y * deltaTime * _speed);
+			}
+
+			var targetPoint:Point = _centerPoint.add(deltaVector);
 
 			var vectLength:Number;
 			var checkVect:Point;
@@ -223,30 +235,59 @@ package com.creatures
 			}
 			
 			var targetRotation:Number;
+			var turnToIdle:Boolean = false;
 			deltaVector = targetPoint.subtract(_centerPoint);
 			_centerPoint = targetPoint;
 
+			
 			if(deltaVector.length < 0.0000000000001)
-				targetRotation = idle(deltaTime);
-			else
+			{
+				if(_idleStartTime === 0)
+				{
+					turnToIdle = true;
+					_idleStartTime = _masterTime;					
+				} else if((_masterTime - _idleStartTime) > 5) {
+					targetRotation = idle(deltaTime);
+				} else {
+					turnToIdle = true;
+				}
+				
+			}
+			if(turnToIdle)
 				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
 			_image.rotation += Math.min(Math.max(-MAXIMUM_ROTATION_DELTA,(targetRotation - _image.rotation) * 0.5), MAXIMUM_ROTATION_DELTA);
 			//			_image.rotation = targetRotation;
 			
 			updatePosition();
+			
+			if(_waypoint !== null && _centerPoint.subtract(_waypoint).length < 5)
+			{
+				_waypoint = null;
+			}
 			_lastMoveTime = _masterTime;
 		}
 		
-		private static const MOSEY_SPEED:Number = 5;
-		private var _wanderVect:Point = new Point(0, -1);
+		private var _waypoint:Point = null;
 		protected function idle(delta:Number = 0):Number
 		{
-			var wanderClone:Point = _wanderVect.clone();
-			wanderClone.normalize(delta * MOSEY_SPEED);
-			_centerPoint = _centerPoint.add(wanderClone);
+			if(_waypoint === null)
+			{
+				_waypoint = new Point(_centerPoint.x + ((Math.random() - .5) * 200), _centerPoint.y + ((Math.random() - .5) * 200));
+				if(_waypoint.x < bounds.left)
+					_waypoint.x = bounds.left + 1;
+				if(_waypoint.x > bounds.right)
+					_waypoint.x = bounds.right - 1;
+				if(_waypoint.y < bounds.top)
+					_waypoint.y = bounds.top + 1;
+				if(_waypoint.y > bounds.bottom)
+					_waypoint.y = bounds.bottom - 1;
+			}
 			return 0;
 		}
-		
+		public function setWaypoint(waypoint:Point):void
+		{
+			_waypoint = waypoint;
+		}
 		public function attackTick():void
 		{
 			var distance:Number = 0;
