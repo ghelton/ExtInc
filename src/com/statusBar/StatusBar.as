@@ -284,7 +284,8 @@ package com.statusBar
 			var message:String;
 			if(ExtInc.playerData.money >= AskTony.toolInfo[tool].cost)
 			{
-				updateCash(-AskTony.toolInfo[tool].cost);
+				ExtInc.playerData.money -= AskTony.toolInfo[tool].cost;
+				updateCash(ExtInc.playerData.money);
 				message = AskTony.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 				var event:AttackEvent = new AttackEvent(AttackEvent.PURCHASED, AskTony.toolInfo[tool].attackType, new Point(0,0));
@@ -294,12 +295,6 @@ package com.statusBar
 				message = OverlayEvent.BROKE;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, message));
 			}
-		}
-		
-		private function updateCash(diff:int):void
-		{
-			ExtInc.playerData.money += diff;
-			_cashLabel.text = '$' + ExtInc.playerData.money.toString();
 		}
 		
 		private function showOverlay(name:String):void
@@ -342,6 +337,11 @@ package com.statusBar
 		public function updateKillCount(newKillCount:uint):void
 		{
 			_killLabel.text = 'Kill\n' + newKillCount;
+		}
+		
+		public function updateCash(newCash:uint):void
+		{
+			_cashLabel.text = '$' + newCash;
 		}
 		
 		//--------------------------------------

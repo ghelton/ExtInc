@@ -191,6 +191,7 @@ package
 				playerData.killCount--;
 			}
 			
+			_statusBar.updateCash(playerData.money);
 			_statusBar.updateKillCount(playerData.killCount);
 		}
 		//--------------------------------------
