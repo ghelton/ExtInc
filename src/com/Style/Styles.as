@@ -31,7 +31,7 @@ package com.Style
 		//--------------------------------------
 		// FONTS
 		//--------------------------------------
-		public static const TRANSPONDER:String = 'TransponderAOE';
+		public static const TRANSPONDER:String = 'HelveticaNeue';
 		
 		//--------------------------------------
 		// TEXT FORMAT
