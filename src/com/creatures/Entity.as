@@ -134,8 +134,8 @@ package com.creatures
 		
 		protected function updatePosition():void
 		{
-			_centerPoint.x %= bounds.width;
-			_centerPoint.y %= bounds.height;
+			_centerPoint.x %= 5;
+			_centerPoint.y %= 5;
 			_image.x = (_centerPoint.x - (_image.width * 0.5));
 			_image.y = (_centerPoint.y - (_image.height * 0.5));	
 		}
@@ -210,6 +210,7 @@ package com.creatures
 		public function updateFearVector():void
 		{
 			var scale:Number;
+			var bestVector:Point = new Point();
 			var newFearVector:Point = new Point();
 			var differenceVector:Point;
 			for each (var enemy:Entity in _hitList)
@@ -218,16 +219,22 @@ package com.creatures
 				{					
 					continue;
 				}
+				//trace(AskJon.entityFearMatrix[type][enemy.type] + "    " + (.25 + .75 * (enemy.getHealth() * 1/100)) + "    " + Math.exp(-distanceFromEntity(enemy) * 1/100));
 				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				differenceVector.normalize(1);
 				differenceVector.x *= scale;
 				differenceVector.y *= scale;
-				
-				newFearVector = newFearVector.add(differenceVector); 
+				//trace(scale);
+				if(scale > 0 && scale > bestVector.length)
+				{
+					bestVector = differenceVector;
+				} else if(scale < 0) {
+					newFearVector = newFearVector.add(differenceVector); 				
+				}
 			}
-			fearVector = (fearVector.add(newFearVector));
+			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;
 		}
