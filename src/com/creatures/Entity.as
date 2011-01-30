@@ -122,12 +122,11 @@ package com.creatures
 		
 		//ACTUAL CODE
 		
-		public function attackEntity(enemy:Entity):Number
+		public function attackEntity(enemy:Entity):void
 		{
 			var healthChange:Number = AskJon.entityDamageMatrix[_type][enemy.type];
 			
 			changeHealth(healthChange);
-			return healthChange;
 		}
 		private function changeHealth(healthDelta:Number):void
 		{
@@ -202,7 +201,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(bestEntity) > 0;
+			attackEntity(bestEntity);
 			bestEntity.riposte(this);
 		}
 		
@@ -220,18 +219,30 @@ package com.creatures
 			var bestVector:Point = new Point();
 			var newFearVector:Point = new Point();
 			var differenceVector:Point;
+			var distance:Number = 0;
 			for each (var enemy:Entity in _hitList)
 			{
-				if(enemy === this)
+				if(enemy === this || enemy.getHealth() <= 0)
 				{					
 					continue;
 				}
-				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) : 0;
+				distance = distanceFromEntity(enemy);
+				
+				if(AskJon.entityFearMatrix[type][enemy.type] > 0)
+				{
+					if(distance > Math.abs(AskJon.entityPredatorAgroRangeArray[_type] * AskJon.entityFearMatrix[_type][enemy.type]))
+						continue;
+					
+					scale = AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100));
+				} else {
+					if(distance > Math.abs(AskJon.entityPreyAgroRangeArray[_type] * AskJon.entityFearMatrix[_type][enemy.type]))
+						continue;
+					
+					scale = AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distance * 1/100);
+				}
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
-				differenceVector.normalize(1);
-				differenceVector.x *= scale;
-				differenceVector.y *= scale;
+				differenceVector.normalize(scale);
 				if(scale > 0 && scale > bestVector.length)
 				{
 					bestVector = differenceVector;
@@ -239,6 +250,9 @@ package com.creatures
 					newFearVector = newFearVector.add(differenceVector); 				
 				}
 			}
+			newFearVector.normalize(.5);
+			bestVector.normalize(.5);
+			
 			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;

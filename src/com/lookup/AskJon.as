@@ -91,7 +91,7 @@ package com.lookup
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:1, MARINE:1, FIRE:0, TREE:2, PANDA_BAIT:3, SEAL_BAIT:4, TIGER_BAIT:0, MINE:0
 				},
 				TIGER:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:1, MARINE:1, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:1, TIGER_BAIT:1, MINE:0
+					PANDA:0, SEAL:1, TIGER:0, COMMANDO:2, MARINE:2, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:2, TIGER_BAIT:3, MINE:0
 				},
 				COMMANDO:{
 					PANDA:1, SEAL:1, TIGER:1, COMMANDO:1, MARINE:1, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
@@ -218,6 +218,38 @@ package com.lookup
 				SEAL_BAIT:		0.0,
 				TIGER_BAIT:		0.0,
 				MINE:			0.0
+			};
+		
+		//Prey agro range
+		public static const entityPreyAgroRangeArray:Object = 
+			{
+				PANDA:			500,
+				SEAL:			500,
+				TIGER:			500,
+				COMMANDO:		500,
+				MARINE:			500,
+				FIRE:			500,
+				TREE:			500,
+				PANDA_BAIT:		500,
+				SEAL_BAIT:		500,
+				TIGER_BAIT:		500,
+				MINE:			500
+			};
+		
+		//Predator agro range
+		public static const entityPredatorAgroRangeArray:Object = 
+			{
+				PANDA:			200,
+				SEAL:			200,
+				TIGER:			200,
+				COMMANDO:		200,
+				MARINE:			200,
+				FIRE:			200,
+				TREE:			200,
+				PANDA_BAIT:		200,
+				SEAL_BAIT:		200,
+				TIGER_BAIT:		200,
+				MINE:			200
 			};
 		
 		//toolz
