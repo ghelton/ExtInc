@@ -250,6 +250,8 @@ package com.creatures
 					idle(deltaTime);
 				}
 				
+			} else if(_idleStartTime !== 0) {
+				_idleStartTime = 0;
 			}
 			
 			targetRotation = (Math.atan2(deltaVector.y, deltaVector.x)) - Math.PI * 0.5;
@@ -288,6 +290,7 @@ package com.creatures
 			if(_waypoint !== null && _centerPoint.subtract(_waypoint).length < 5)
 			{
 				_waypoint = null;
+				_idleStartTime = 0;
 			}
 			_lastMoveTime = _masterTime;
 		}
@@ -315,14 +318,10 @@ package com.creatures
 			if(_waypoint === null)
 			{
 				_waypoint = new Point(_centerPoint.x + ((Math.random() - .5) * 200), _centerPoint.y + ((Math.random() - .5) * 200));
-				if(_waypoint.x < bounds.left)
-					_waypoint.x = bounds.left + 1;
-				if(_waypoint.x > bounds.right)
-					_waypoint.x = bounds.right - 1;
-				if(_waypoint.y < bounds.top)
-					_waypoint.y = bounds.top + 1;
-				if(_waypoint.y > bounds.bottom)
-					_waypoint.y = bounds.bottom - 1;
+				if(_waypoint.x < bounds.left) 		_waypoint.x = bounds.left + 1;
+				if(_waypoint.x > bounds.right)		_waypoint.x = bounds.right - 1;
+				if(_waypoint.y < bounds.top)		_waypoint.y = bounds.top + 1;
+				if(_waypoint.y > bounds.bottom)		_waypoint.y = bounds.bottom - 1;
 			}
 			return 0;
 		}
