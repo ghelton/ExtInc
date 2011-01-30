@@ -124,6 +124,8 @@ package
 			_statusBar = new StatusBar();
 			addChild(_statusBar);
 			
+			// - STATUS MESSAGE -
+			
 //			addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
 //			addEventListener(Event.RESIZE, onResize);
 		}

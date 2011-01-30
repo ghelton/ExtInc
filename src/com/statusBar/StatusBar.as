@@ -9,6 +9,7 @@ package com.statusBar
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.net.URLRequest;
@@ -29,12 +30,17 @@ package com.statusBar
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
-		
+		public static const BAIT:String = 'Bait';
+		public static const WEAPONS:String = 'Weapons';
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
 		private var _cashLabel:TextField;
 		private var _animalFace:Loader;
+		private var _baitTool:BaitButton;
+		private var _weaponTool:WeaponButton;
+		
+		private static var _currentTab:String = BAIT;
 		
 		//--------------------------------------
 		// CONSTRUCTOR
@@ -86,8 +92,30 @@ package com.statusBar
 			killBoxBg.addChild(_animalFace);
 			
 			// - TOOL BOX -
+			_baitTool = new BaitButton();
+			_baitTool.name = BAIT;
+			_baitTool.addEventListener(MouseEvent.CLICK, onTabClick, false, 0, true);
+			_baitTool.addEventListener(MouseEvent.MOUSE_OVER, onTabOver, false, 0, true);
+			_baitTool.addEventListener(MouseEvent.MOUSE_OUT, onTabOut, false, 0, true);
+			_baitTool.x = 445;
+			_baitTool.y = 662;
+			_baitTool.buttonMode = true;
+			_baitTool.mouseChildren = false;
+			addChild(_baitTool);
+			
+			_weaponTool = new WeaponButton();
+			_weaponTool.name = WEAPONS;
+			_weaponTool.addEventListener(MouseEvent.CLICK, onTabClick, false, 0, true);
+			_weaponTool.addEventListener(MouseEvent.MOUSE_OVER, onTabOver, false, 0, true);
+			_weaponTool.addEventListener(MouseEvent.MOUSE_OUT, onTabOut, false, 0, true);
+			_weaponTool.x = 445;
+			_weaponTool.y = 712;
+			_weaponTool.buttonMode = true;
+			_weaponTool.mouseChildren = false;
+			addChild(_weaponTool);
+			
 			var toolBoxBg:StatusBox = new StatusBox(434, 98, cornerRadius);
-			toolBoxBg.x = 495;
+			toolBoxBg.x = 505;
 			toolBoxBg.y = 662;
 			addChild(toolBoxBg);
 			
@@ -100,6 +128,7 @@ package com.statusBar
 			fullScreenButton.buttonMode = true;
 			
 			updateTarget(AskJon.PANDA);
+			updateTabs(BAIT);
 		}
 		
 		//--------------------------------------
@@ -123,6 +152,35 @@ package com.statusBar
 					_animalFace.load(new URLRequest('chrome/panda.swf'));
 					break;
 			}
+		}
+		
+		private function updateTabs(targetTab:String):void
+		{
+			_currentTab = targetTab;
+			if(_currentTab == BAIT)
+			{
+				_baitTool.gotoAndStop(2);
+				_weaponTool.gotoAndStop(1);
+			} else {
+				_baitTool.gotoAndStop(1);
+				_weaponTool.gotoAndStop(2);
+			}
+		}
+		
+		private function onTabClick(e:MouseEvent):void
+		{
+			updateTabs(e.currentTarget.name);
+		}
+		
+		private function onTabOver(e:MouseEvent):void
+		{
+			e.currentTarget.gotoAndStop(2);
+		}
+		
+		private function onTabOut(e:MouseEvent):void
+		{
+			if(_currentTab != e.currentTarget.name)
+				e.currentTarget.gotoAndStop(1);
 		}
 		
 		//--------------------------------------
