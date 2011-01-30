@@ -109,7 +109,7 @@ package
 			
 			// - BG -
 			_bg = new Loader();
-			_bg.load(new URLRequest(CHROME + 'MainBg.png'));
+			_bg.load(new URLRequest(CHROME + 'MainBg.swf'));
 			addChild(_bg);
 			
 			// - SCREEN -

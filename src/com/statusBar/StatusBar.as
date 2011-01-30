@@ -44,6 +44,8 @@ package com.statusBar
 		private var _animalFace:Loader;
 		private var _baitTool:BaitButton;
 		private var _weaponTool:WeaponButton;
+		private var _weaponsContainer:Sprite;
+		private var _baitContainer:Sprite;
 		
 		private static var _currentTab:String = BAIT;
 		private static var _currentAnimal:String;
@@ -150,27 +152,50 @@ package com.statusBar
 				toolBoxBg.addChild(box);
 			}
 			
-			var icons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
-			icons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].url));
-			icons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].url));
-			icons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].url));
 			
-			var icon:ToolButton;
+			_weaponsContainer = new Sprite();
+			addChild(_weaponsContainer);
+			var weapons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
+			weapons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].iconUrl));
+			weapons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].iconUrl));
+			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+			
+			var weapon:ToolButton;
 			boxIndent = 45;
-			for each(var data:ToolButtonData in icons)
+			for each(var weaponData:ToolButtonData in weapons)
 			{
-				icon = new ToolButton(data);
-				icon.x = boxIndent + icons.indexOf(data) * 74 + toolBoxBg.x;
-				icon.y = 30 + toolBoxBg.y;
-//				icon.filters = [Styles.SCREEN_GLOW];
-				icon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
-				icon.addEventListener(MouseEvent.CLICK, onToolClick);
-				icon.mouseChildren = false;
-				icon.buttonMode = true;
-				addChild(icon);
+				weapon = new ToolButton(weaponData);
+				weapon.x = boxIndent + weapons.indexOf(weapon) * 74 + toolBoxBg.x;
+				weapon.y = 30 + toolBoxBg.y;
+//				weapon.filters = [Styles.SCREEN_GLOW];
+				weapon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+				weapon.addEventListener(MouseEvent.CLICK, onToolClick);
+				weapon.mouseChildren = false;
+				weapon.buttonMode = true;
+				_weaponsContainer.addChild(weapon);
 			}
 			
+			_baitContainer = new Sprite();
+			addChild(_baitContainer);
+			var baits:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
+			baits.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].iconUrl));
+			baits.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].iconUrl));
+			baits.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
 			
+			var bait:ToolButton;
+			boxIndent = 45;
+			for each(var baitData:ToolButtonData in baits)
+			{
+				bait = new ToolButton(baitData);
+				bait.x = boxIndent + baits.indexOf(baitData) * 74 + toolBoxBg.x;
+				bait.y = 30 + toolBoxBg.y;
+				//				bait.filters = [Styles.SCREEN_GLOW];
+				bait.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+				bait.addEventListener(MouseEvent.CLICK, onToolClick);
+				bait.mouseChildren = false;
+				bait.buttonMode = true;
+				_baitContainer.addChild(bait);
+			}
 			
 			// - FS BUTTON -
 			var fullScreenButton:StatusBox = new StatusBox(25, 25, cornerRadius);
