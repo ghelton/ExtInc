@@ -296,8 +296,8 @@ package com.lookup
 			
 		public static const offsets:Object =
 			{
-				PANDA: 			{x:0, y:0},
-				TIGER: 			{x:0, y:0},
+				PANDA: 			{x:-23, y:-28},
+				TIGER: 			{x:-23, y:-28},
 				SEAL: 			{x:-23, y:-28},
 				COMMANDO:		{x:0, y:0},
 				MARINE:			{x:0, y:0},
