@@ -45,7 +45,7 @@ package com.statusBar
 			_message.defaultTextFormat = Styles.PANEL_TF;
 			_message.width = _width;
 			_message.text = 'Welcome';
-			_message.y = 6;
+			_message.y = 4;
 			addChild(_message);
 			
 			_killTimer = new Timer(2000, 1);
