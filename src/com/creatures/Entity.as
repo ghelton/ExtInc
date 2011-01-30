@@ -157,7 +157,7 @@ package com.creatures
 				_health = 0;
 				killed();
 			}
-			else if(_health >= 200)
+			else if(_health >= AskTony.splitHealth)
 				split();
 		}
 		

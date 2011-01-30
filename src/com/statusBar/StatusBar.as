@@ -163,6 +163,8 @@ package com.statusBar
 			weapons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].iconUrl));
 			weapons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].iconUrl));
 			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
+			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			
 			var weapon:ToolButton;
 			boxIndent = 45;
@@ -185,6 +187,8 @@ package com.statusBar
 			baits.push(new ToolButtonData(AskTony.PANDA_BAIT_TOOL, AskTony.toolInfo[AskTony.PANDA_BAIT_TOOL].iconUrl));
 			baits.push(new ToolButtonData(AskTony.SEAL_BAIT_TOOL, AskTony.toolInfo[AskTony.SEAL_BAIT_TOOL].iconUrl));
 			baits.push(new ToolButtonData(AskTony.TIGER_BAIT_TOOL, AskTony.toolInfo[AskTony.TIGER_BAIT_TOOL].iconUrl));
+			baits.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
+			baits.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			
 			var bait:ToolButton;
 			boxIndent = 45;
@@ -322,8 +326,10 @@ package com.statusBar
 				case AskTony.TIGER_BAIT_TOOL :
 				case AskTony.SEAL_BAIT_TOOL :
 				case AskTony.PANDA_BAIT_TOOL :
-				default :
 					message = "$" + AskTony.toolInfo[name].cost + ' - ' + AskTony.toolInfo[name].name;
+					break;
+				default :
+					message = 'Coming Soon - More ways to dismember and treats to tantalize!';
 					break;
 			}
 			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));

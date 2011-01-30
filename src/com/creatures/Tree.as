@@ -18,7 +18,7 @@ package com.creatures
 //				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
 //				endFill();
 //			}
-			var tree:UILoader = new UILoader('../src/assets/treeeees.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+			var tree:UILoader = new UILoader('assets/treeeees.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
 			super(tree, $health, $point, AskTony.TREE);
 		}
