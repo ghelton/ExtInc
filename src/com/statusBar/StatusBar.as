@@ -4,6 +4,7 @@ package com.statusBar
 	import com.Style.Styles;
 	import com.attacks.AttackEvent;
 	import com.lookup.AskTony;
+	
 	import flash.display.Loader;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -242,10 +243,10 @@ package com.statusBar
 			trace('tool clicked: ' + e.currentTarget.name);
 			var tool:String = e.currentTarget.name;
 			var message:String;
-			if(ExtInc.playerData.money >= AskJon.toolInfo[tool].cost)
+			if(ExtInc.playerData.money >= AskTony.toolInfo[tool].cost)
 			{
-				updateCash(-AskJon.toolInfo[tool].cost);
-				message = AskJon.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
+				updateCash(-AskTony.toolInfo[tool].cost);
+				message = AskTony.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 				parent.dispatchEvent(new AttackEvent(AttackEvent.PURCHASED, tool, new Point(0,0))); 
 			} else {
