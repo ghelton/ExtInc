@@ -1,7 +1,7 @@
 package com.creatures
 {
 	import com.UI.UILoader;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -14,7 +14,7 @@ package com.creatures
 		{
 			var fire:UILoader = new UILoader('../src/assets/FireBomb.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
-			super(fire, $health, $point, AskJon.FIRE);
+			super(fire, $health, $point, AskTony.FIRE);
 		}
 	}
 }

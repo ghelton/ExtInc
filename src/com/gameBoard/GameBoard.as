@@ -5,7 +5,7 @@ package com.gameBoard
 	import com.attacks.AttackEvent;
 	import com.creatures.Entity;
 	import com.creatures.EntityEvent;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -17,13 +17,10 @@ package com.gameBoard
 
 	public class GameBoard extends Sprite
 	{
-		public static var attackType:String = AskJon.MINE;
+		public static var attackType:String = AskTony.PANDA_BAIT;
 		public function setAttackType($type:String):void
 		{
-			if($type != null)
-			{
-				_entityLayer.mouseChildren = false;
-			}
+			_entityLayer.mouseChildren = _entityLayer.mouseChildren = ($type == null);
 			attackType = $type;
 		}
 		
@@ -33,10 +30,10 @@ package com.gameBoard
 		
 		public function explode(target:Point):void
 		{
-			
+			createEntity(target, AskTony.FIRE);
 		}
 		
-		public function GameBoard(_bg:UILoader, $type:Array, $typeQuantities:Array = null, $typePositions:Array = null) //$theGrid:Vector.<Vector.<Tile>>)
+		public function GameBoard(_bg:UILoader, $type:Object) //$theGrid:Vector.<Vector.<Tile>>)
 		{
 			entities = new Vector.<Entity>();
 //			_grid = $theGrid;
@@ -50,8 +47,18 @@ package com.gameBoard
 				
 				var count:int;
 				var testPoint:Point;
-				for each(var enemyType:String in $type)			{
-					for(count = 12; count >= 0; count--)
+				if($type[AskTony.DISTRACTOR] != null && $type[AskTony.DISTRACTOR] > 0)
+				{
+					createEntity(new Point(0,0), AskTony.DISTRACTOR);
+					createEntity(new Point(_bg.width,0), AskTony.DISTRACTOR);
+					createEntity(new Point(_bg.width,_bg.height), AskTony.DISTRACTOR);
+					createEntity(new Point(0,_bg.height), AskTony.DISTRACTOR);
+					delete $type[$type];
+				}
+				
+				for(var enemyType:String in $type)			
+				{
+					for(count = $type[enemyType]; count > 0; count--)
 					{
 						testPoint = new Point(Math.random() * _bg.width, Math.random() * _bg.height);
 						createEntity(testPoint, enemyType);
@@ -77,6 +84,7 @@ package com.gameBoard
 		{
 			if(attackType != null)
 			{
+				setAttackType(attackType);
 				if(_attack == null)
 				{
 					_attack = new Attack(1, attackType);
@@ -92,6 +100,17 @@ package com.gameBoard
 				}
 			}
 		}
+		
+		private function onSplode(e:EntityEvent):void
+		{
+			explode(e.entity.centerPoint);
+		}
+		private function onSplit(e:EntityEvent):void
+		{
+			if(entities.length < 40)
+				createEntity(e.entity.centerPoint.add(new Point(Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE)), e.entity.type);
+//			explode(e.entity.centerPoint);
+		}
 //		private function onAttackUp(e:Event):void
 //		{
 //			_tileLayer.addEventListener(MouseEvent.MOUSE_DOWN, onAttackClick);
@@ -102,7 +121,7 @@ package com.gameBoard
 		private function clearAttack(attack:AttackEvent):void 
 		{
 			_entityLayer.mouseChildren = true;
-			_attack = null;
+			setAttackType(null);
 		}
 		private function fireAttack($attack:AttackEvent):void 
 		{
@@ -178,6 +197,10 @@ package com.gameBoard
 				if(entities.length > count)
 					entities[count].attackTick();
 			}
+			
+			for(count = (_attacks.length - 1); count >= 0; count--)
+				_attacks[count].tick();
+			
 			var index:int;
 			for(count = _deadList.length - 1; count >= 0; count--)
 			{
@@ -191,7 +214,7 @@ package com.gameBoard
 		}
 		public function createEntity(point:Point, type:String):void
 		{
-			var contructor:* = AskJon.classLookup[type];
+			var contructor:* = AskTony.classLookup[type];
 			if(contructor != null)
 			{
 				var entity:Entity = new contructor(100, point);
@@ -200,7 +223,7 @@ package com.gameBoard
 		}
 		private function addEntity(newEntity:Entity):void
 		{
-			newEntity.addEventListener(EntityEvent.KILLED, tangoDown);
+			addEntityListeners(newEntity);
 			newEntity.setHitList(entities);
 			entities.push(newEntity);
 			_entityLayer.addChild(newEntity.getGraphic());
@@ -232,6 +255,19 @@ package com.gameBoard
 //				_updater = 0;
 			
 			tick();
+		}
+		
+		private function addEntityListeners(entity:Entity):void
+		{
+			entity.addEventListener(EntityEvent.KILLED, tangoDown);
+			entity.addEventListener(EntityEvent.SPLODED, onSplode);
+			entity.addEventListener(EntityEvent.SPLIT, onSplit);
+		}
+		private function removeEntityListeners(entity:Entity):void
+		{
+			entity.removeEventListener(EntityEvent.KILLED, tangoDown);
+			entity.removeEventListener(EntityEvent.SPLODED, onSplode);
+			entity.removeEventListener(EntityEvent.SPLIT, onSplit);
 		}
 	}
 }

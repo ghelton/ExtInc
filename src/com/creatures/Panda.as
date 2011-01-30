@@ -1,7 +1,7 @@
 package com.creatures
 {
 	import com.UI.UILoader;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -11,7 +11,7 @@ package com.creatures
 		public function Panda($health:Number, $point:Point)
 		{
 			var panda:UILoader = new UILoader('../src/assets/Panda.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
-			super(panda, $health, $point, AskJon.PANDA);
+			super(panda, $health, $point, AskTony.PANDA);
 		}
 	}
 }

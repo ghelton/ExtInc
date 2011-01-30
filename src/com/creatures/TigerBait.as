@@ -3,7 +3,7 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	public class TigerBait extends Entity
 	{
@@ -16,7 +16,7 @@ package com.creatures
 //				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
 //				endFill();
 //			}
-			super(null, $health, $point, AskJon.TIGER_BAIT);
+			super(null, $health, $point, AskTony.TIGER_BAIT);
 		}
 	}
 }

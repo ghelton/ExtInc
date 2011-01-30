@@ -2,7 +2,7 @@
 package com.statusBar
 {
 	import com.Style.Styles;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Loader;
 	import flash.display.Shape;
@@ -170,7 +170,7 @@ package com.statusBar
 			fullScreenButton.addEventListener(MouseEvent.CLICK, onFsClick);
 			fullScreenButton.buttonMode = true;
 			
-			updateTarget(AskJon.PANDA);
+			updateTarget(AskTony.PANDA);
 			updateTabs(WEAPONS);
 		}
 		
@@ -192,7 +192,7 @@ package com.statusBar
 			_currentAnimal = target;
 			switch(target)
 			{
-				case AskJon.PANDA :
+				case AskTony.PANDA :
 					_animalFace.load(new URLRequest('chrome/panda.swf'));
 					break;
 			}

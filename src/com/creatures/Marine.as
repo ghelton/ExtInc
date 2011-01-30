@@ -1,6 +1,6 @@
 package com.creatures
 {
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -9,7 +9,7 @@ package com.creatures
 	{
 		public function Marine($health:Number, $point:Point)
 		{
-			super(null, $health, $point, AskJon.MARINE);
+			super(null, $health, $point, AskTony.MARINE);
 		}
 	}
 }

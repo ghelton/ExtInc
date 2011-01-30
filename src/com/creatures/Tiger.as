@@ -1,7 +1,7 @@
 package com.creatures
 {
 	import com.UI.UILoader;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -19,7 +19,7 @@ package com.creatures
 //			}
 			var tiger:UILoader = new UILoader('../src/assets/Tiger.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
-			super(tiger, $health, $point, AskJon.TIGER);
+			super(tiger, $health, $point, AskTony.TIGER);
 		}
 	}
 }

@@ -42,6 +42,11 @@ package com.attacks
 			
 		}
 		
+		public function tick():void
+		{
+			
+		}
+		
 		private var _projectile:Entity;
 		protected function fire(point:Point):void {
 			dispatchEvent(new AttackEvent(AttackEvent.FIRE, _type, point));
