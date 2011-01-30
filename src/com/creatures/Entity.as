@@ -168,6 +168,8 @@ package com.creatures
 				}
 				else if(_health >= AskTony.splitHealth)
 					split();
+				
+				_image.scaleX = _image.scaleY = (this.getHealth() / 300) + 0.8;
 			}
 		}
 		

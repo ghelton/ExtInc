@@ -28,11 +28,10 @@ package com.creatures
 			playAnimation(_defaultAnimation);
 		}
 		
-		protected override function changeHealth(healthDelta:Number, killedBy:String):void
-		{
-			_image.scaleX = _image.scaleY = (this.getHealth() / 300) + 0.8;
-			super.changeHealth(healthDelta, killedBy);
-		}
+//		protected override function changeHealth(healthDelta:Number, killedBy:String):void
+//		{
+//			super.changeHealth(healthDelta, killedBy);
+//		}
 		
 		protected function playAnimation(keyFrame:String):void
 		{
