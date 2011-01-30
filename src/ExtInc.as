@@ -10,7 +10,9 @@ package
 	import com.player.PlayerData;
 	import com.player.tools.Tool;
 	import com.player.tools.ToolEvent;
+	import com.statusBar.OverlayEvent;
 	import com.statusBar.StatusBar;
+	import com.statusBar.StatusOverlay;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -60,8 +62,6 @@ package
 		//--------------------------------------
 		private static var CHROME:String = 'chrome/';
 		
-		public static var testLayer:Sprite = new Sprite();
-		
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
@@ -71,8 +71,9 @@ package
 		public static var playerData:PlayerData;
 
 		private var _bg:Loader;
-		private var _gameBoardMask:Loader;
+		private var _screenMask:Loader;
 		private var _statusBar:StatusBar;
+		private var _statusOverlay:StatusOverlay;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
@@ -108,44 +109,48 @@ package
 			_bg.load(new URLRequest(CHROME + 'MainBg.png'));
 			addChild(_bg);
 			
+			// - SCREEN -
+			var screen:Sprite = new Sprite();
+			addChild(screen);
+			
 			// - MASK -
-			_gameBoardMask = new Loader();
-			_gameBoardMask.load(new URLRequest(CHROME + 'gameBoardMask.swf'));
-			addChild(_gameBoardMask);
+			_screenMask = new Loader();
+			_screenMask.load(new URLRequest(CHROME + 'gameBoardMask.swf'));
+			addChild(_screenMask);
+			screen.mask = _screenMask;
 			
 			// - GAME BOARD -
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
 			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), testTypes );//buildGameBoard());
-			gameBoard.mask = _gameBoardMask;
-			addChild(gameBoard);
-			addChild(testLayer);
+			screen.addChild(gameBoard);
 			
-			gameBoard.x = _gameBoardMask.x = 54; 
-			gameBoard.y = _gameBoardMask.y = 39;
+			gameBoard.x = _screenMask.x = 54; 
+			gameBoard.y = _screenMask.y = 39;
+			
+			// - OVERLAY -
+			_statusOverlay = new StatusOverlay();
+			_statusOverlay.x = gameBoard.x;
+			_statusOverlay.y = 605;
+			screen.addChild(_statusOverlay);
 			
 			// - STATUS BAR -
 			_statusBar = new StatusBar();
 			addChild(_statusBar);
 			
 			// - STATUS MESSAGE -
+			addEventListener(OverlayEvent.SHOW_MESSAGE, onOverlayEvent);
+			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
 			
-//			addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
-//			addEventListener(Event.RESIZE, onResize);
 		}
 		
 		//--------------------------------------
 		// PROTECTED & PRIVATE METHODS
-		//--------------------------------------	
-		/*private function onFullScreen(e:FullScreenEvent):void
+		//--------------------------------------
+		private function onOverlayEvent(e:OverlayEvent):void
 		{
-			
+			if(e.type == OverlayEvent.SHOW_MESSAGE)
+				_statusOverlay.changeMessage(e.message);
 		}
-		
-		private function onResize(e:Event):void
-		{
-			
-		}*/
-		
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------

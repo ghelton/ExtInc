@@ -210,6 +210,18 @@ package com.statusBar
 		private function onTabOver(e:MouseEvent):void
 		{
 			e.currentTarget.gotoAndStop(2);
+			var message:String;
+			switch(e.currentTarget.name)
+			{
+				case BAIT :
+					message = OverlayEvent.BAIT;
+					break;
+				case WEAPONS :
+					message = OverlayEvent.WEAPONS;
+					break;
+				default :
+			}
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 		}
 		
 		private function onTabOut(e:MouseEvent):void

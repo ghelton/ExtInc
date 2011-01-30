@@ -36,6 +36,7 @@ package com.Style
 		//--------------------------------------
 		public static const PANEL_TF:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
 		public static const PANEL_TF_L:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.LEFT);
+		public static const OVERLAY_TF:TextFormat = new TextFormat('Arial', 14, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
 		
 		//--------------------------------------
 		// FILTERS
