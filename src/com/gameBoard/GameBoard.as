@@ -239,14 +239,19 @@ package com.gameBoard
 					entities[count].attackTick();
 			}
 			
-			for(count = (_attacks.length - 1); count >= 0; count--)
+			for(count = (_attacks.length - 1); count >= 0; count--) {
 				_attacks[count].tick();
+			}
 			
 			var index:int;
 			for(count = _deadList.length - 1; count >= 0; count--)
 			{
 				index = entities.lastIndexOf(_deadList[count]);
-				if(index >= 0) entities.splice(index, 1);
+				if(index >= 0) 
+				{
+					dispatchEvent(new AttackEvent(AttackEvent.DEATH, entities[index].type, entities[index].centerPoint));
+					entities.splice(index, 1);
+				}
 			}
 			_deadList.length = 0;
 			
