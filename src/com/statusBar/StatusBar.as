@@ -62,7 +62,7 @@ package com.statusBar
 			cashMoniesBg.name = CASH_MONIES;
 			addChild(cashMoniesBg);
 			cashMoniesBg.mouseChildren = false;
-			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
+			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 			
 			var cashTitleLabel:TextField = new TextField();
 			cashTitleLabel.defaultTextFormat = Styles.PANEL_TF;
@@ -85,7 +85,7 @@ package com.statusBar
 			killBoxBg.name = KILL_BOX;
 			killBoxBg.mouseChildren = false;
 			addChild(killBoxBg);
-			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
+			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 			
 			var killBoxLabel:TextField = new TextField();
 			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
@@ -147,15 +147,24 @@ package com.statusBar
 				toolBoxBg.addChild(box);
 			}
 			
-			var icon:Loader;
+			var icons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
+			icons.push(new ToolButtonData('Mine', 'chrome/weapons/mine.swf'));
+			icons.push(new ToolButtonData('Mine 2', 'chrome/weapons/mine.swf'));
+			icons.push(new ToolButtonData('Mine 3', 'chrome/weapons/mine.swf'));
+			icons.push(new ToolButtonData('Mine 4', 'chrome/weapons/mine.swf'));
+			
+			var icon:ToolButton;
 			boxIndent = 45;
-			for (var j:uint = 0; j < 5; j++)
+			for each(var data:ToolButtonData in icons)
 			{
-				icon = new Loader();
-				icon.load(new URLRequest('chrome/weapons/mine.swf'));
-				icon.x = boxIndent + j * 74;
+				icon = new ToolButton(data);
+				icon.x = boxIndent + icons.indexOf(data) * 74;
 				icon.y = 30;
-				icon.filters = [Styles.SCREEN_GLOW];
+//				icon.filters = [Styles.SCREEN_GLOW];
+				icon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+				icon.addEventListener(MouseEvent.CLICK, onToolClick);
+				icon.mouseChildren = false;
+				icon.buttonMode = true;
 				toolBoxBg.addChild(icon);
 			}
 			
@@ -219,18 +228,7 @@ package com.statusBar
 		private function onTabOver(e:MouseEvent):void
 		{
 			e.currentTarget.gotoAndStop(2);
-			var message:String;
-			switch(e.currentTarget.name)
-			{
-				case BAIT :
-					message = OverlayEvent.BAIT;
-					break;
-				case WEAPONS :
-					message = OverlayEvent.WEAPONS;
-					break;
-				default :
-			}
-			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+			showOverlay(e.currentTarget.name);
 		}
 		
 		private function onTabOut(e:MouseEvent):void
@@ -239,16 +237,32 @@ package com.statusBar
 				e.currentTarget.gotoAndStop(1);
 		}
 		
-		private function onBoxRollover(e:MouseEvent):void
+		private function onIconRollover(e:MouseEvent):void
+		{
+			showOverlay(e.currentTarget.name);
+		}
+		
+		private function onToolClick(e:MouseEvent):void
+		{
+			trace('tool clicked: ' + e.currentTarget.name);
+		}
+		
+		private function showOverlay(name:String):void
 		{
 			var message:String;
-			switch(e.currentTarget.name)
+			switch(name)
 			{
 				case CASH_MONIES :
 					message = OverlayEvent.CASH_MONIES;
 					break;
 				case KILL_BOX :
 					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomInsult() + " " + _currentAnimal;
+					break;
+				case BAIT :
+					message = OverlayEvent.BAIT;
+					break;
+				case WEAPONS :
+					message = OverlayEvent.WEAPONS;
 					break;
 				default :
 			}
