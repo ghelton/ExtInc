@@ -1,9 +1,10 @@
 package com.creatures
 {
+	import com.UI.UILoader;
+	import com.lookup.AskTony;
+	
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	
-	import com.lookup.AskTony;
 	
 	public class SealBait extends Entity
 	{
@@ -16,7 +17,9 @@ package com.creatures
 //				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
 //				endFill();
 //			}
-			super(null, $health, $point, AskTony.SEAL_BAIT);
+			var fish:UILoader = new UILoader('assets/fish.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+
+			super(fish, $health, $point, AskTony.SEAL_BAIT);
 		}
 	}
 }

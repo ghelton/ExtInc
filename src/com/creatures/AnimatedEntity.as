@@ -1,6 +1,7 @@
 package com.creatures
 {
 	import com.UI.UILoader;
+	import com.lookup.AskTony;
 	
 	import flash.display.AVM1Movie;
 	import flash.display.MovieClip;
@@ -27,6 +28,12 @@ package com.creatures
 			playAnimation(_defaultAnimation);
 		}
 		
+		protected override function changeHealth(healthDelta:Number, killedBy:String):void
+		{
+			_image.scaleX = _image.scaleY = (this.getHealth() / 200) + 0.5;
+			super.changeHealth(healthDelta, killedBy);
+		}
+		
 		protected function playAnimation(keyFrame:String):void
 		{
 			if(_movie != null && _currentAnimation != keyFrame)
@@ -44,10 +51,23 @@ package com.creatures
 		}
 		
 		private var _currentAnimation:String = '';
-		protected override function killed():void
+		protected override function killed(killedByType:String):void
 		{
-			playAnimation('dead');
-			super.killed();
+			var animation:String = null;
+			switch(killedByType)
+			{
+				case AskTony.EXPLOSION:
+					animation = 'explode';
+				break;
+				case AskTony.FIRE:
+					animation = 'smolder';
+					break;
+				default:
+					animation = 'dead';
+				break;
+			}
+			playAnimation(animation);
+			super.killed(killedByType);
 		}
 		
 		protected override function split():void

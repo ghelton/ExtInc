@@ -31,7 +31,7 @@ package com.gameBoard
 		
 		public function explode(target:Point):void
 		{
-			createEntity(target, AskTony.FIRE);
+			createEntity(target, AskTony.EXPLOSION);
 		}
 		
 		public function GameBoard(_bg:UILoader, $type:Object) //$theGrid:Vector.<Vector.<Tile>>)
