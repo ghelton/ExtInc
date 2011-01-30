@@ -66,7 +66,7 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
-		private var testTypes:Array = [AskJon.TIGER, AskJon.SEAL, AskJon.PANDA];
+		private var testTypes:Array = [AskJon.SEAL, AskJon.TIGER, AskJon.PANDA];
 		
 		public static var playerData:PlayerData;
 
