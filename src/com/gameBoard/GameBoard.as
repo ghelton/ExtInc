@@ -1,10 +1,12 @@
 package com.gameBoard
 {
+	import com.UI.UILoader;
 	import com.attacks.AttackEvent;
 	import com.attacks.Firebomb;
 	import com.creatures.Entity;
 	import com.creatures.EntityEvent;
 	import com.creatures.Fire;
+	import com.lookup.AskJon;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -20,13 +22,16 @@ package com.gameBoard
 		internal static var entities:Vector.<Entity>;
 		
 		
-		public function GameBoard($theGrid:Vector.<Vector.<Tile>>)
+		public function GameBoard(_bg:UILoader) //$theGrid:Vector.<Vector.<Tile>>)
 		{
 			entities = new Vector.<Entity>();
-			_grid = $theGrid;
-			drawGrid();
+//			_grid = $theGrid;
+//			drawGrid();
 			addChild(_tileLayer);
 			addChild(_entityLayer);
+			_entityLayer.addChild(_bg);
+			
+			Entity.bounds = _tileLayer.getBounds(this);
 			
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -127,7 +132,15 @@ package com.gameBoard
 			for each(entity in entities)
 				entity.moveTick();
 		}
-		
+		public function createEntity(point:Point, type:String):void
+		{
+			var contructor:* = AskJon.classLookup[type];
+			if(contructor != null)
+			{
+				var entity:Entity = new contructor(100, point);
+				addEntity(entity);
+			}
+		}
 		public function addEntity(newEntity:Entity):void
 		{
 			newEntity.addEventListener(EntityEvent.KILLED, tangoDown);
@@ -137,7 +150,9 @@ package com.gameBoard
 		}
 		public function removeEntity(deadEntity:Entity):void
 		{
-			deadEntity.getGraphic().alpha = 0.1;
+			var graphic:Sprite = deadEntity.getGraphic();
+//			deadEntity.getGraphic().alpha = 0.1;
+			graphic.scaleX = graphic.scaleY = 0.5;
 			var index:int = entities.lastIndexOf(deadEntity);
 			deadEntity.removeEventListener(EntityEvent.KILLED, tangoDown);
 			if(index >= 0) {

@@ -15,11 +15,10 @@ package com.attacks
 		private var _numFires:uint;
 //		private var _fires:Vector.<Fire>;
 		
-		public function Firebomb($start:Point, $numFires:uint)
+		public function Firebomb($start:Point, $numFires:uint, $timeStagger:Number = 0.2)
 		{
 			_start = $start;
 			_numFires = $numFires;
-			
 		}
 		
 		private var _pathOffset:Point;
@@ -36,7 +35,7 @@ package com.attacks
 
 			for(var i:int = 0; i < _numFires; i++)
 			{
-				flame = new Fire(new Sprite(), 100, new Point(_start.x + _pathOffset.x * i, _start.y + _pathOffset.y * i));
+				flame = new Fire(100, new Point(_start.x + _pathOffset.x * i, _start.y + _pathOffset.y * i));
 				dispatchEvent(new AttackEvent(AttackEvent.FIRE, flame));
 //				_fires[i] = flame;
 			}

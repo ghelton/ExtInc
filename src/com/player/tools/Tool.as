@@ -1,6 +1,6 @@
 package com.player.tools
 {
-	import com.lookup.Lookup;
+	import com.lookup.AskJon;
 	
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
@@ -16,7 +16,7 @@ package com.player.tools
 		
 		public function Tool($type:String)
 		{
-			var stats:Object = Lookup.toolStats[$type];
+			var stats:Object = AskJon.toolStats[$type];
 			_cooldown = stats.cooldown;
 			_cost = stats.cost;
 			_type = $type;

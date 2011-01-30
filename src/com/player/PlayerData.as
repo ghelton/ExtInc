@@ -1,6 +1,6 @@
 package com.player
 {
-	import com.lookup.Lookup;
+	import com.lookup.AskJon;
 	import com.player.tools.Tool;
 
 	public class PlayerData
@@ -11,7 +11,7 @@ package com.player
 		public function PlayerData($money:int)
 		{
 			money = $money;
-			var ids:Array = [Lookup.PANDA_BAIT_TOOL, Lookup.FIRE_TOOL, Lookup.MARINES_TOOL, Lookup.COMMANDO_TOOL, Lookup.SEAL_BAIT_TOOL, Lookup.TIGER_BAIT_TOOL, Lookup.MINES_TOOL];
+			var ids:Array = [AskJon.PANDA_BAIT_TOOL, AskJon.FIRE_TOOL, AskJon.MARINES_TOOL, AskJon.COMMANDO_TOOL, AskJon.SEAL_BAIT_TOOL, AskJon.TIGER_BAIT_TOOL, AskJon.MINES_TOOL];
 			_jerseyShore = new Vector.<Tool>(ids.length, true);
 			for(var i:int = 0; i < _jerseyShore.length; i++)
 			{

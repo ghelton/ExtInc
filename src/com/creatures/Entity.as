@@ -1,15 +1,17 @@
 package com.creatures
 {
-	import com.lookup.Lookup;
+	import com.lookup.AskJon;
 	
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	
 	public class Entity extends EventDispatcher
 	{
 		public static var _masterTime:Number;
+		public static var bounds:Rectangle;
 		
 		public static function setMasterTime(masterTime:Number):void
 		{
@@ -25,34 +27,37 @@ package com.creatures
 		private var _type:String;
 		private var _hitList:Vector.<Entity>;
 		private var _image:Sprite;
-		private var _health:Number; //uint maybe?
+		private var _health:Number;
 		private var _centerPoint:Point;
 		
-		private static const TEMP_ENTITY_SIZE:Number = 5;
+		protected static const TEMP_ENTITY_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
-		private var _lastAttackTime:Number;
-		private var _lastMoveTime:Number;
+		private var _lastAttackTime:Number = 0;
+		private var _lastMoveTime:Number = 0;
+		private var _lastRegenTime:Number = 0;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
 			super();
 			
-			_lastMoveTime = _masterTime;
+			_lastRegenTime = _lastMoveTime = _masterTime;
 			_type = $type;
 			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
-			_lastAttackTime = _masterTime;
 			
-			var tempGraphic:Sprite = new Sprite();
-			with(tempGraphic.graphics)
+			if(_image == null)
 			{
-				beginFill(0xFF0000, 0.8);
-				drawCircle(0, 0, TEMP_ENTITY_SIZE);
-				endFill();
+				var tempGraphic:Sprite = new Sprite();
+				with(tempGraphic.graphics)
+				{
+					beginFill(AskJon.colorOf[type], 0.8);
+					drawCircle(0, 0, TEMP_ENTITY_SIZE);
+					endFill();
+				}
+				_image = tempGraphic;
 			}
-			_image = tempGraphic;
 			updatePosition();
 			
 			_attackWasBenefitial = false;
@@ -71,6 +76,8 @@ package com.creatures
 		
 		public function getHealth():Number
 		{
+			if(isNaN(_health))
+				trace("what the fuck");
 			return _health;
 		}
 		
@@ -88,7 +95,7 @@ package com.creatures
 		//HELPERS
 		public function canAttack():Boolean
 		{
-			return _health > 0 && ((Lookup.entityROFArray[_type] + _lastAttackTime) < _masterTime);
+			return _health > 0 && ((AskJon.entityROFArray[_type] + _lastAttackTime) < _masterTime);
 		}
 		
 		public function distanceFromEntity(other:Entity):Number
@@ -99,23 +106,38 @@ package com.creatures
 		
 		//ACTUAL CODE
 		
-		public function attackEntity(enemy:Entity, timeDelta:Number):void
+		public function attackEntity(enemy:Entity):Number
 		{
-			var healthChange:Number = Lookup.entityDamageMatrix[_type][enemy.type];
-			if((_health + healthChange) < 0)
+			var healthChange:Number = AskJon.entityDamageMatrix[_type][enemy.type];
+			
+			changeHealth(healthChange);
+			return healthChange;
+		}
+		private function changeHealth(healthDelta:Number):void
+		{
+			_health += healthDelta;	
+			if((_health) < 0)
 			{
-				trace("DEAD");
 				_health = 0;
 				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
-			} else {
-				_health += Lookup.entityDamageMatrix[_type][enemy.type];	
-			}
+			} 
+			else if(_health >= 200)
+				dispatchEvent(new EntityEvent(EntityEvent.SPLIT, this));
+		}
+		private function regenerate():void
+		{
+			var deltaTime:Number = _masterTime - _lastRegenTime;
+			var deltaHealth:Number = deltaTime * AskJon.entityRegenArray[_type];
+			changeHealth(deltaHealth);
+			_lastRegenTime = _masterTime;
 		}
 		
 		protected function updatePosition():void
 		{
-			_image.x = _centerPoint.x - (_image.width * 0.5);
-			_image.y = _centerPoint.y - (_image.height * 0.5);	
+			_centerPoint.x %= bounds.width;
+			_centerPoint.y %= bounds.height;
+			_image.x = (_centerPoint.x - (_image.width * 0.5));
+			_image.y = (_centerPoint.y - (_image.height * 0.5));	
 		}
 		
 		public function moveTick():void
@@ -125,8 +147,15 @@ package com.creatures
 			{
 				
 			} else {
-				_centerPoint.x += fearVector.x * deltaTime * Lookup.entitySpeedArray[_type];
-				_centerPoint.y += fearVector.y * deltaTime * Lookup.entitySpeedArray[_type];
+				if(fearVector.x < 0.01 && fearVector.y < .01)
+				{
+					_lastMoveTime = _masterTime;
+					return;
+				}
+				
+				_centerPoint.x += fearVector.x * deltaTime * AskJon.entitySpeedArray[_type];
+				_centerPoint.y += fearVector.y * deltaTime * AskJon.entitySpeedArray[_type];
+
 				updatePosition();
 			}
 			_lastMoveTime = _masterTime;
@@ -138,10 +167,22 @@ package com.creatures
 			var closestDistance:Number = Number.POSITIVE_INFINITY;
 			var closestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
+			
+			regenerate();
+			
 			if(!canAttack())
 			{
 				return;
 			}
+			var self:Entity = this;
+			function compareFactionRisk(x:Entity, y:Entity):Number
+			{
+				return Number(AskJon.entityFactionMatrix[self.type][x.type] - AskJon.entityFactionMatrix[self.type][y.type]);
+			}
+			trace("I am a " + _type + " and my hit list is " + _hitList);
+			var sortedHitList:Vector.<Entity> = _hitList.slice();
+			sortedHitList.sort(compareFactionRisk);
+			trace("My biggest targets are at the end of this list " + sortedHitList);
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
@@ -149,7 +190,7 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if(!(Lookup.entityDamageMatrix[enemy.type] == Lookup.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= Lookup.entityRangeArray[_type])
+				if(!(AskJon.entityDamageMatrix[enemy.type] == AskJon.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= AskJon.entityRangeArray[_type])
 				{
 					closestEntity = enemy;
 					closestDistance = distance;
@@ -161,7 +202,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(closestEntity, deltaTime);
+			_attackWasBenefitial = attackEntity(closestEntity) > 0; 
 			closestEntity.riposte(this);
 		}
 		
@@ -169,7 +210,7 @@ package com.creatures
 		{
 			if(canAttack())
 			{
-				attackEntity(attacker, _masterTime - _lastAttackTime);
+				attackEntity(attacker);
 			}	
 		}
 		
@@ -184,7 +225,7 @@ package com.creatures
 				{					
 					continue;
 				}
-				scale = Lookup.entityFactionMatrix[type][enemy.type] * (enemy.getHealth() / 100) * Math.exp(-distanceFromEntity(enemy) * 1/100);
+				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				

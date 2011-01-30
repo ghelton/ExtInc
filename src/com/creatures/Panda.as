@@ -1,15 +1,17 @@
 package com.creatures
 {
+	import com.UI.UILoader;
+	import com.lookup.AskJon;
+	
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import com.lookup.Lookup;
-	
-	public class Panda
+	public class Panda extends Entity
 	{
-		public function Panda($graphic:Sprite, $health:Number, $point:Point)
+		public function Panda($health:Number, $point:Point)
 		{
-			super($graphic, $health, $point, Lookup.PANDA);
+			var panda:UILoader = new UILoader('../src/assets/Panda.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+			super(panda, $health, $point, AskJon.PANDA);
 		}
 	}
 }
