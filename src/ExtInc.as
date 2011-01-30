@@ -30,7 +30,7 @@ package
 	 * @author G$
 	 * @since Jan 28, 2011
 	 */
-	[SWF(width="1024", height="768", version_major="10", frameRate="24")]
+	[SWF(width="1024", height="768", frameRate="24")]
 	
 	public class ExtInc extends Sprite
 	{
