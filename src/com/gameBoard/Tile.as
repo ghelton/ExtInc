@@ -1,6 +1,7 @@
 package com.gameBoard
 {
 	import flash.display.Sprite;
+	import flash.geom.Point;
 	
 	public class Tile extends Sprite
 	{

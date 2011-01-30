@@ -175,14 +175,15 @@ package com.creatures
 				return;
 			}
 			var self:Entity = this;
+			var myType:String = type;
 			function compareFactionRisk(x:Entity, y:Entity):Number
 			{
-				return Number(AskJon.entityFactionMatrix[self.type][x.type] - AskJon.entityFactionMatrix[self.type][y.type]);
+				return Number(AskJon.entityFactionMatrix[myType][x.type] - AskJon.entityFactionMatrix[myType][y.type]);
 			}
-			trace("I am a " + _type + " and my hit list is " + _hitList);
+//			trace("I am a " + _type + " and my hit list is " + _hitList);
 			var sortedHitList:Vector.<Entity> = _hitList.slice();
 			sortedHitList.sort(compareFactionRisk);
-			trace("My biggest targets are at the end of this list " + sortedHitList);
+//			trace("My biggest targets are at the end of this list " + sortedHitList);
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
