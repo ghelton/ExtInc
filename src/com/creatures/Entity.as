@@ -34,7 +34,6 @@ package com.creatures
 		
 		protected static const TEMP_ENTITY_SIZE:Number = 30;
 		protected static const PLACEHOLDER_SIZE:Number = 5;
-		private var _attackWasBenefitial:Boolean;
 		
 		private var _lastAttackTime:Number = 0;
 		private var _lastMoveTime:Number = 0;
@@ -45,7 +44,7 @@ package com.creatures
 			super();
 			
 			_type = $type;
-			_image = $graphic;
+//			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
 			
@@ -60,7 +59,6 @@ package com.creatures
 				drawCircle(0, 0, PLACEHOLDER_SIZE);
 				endFill();
 			}
-			_attackWasBenefitial = false;
 			
 			if(_image is UILoader)
 				(_image as UILoader).onComplete = loaderInit;
@@ -156,28 +154,18 @@ package com.creatures
 			_centerPoint.y %= bounds.height;
 			var $bounds:Rectangle = _image.getBounds(_image.parent);
 
-			_image.x = (_centerPoint.x - (_image.width * 0.5));
-			_image.y = (_centerPoint.y - (_image.height * 0.5));	
+			_image.x = (_centerPoint.x - ($bounds.width * 0.5));
+			_image.y = (_centerPoint.y - ($bounds.height * 0.5));	
 		}
 		
 		public function moveTick():void
 		{
 			var deltaTime:Number = _masterTime - _lastMoveTime;
-			if(_attackWasBenefitial)
-			{
 				
-			} else {
-				if(fearVector.x < 0.01 && fearVector.y < .01)
-				{
-					_lastMoveTime = _masterTime;
-					return;
-				}
-				
-				_centerPoint.x += fearVector.x * deltaTime * AskJon.entitySpeedArray[_type];
-				_centerPoint.y += fearVector.y * deltaTime * AskJon.entitySpeedArray[_type];
-
-				updatePosition();
-			}
+			_centerPoint.x += fearVector.x * deltaTime * AskJon.entitySpeedArray[_type];
+			_centerPoint.y += fearVector.y * deltaTime * AskJon.entitySpeedArray[_type];
+			updatePosition();
+			
 			_lastMoveTime = _masterTime;
 		}
 		
@@ -189,7 +177,6 @@ package com.creatures
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			
 			regenerate();
-			
 			if(!canAttack())
 			{
 				return;
@@ -215,7 +202,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			_attackWasBenefitial = attackEntity(bestEntity) > 0; 
+			attackEntity(bestEntity) > 0;
 			bestEntity.riposte(this);
 		}
 		
@@ -239,14 +226,12 @@ package com.creatures
 				{					
 					continue;
 				}
-				//trace(AskJon.entityFearMatrix[type][enemy.type] + "    " + (.25 + .75 * (enemy.getHealth() * 1/100)) + "    " + Math.exp(-distanceFromEntity(enemy) * 1/100));
-				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
+				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				differenceVector.normalize(1);
 				differenceVector.x *= scale;
 				differenceVector.y *= scale;
-				//trace(scale);
 				if(scale > 0 && scale > bestVector.length)
 				{
 					bestVector = differenceVector;
