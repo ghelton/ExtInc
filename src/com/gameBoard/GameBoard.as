@@ -18,7 +18,7 @@ package com.gameBoard
 
 	public class GameBoard extends Sprite
 	{
-		public static var attackType:String = null;
+		public static var attackType:String = AskTony.PANDA_BAIT;
 		public function setAttackType($type:String):void
 		{
 			_entityLayer.mouseChildren = _entityLayer.mouseChildren = ($type == null);
@@ -36,6 +36,7 @@ package com.gameBoard
 		
 		public function GameBoard(_bg:UILoader, $type:Object) //$theGrid:Vector.<Vector.<Tile>>)
 		{
+			setAttackType(attackType);
 			entities = new Vector.<Entity>();
 //			_grid = $theGrid;
 //			drawGrid();
@@ -92,16 +93,16 @@ package com.gameBoard
 			
 			switch(attackType)
 			{
-				case AskTony.BOOMBA_TOOL :
-				case AskTony.MINES_TOOL :
+				case AskTony.BOOMBA :
+				case AskTony.MINE :
 					message = OverlayEvent.PLACE_WEAPON;
 					break;
-				case AskTony.FIRE_TOOL:
+				case AskTony.FIRE:
 					message = OverlayEvent.POINT_A;
 					break;
-				case AskTony.PANDA_BAIT_TOOL :
-				case AskTony.SEAL_BAIT_TOOL :
-				case AskTony.TIGER_BAIT_TOOL :
+				case AskTony.PANDA_BAIT :
+				case AskTony.SEAL_BAIT :
+				case AskTony.TIGER_BAIT :
 					message = OverlayEvent.PLACE_BAIT;
 					break;
 				default:
@@ -156,6 +157,7 @@ package com.gameBoard
 		private function clearAttack(attack:AttackEvent):void 
 		{
 			_attack = null;
+			setAttackType(null);
 			dispatchEvent(new AttackEvent(attack.type, attack.bombType, attack.bombPosition));
 		}
 		private function fireAttack($attack:AttackEvent):void 

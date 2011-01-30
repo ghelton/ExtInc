@@ -24,6 +24,7 @@ package com.lookup
 		public static const COMMANDO:String 			= 'COMMANDO';
 		public static const MARINE:String 				= 'MARINE';
 		public static const MINE:String					= 'MINE';
+		public static const BOOMBA:String				= 'BOOMBA';
 		
 		//Environmental
 		public static const TREE:String 				= 'TREE';
@@ -48,9 +49,9 @@ package com.lookup
 		
 		public static const startingQuantities:Object =
 			{
-				PANDA: 			0,//gray
-				TIGER: 			1,//orange
-				SEAL: 			1,//blue gray
+				PANDA: 			1,//gray
+				TIGER: 			0,//orange
+				SEAL: 			0,//blue gray
 				COMMANDO:		0,//dark green
 				MARINE:			0,//pink
 				FIRE:			0,//yellow
@@ -276,14 +277,14 @@ package com.lookup
 		//toolz
 		public static const toolInfo:Object =
 			{
-				PANDA_BAIT_TOOL:	{name: 'Panda Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/cake.swf', url:'chrome/tools/cake.swf'},
-				SEAL_BAIT_TOOL:		{name: 'Seal Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/fish.swf', url:'chrome/tools/fish.swf'},
-				TIGER_BAIT_TOOL:	{name: 'Tiger Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/steak.swf', url:'chrome/tools/steak.swf'},
-				FIRE_TOOL:			{name: 'Napalm', cooldown:5, cost:2000, iconUrl:'chrome/tools/icons/napalm.swf', url:'chrome/tools/napalm.swf'},
-				MINES_TOOL:			{name: 'Mines', cooldown:5, cost:1000, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf'},
-				MARINES_TOOL:		{name: 'Marines', cooldown:5, cost:3000, iconUrl:'chrome/tools/icons/marines.swf', url:'chrome/tools/marines.swf'},
-				BOOMBA_TOOL:		{name: 'Boomba', cooldown:5, cost:5000, iconUrl:'chrome/tools/icons/boomba.swf', url:'chrome/tools/boomba.swf'},
-				COMMANDO_TOOL:		{name: 'Commando', cooldown:5, cost:7000, iconUrl:'chrome/tools/icons/commando.swf', url:'chrome/tools/commando.swf'}
+				PANDA_BAIT_TOOL:	{name: 'Panda Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/cake.swf', url:'chrome/tools/cake.swf', attackType:PANDA_BAIT},
+				SEAL_BAIT_TOOL:		{name: 'Seal Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/fish.swf', url:'chrome/tools/fish.swf', attackType:SEAL_BAIT},
+				TIGER_BAIT_TOOL:	{name: 'Tiger Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/steak.swf', url:'chrome/tools/steak.swf', attackType:TIGER_BAIT},
+				FIRE_TOOL:			{name: 'Napalm', cooldown:5, cost:2000, iconUrl:'chrome/tools/icons/napalm.swf', url:'chrome/tools/napalm.swf', attackType:FIRE},
+				MINES_TOOL:			{name: 'Mines', cooldown:5, cost:1000, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf', attackType:MINE},
+				MARINES_TOOL:		{name: 'Marines', cooldown:5, cost:3000, iconUrl:'chrome/tools/icons/marines.swf', url:'chrome/tools/marines.swf', attackType:MARINE},
+				BOOMBA_TOOL:		{name: 'Boomba', cooldown:5, cost:5000, iconUrl:'chrome/tools/icons/boomba.swf', url:'chrome/tools/boomba.swf', attackType:BOOMBA},
+				COMMANDO_TOOL:		{name: 'Commando', cooldown:5, cost:7000, iconUrl:'chrome/tools/icons/commando.swf', url:'chrome/tools/commando.swf', attackType:COMMANDO}
 			};
 		
 		public static const classInfo:Object =

@@ -13,6 +13,7 @@ package com.attacks
 		public static const FINISHED:String = 'FINISHED';
 		
 		
+		public var toolType:String;
 		public var bombType:String;
 		public var bombPosition:Point;
 		public var weapon:Attack;

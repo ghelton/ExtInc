@@ -165,7 +165,7 @@ package
 			gameBoard.setAttackType(e.bombType);
 			gameBoard.addEventListener(AttackEvent.IN_FLIGHT, onAttackInFlight);
 			
-			_mouseTool = new MouseTool(AskTony.toolInfo[e.bombType].url);
+			_mouseTool = new MouseTool(AskTony.toolInfo[e.toolType].url);
 			addChild(_mouseTool);
 		}
 		private function onAttackInFlight(e:AttackEvent):void
