@@ -120,8 +120,8 @@ package
 			addChild(gameBoard);
 			addChild(testLayer);
 			
-			gameBoard.x = _gameBoardMask.x = 55; 
-			gameBoard.y = _gameBoardMask.y = 40;
+			gameBoard.x = _gameBoardMask.x = 54; 
+			gameBoard.y = _gameBoardMask.y = 39;
 			
 			// - STATUS BAR -
 			_statusBar = new StatusBar();
