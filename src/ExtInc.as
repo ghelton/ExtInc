@@ -5,6 +5,7 @@ package
 	import com.UI.UILoader;
 	import com.attacks.Attack;
 	import com.attacks.AttackEvent;
+	import com.audio.CoreAudioManager;
 	import com.creatures.Entity;
 	import com.fonts.Transponder;
 	import com.gameBoard.GameBoard;
@@ -78,6 +79,7 @@ package
 		private var _statusBar:StatusBar;
 		private var _statusOverlay:StatusOverlay;
 		private var _mouseTool:MouseTool;
+		private var _audioManager:CoreAudioManager;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
@@ -87,6 +89,9 @@ package
 			
 //			Font.registerFont(com.fonts.Transponder);
 //			traceFonts();
+			_audioManager = new CoreAudioManager('audio/', 'music/');
+			_audioManager.backgroundSongs = ['FunkyAssBitch.mp3'];
+			_audioManager.playRandomBackground();
 			loadGame();	
 		}
 		
