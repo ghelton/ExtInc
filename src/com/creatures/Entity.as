@@ -95,6 +95,7 @@ package com.creatures
 			_image.parent.addChild(centerContainer);
 			centerContainer.addChild(_image);
 			_image = centerContainer;
+			_image.mouseEnabled = false;
 			
 			updatePosition();
 		}
@@ -155,7 +156,7 @@ package com.creatures
 				_health = 0;
 				killed();
 			}
-			else if(_health >= 200)
+			else if(_health >= AskTony.splitHealth)
 				split();
 		}
 		
@@ -223,20 +224,26 @@ package com.creatures
 			
 			var targetRotation:Number;
 			deltaVector = targetPoint.subtract(_centerPoint);
+			_centerPoint = targetPoint;
+
 			if(deltaVector.length < 0.0000000000001)
-				targetRotation = idle();
+				targetRotation = idle(deltaTime);
 			else
 				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
 			_image.rotation += Math.min(Math.max(-MAXIMUM_ROTATION_DELTA,(targetRotation - _image.rotation) * 0.5), MAXIMUM_ROTATION_DELTA);
 			//			_image.rotation = targetRotation;
-			_centerPoint = targetPoint;
 			
 			updatePosition();
 			_lastMoveTime = _masterTime;
 		}
 		
-		protected function idle():Number
+		private static const MOSEY_SPEED:Number = 5;
+		private var _wanderVect:Point = new Point(0, -1);
+		protected function idle(delta:Number = 0):Number
 		{
+			var wanderClone:Point = _wanderVect.clone();
+			wanderClone.normalize(delta * MOSEY_SPEED);
+			_centerPoint = _centerPoint.add(wanderClone);
 			return 0;
 		}
 		

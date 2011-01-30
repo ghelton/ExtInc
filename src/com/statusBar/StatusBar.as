@@ -2,6 +2,8 @@
 package com.statusBar
 {
 	import com.Style.Styles;
+	import com.attacks.AttackEvent;
+	import com.creatures.EntityEvent;
 	import com.lookup.AskTony;
 	
 	import flash.display.Loader;
@@ -13,6 +15,7 @@ package com.statusBar
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -42,6 +45,8 @@ package com.statusBar
 		private var _animalFace:Loader;
 		private var _baitTool:BaitButton;
 		private var _weaponTool:WeaponButton;
+		private var _weaponsContainer:Sprite;
+		private var _baitContainer:Sprite;
 		
 		private static var _currentTab:String = BAIT;
 		private static var _currentAnimal:String;
@@ -56,6 +61,7 @@ package com.statusBar
 			var cornerRadius:uint = 56;
 			
 			// - CASH MONIES -
+			
 			var cashMoniesBg:StatusBox = new StatusBox(145, 98, cornerRadius);
 			cashMoniesBg.x = 105;
 			cashMoniesBg.y = 662;
@@ -68,17 +74,18 @@ package com.statusBar
 			cashTitleLabel.defaultTextFormat = Styles.PANEL_TF;
 			cashTitleLabel.width = 145;
 			cashTitleLabel.y = 15;
-			cashTitleLabel.text = "Money";
+			cashTitleLabel.text = "-Money-";
 			cashMoniesBg.addChild(cashTitleLabel);
 			
 			_cashLabel = new TextField();
 			_cashLabel.defaultTextFormat = Styles.PANEL_TF;
 			_cashLabel.width = 145;
 			_cashLabel.y = 50;
-			_cashLabel.text = ExtInc.playerData.money.toString();
+			_cashLabel.text = '$' + ExtInc.playerData.money.toString();
 			cashMoniesBg.addChild(_cashLabel);
 			
 			// - KILL BOX -
+			
 			var killBoxBg:StatusBox = new StatusBox(165, 98, cornerRadius);
 			killBoxBg.x = 267;
 			killBoxBg.y = 662;
@@ -91,24 +98,25 @@ package com.statusBar
 			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
 			killBoxLabel.multiline = true;
 			killBoxLabel.width = 60;
-			killBoxLabel.x = 15;
+			killBoxLabel.x = 20;
 			killBoxLabel.y = 15;
 			killBoxLabel.text = "Kill\n100";
 			killBoxBg.addChild(killBoxLabel);
 			
 			_animalFace = new Loader();
 			_animalFace.x = 80;
-			_animalFace.y = 20;
+			_animalFace.y = 25;
 			killBoxBg.addChild(_animalFace);
 			
 			// - TOOL BOX -
+			
 			_baitTool = new BaitButton();
 			_baitTool.name = BAIT;
 			_baitTool.addEventListener(MouseEvent.CLICK, onTabClick, false, 0, true);
 			_baitTool.addEventListener(MouseEvent.MOUSE_OVER, onTabOver, false, 0, true);
 			_baitTool.addEventListener(MouseEvent.MOUSE_OUT, onTabOut, false, 0, true);
 			_baitTool.x = 445;
-			_baitTool.y = 662;
+			_baitTool.y = 712;
 			_baitTool.buttonMode = true;
 			_baitTool.mouseChildren = false;
 			addChild(_baitTool);
@@ -119,7 +127,7 @@ package com.statusBar
 			_weaponTool.addEventListener(MouseEvent.MOUSE_OVER, onTabOver, false, 0, true);
 			_weaponTool.addEventListener(MouseEvent.MOUSE_OUT, onTabOut, false, 0, true);
 			_weaponTool.x = 445;
-			_weaponTool.y = 712;
+			_weaponTool.y = 662;
 			_weaponTool.buttonMode = true;
 			_weaponTool.mouseChildren = false;
 			addChild(_weaponTool);
@@ -148,29 +156,53 @@ package com.statusBar
 				toolBoxBg.addChild(box);
 			}
 			
-			var icons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
-			icons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].url));
-			icons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].url));
-			icons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].url));
 			
-			var icon:ToolButton;
+			_weaponsContainer = new Sprite();
+			addChild(_weaponsContainer);
+			var weapons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
+			weapons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].iconUrl));
+			weapons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].iconUrl));
+			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+			
+			var weapon:ToolButton;
 			boxIndent = 45;
-			for each(var data:ToolButtonData in icons)
+			for each(var weaponData:ToolButtonData in weapons)
 			{
-				icon = new ToolButton(data);
-				icon.x = boxIndent + icons.indexOf(data) * 74 + toolBoxBg.x;
-				icon.y = 30 + toolBoxBg.y;
-//				icon.filters = [Styles.SCREEN_GLOW];
-				icon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
-				icon.addEventListener(MouseEvent.CLICK, onToolClick);
-				icon.mouseChildren = false;
-				icon.buttonMode = true;
-				addChild(icon);
+				weapon = new ToolButton(weaponData);
+				weapon.x = boxIndent + weapons.indexOf(weaponData) * 74 + toolBoxBg.x;
+				weapon.y = 30 + toolBoxBg.y;
+//				weapon.filters = [Styles.SCREEN_GLOW];
+				weapon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+				weapon.addEventListener(MouseEvent.CLICK, onToolClick);
+				weapon.mouseChildren = false;
+				weapon.buttonMode = true;
+				_weaponsContainer.addChild(weapon);
 			}
 			
+			_baitContainer = new Sprite();
+			addChild(_baitContainer);
+			var baits:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
+			baits.push(new ToolButtonData(AskTony.PANDA_BAIT_TOOL, AskTony.toolInfo[AskTony.PANDA_BAIT_TOOL].iconUrl));
+			baits.push(new ToolButtonData(AskTony.SEAL_BAIT_TOOL, AskTony.toolInfo[AskTony.SEAL_BAIT_TOOL].iconUrl));
+			baits.push(new ToolButtonData(AskTony.TIGER_BAIT_TOOL, AskTony.toolInfo[AskTony.TIGER_BAIT_TOOL].iconUrl));
 			
+			var bait:ToolButton;
+			boxIndent = 45;
+			for each(var baitData:ToolButtonData in baits)
+			{
+				bait = new ToolButton(baitData);
+				bait.x = boxIndent + baits.indexOf(baitData) * 74 + toolBoxBg.x;
+				bait.y = 30 + toolBoxBg.y;
+				//				bait.filters = [Styles.SCREEN_GLOW];
+				bait.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+				bait.addEventListener(MouseEvent.CLICK, onToolClick);
+				bait.mouseChildren = false;
+				bait.buttonMode = true;
+				_baitContainer.addChild(bait);
+			}
 			
 			// - FS BUTTON -
+			
 			var fullScreenButton:StatusBox = new StatusBox(25, 25, cornerRadius);
 			fullScreenButton.x = 950;
 			fullScreenButton.y = 700;
@@ -208,9 +240,13 @@ package com.statusBar
 			{
 				_baitTool.gotoAndStop(2);
 				_weaponTool.gotoAndStop(1);
+				_baitContainer.visible = true;
+				_weaponsContainer.visible = false;
 			} else {
 				_baitTool.gotoAndStop(1);
 				_weaponTool.gotoAndStop(2);
+				_baitContainer.visible = false;
+				_weaponsContainer.visible = true;
 			}
 		}
 		
@@ -239,6 +275,26 @@ package com.statusBar
 		private function onToolClick(e:MouseEvent):void
 		{
 			trace('tool clicked: ' + e.currentTarget.name);
+			var tool:String = e.currentTarget.name;
+			var message:String;
+			if(ExtInc.playerData.money >= AskTony.toolInfo[tool].cost)
+			{
+				updateCash(-AskTony.toolInfo[tool].cost);
+				message = AskTony.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
+				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+				var event:AttackEvent = new AttackEvent(AttackEvent.PURCHASED, AskTony.toolInfo[tool].attackType, new Point(0,0));
+				event.toolType = tool;
+				parent.dispatchEvent(event); 
+			} else {
+				message = OverlayEvent.BROKE;
+				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, message));
+			}
+		}
+		
+		private function updateCash(diff:int):void
+		{
+			ExtInc.playerData.money += diff;
+			_cashLabel.text = '$' + ExtInc.playerData.money.toString();
 		}
 		
 		private function showOverlay(name:String):void
@@ -259,21 +315,16 @@ package com.statusBar
 					message = OverlayEvent.WEAPONS;
 					break;
 				case AskTony.MINES_TOOL :
-					message = "$" + AskTony.toolInfo[AskTony.MINES_TOOL].cost + OverlayEvent.MINES_TOOL;
-					break;
 				case AskTony.MARINES_TOOL :
-					message = "$" + AskTony.toolInfo[AskTony.MARINES_TOOL].cost + OverlayEvent.MARINES_TOOL;
-					break;
 				case AskTony.COMMANDO_TOOL :
-					message = "$" + AskTony.toolInfo[AskTony.COMMANDO_TOOL].cost + OverlayEvent.COMMANDO_TOOL;
-					break;
 				case AskTony.FIRE_TOOL :
-					message = "$" + AskTony.toolInfo[AskTony.FIRE_TOOL].cost + OverlayEvent.FIRE_TOOL;
-					break;
 				case AskTony.BOOMBA_TOOL :
-					message = "$" + AskTony.toolInfo[AskTony.BOOMBA_TOOL].cost + OverlayEvent.BOOMBA_TOOL;
-					break;
+				case AskTony.TIGER_BAIT_TOOL :
+				case AskTony.SEAL_BAIT_TOOL :
+				case AskTony.PANDA_BAIT_TOOL :
 				default :
+					message = "$" + AskTony.toolInfo[name].cost + ' - ' + AskTony.toolInfo[name].name;
+					break;
 			}
 			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 		}

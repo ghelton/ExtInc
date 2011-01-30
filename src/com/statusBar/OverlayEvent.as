@@ -17,17 +17,19 @@ package com.statusBar
 		// CONSTANTS
 		//--------------------------------------
 		public static const SHOW_MESSAGE:String = "SHOW_MESSAGE";
+		public static const SHOW_ERROR_MESSAGE:String = "SHOW_ERROR_MESSAGE";
 		
 		public static const WELCOME:String = "Welcome";
 		public static const BAIT:String = "Bait - Use Bait to attract creatures";
 		public static const WEAPONS:String = "Weapons - Use your weapons to kill creatures";
 		public static const CASH_MONIES:String = "Money Money Money!!!!!";
 		public static const KILL_BOX:String = "Kill the ";
-		public static const MINES_TOOL:String = " - Landmine";
-		public static const FIRE_TOOL:String = " - Napalm";
-		public static const COMMANDO_TOOL:String = " - Commando";
-		public static const MARINES_TOOL:String = " - Marines";
-		public static const BOOMBA_TOOL:String = " - Boomba";
+		public static const PURCHASED:String = "purchased!";
+		public static const BROKE:String = "You're Broke!";
+		public static const PLACE_WEAPON:String = "Place your weapon";
+		public static const PLACE_BAIT:String = "Place your bait";
+		public static const POINT_A:String = "Napalm - Place starting point";
+		public static const POINT_B:String = "Napalm - Place end point";
 		
 		//--------------------------------------
 		// VARIABLES
@@ -40,7 +42,7 @@ package com.statusBar
 		public function OverlayEvent(type:String, $message:String)
 		{
 			message = $message;
-			super(type, false, false);
+			super(type, true, false);
 		}
 		
 		//--------------------------------------

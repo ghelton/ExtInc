@@ -1,7 +1,10 @@
 package
 {
+	import com.Style.Styles;
+	import com.Tools.MouseTool;
 	import com.UI.UILoader;
 	import com.attacks.Attack;
+	import com.attacks.AttackEvent;
 	import com.creatures.Entity;
 	import com.fonts.Transponder;
 	import com.gameBoard.GameBoard;
@@ -20,6 +23,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.text.Font;
@@ -73,6 +77,7 @@ package
 		private var _screenMask:Loader;
 		private var _statusBar:StatusBar;
 		private var _statusOverlay:StatusOverlay;
+		private var _mouseTool:MouseTool;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
@@ -105,7 +110,7 @@ package
 			
 			// - BG -
 			_bg = new Loader();
-			_bg.load(new URLRequest(CHROME + 'MainBg.png'));
+			_bg.load(new URLRequest(CHROME + 'MainBg.swf'));
 			addChild(_bg);
 			
 			// - SCREEN -
@@ -138,7 +143,11 @@ package
 			
 			// - STATUS MESSAGE -
 			addEventListener(OverlayEvent.SHOW_MESSAGE, onOverlayEvent);
+			addEventListener(OverlayEvent.SHOW_ERROR_MESSAGE, onOverlayEvent);
+			addEventListener(AttackEvent.PURCHASED, onToolPurchased);
 			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
+			
+			// - TOOL LAYER -
 		}
 		
 		//--------------------------------------
@@ -147,7 +156,23 @@ package
 		private function onOverlayEvent(e:OverlayEvent):void
 		{
 			if(e.type == OverlayEvent.SHOW_MESSAGE)
-				_statusOverlay.changeMessage(e.message);
+				_statusOverlay.changeMessage(e.message, Styles.OVERLAY_TF);
+			else if (e.type == OverlayEvent.SHOW_ERROR_MESSAGE)
+				_statusOverlay.changeMessage(e.message, Styles.OVERLAY_ERROR_TF);
+		}
+		private function onToolPurchased(e:AttackEvent):void
+		{
+			gameBoard.setAttackType(e.bombType);
+			gameBoard.addEventListener(AttackEvent.IN_FLIGHT, onAttackInFlight);
+			
+			_mouseTool = new MouseTool(AskTony.toolInfo[e.toolType].url);
+			addChild(_mouseTool);
+		}
+		private function onAttackInFlight(e:AttackEvent):void
+		{
+//			e.stopImmediatePropagation();
+			_mouseTool.destruct();
+			removeChild(_mouseTool);
 		}
 		//--------------------------------------
 		// PUBLIC METHODS

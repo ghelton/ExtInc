@@ -55,7 +55,7 @@ package com.creatures
 			playAnimation('split');
 			super.split();
 		}
-		protected override function idle():Number
+		protected override function idle(delta:Number = 0):Number
 		{
 			playAnimation('idle');
 			return super.idle();

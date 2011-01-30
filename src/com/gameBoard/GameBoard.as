@@ -6,6 +6,7 @@ package com.gameBoard
 	import com.creatures.Entity;
 	import com.creatures.EntityEvent;
 	import com.lookup.AskTony;
+	import com.statusBar.OverlayEvent;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -35,6 +36,7 @@ package com.gameBoard
 		
 		public function GameBoard(_bg:UILoader, $type:Object) //$theGrid:Vector.<Vector.<Tile>>)
 		{
+			setAttackType(attackType);
 			entities = new Vector.<Entity>();
 //			_grid = $theGrid;
 //			drawGrid();
@@ -72,9 +74,43 @@ package com.gameBoard
 				addChild(_entityLayer);
 			}
 			addEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(MouseEvent.ROLL_OVER, onGameRollOver);
 		}
 		
 		// EVENT LISTENERS
+		
+		private function onGameRollOver(e:MouseEvent):void
+		{
+			if(!attackType)
+				return;
+			
+			notifyTool();
+		}
+		
+		private function notifyTool():void
+		{
+			var message:String;
+			
+			switch(attackType)
+			{
+				case AskTony.BOOMBA :
+				case AskTony.MINE :
+					message = OverlayEvent.PLACE_WEAPON;
+					break;
+				case AskTony.FIRE:
+					message = OverlayEvent.POINT_A;
+					break;
+				case AskTony.PANDA_BAIT :
+				case AskTony.SEAL_BAIT :
+				case AskTony.TIGER_BAIT :
+					message = OverlayEvent.PLACE_BAIT;
+					break;
+				default:
+					break;
+			}
+			
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+		}
 		
 		//_weapons vector to track timing centrally from gameboard
 		private var _attacks:Vector.<Attack> = new Vector.<Attack>();
@@ -108,7 +144,10 @@ package com.gameBoard
 		private function onSplit(e:EntityEvent):void
 		{
 			if(entities.length < 40)
-				createEntity(e.entity.centerPoint.add(new Point(Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE)), e.entity.type);
+			{
+				var entity:Entity = e.entity;
+				createEntity(entity.centerPoint.add(new Point(Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE)), entity.type, entity.getHealth());
+			}
 //			explode(e.entity.centerPoint);
 		}
 //		private function onAttackUp(e:Event):void
@@ -121,8 +160,8 @@ package com.gameBoard
 		private function clearAttack(attack:AttackEvent):void 
 		{
 			_attack = null;
-//			_entityLayer.mouseChildren = true;
-//			setAttackType(null);
+			setAttackType(null);
+			dispatchEvent(new AttackEvent(attack.type, attack.bombType, attack.bombPosition));
 		}
 		private function fireAttack($attack:AttackEvent):void 
 		{
@@ -141,6 +180,7 @@ package com.gameBoard
 				if(index >= 0)
 					_attacks.splice(index, 1);
 			}
+			attackType = null;
 		}
 		private function tangoDown(e:EntityEvent):void
 		{
@@ -213,12 +253,12 @@ package com.gameBoard
 			for(count = 0; count < entities.length; count++)
 				entities[count].moveTick();
 		}
-		public function createEntity(point:Point, type:String):void
+		public function createEntity(point:Point, type:String, health:int = 100):void
 		{
 			var contructor:* = AskTony.classLookup[type];
 			if(contructor != null)
 			{
-				var entity:Entity = new contructor(100, point);
+				var entity:Entity = new contructor(health, point);
 				addEntity(entity);
 			}
 		}
