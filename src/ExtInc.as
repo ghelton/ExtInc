@@ -1,5 +1,6 @@
 package
 {
+	import com.UI.UILoader;
 	import com.attacks.Firebomb;
 	import com.creatures.Entity;
 	import com.gameBoard.GameBoard;
@@ -81,7 +82,7 @@ package
 			addChild(_gameBoardMask);
 			
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
-			gameBoard = new GameBoard(buildGameBoard());
+			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf") );//buildGameBoard());
 			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
 			
