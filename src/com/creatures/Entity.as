@@ -25,14 +25,16 @@ package com.creatures
 			_hitList = list;
 		}
 
+		private var _speed:Number = 0;
 		public var fearVector:Point = new Point();
 		private var _type:String;
 		private var _hitList:Vector.<Entity>;
 		private var _image:Sprite;
 		private var _health:Number;
 		private var _centerPoint:Point;
+		private var _rotation:Number;
 		
-		protected static const TEMP_ENTITY_SIZE:Number = 30;
+		protected static const TEMP_ENTITY_SIZE:Number = 50;
 		protected static const PLACEHOLDER_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
@@ -45,20 +47,20 @@ package com.creatures
 			super();
 			
 			_type = $type;
-//			_image = $graphic;
+			_speed = Number(AskJon.entitySpeedArray[_type]);
+			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
 			
 			if(_image == null)
 			{
 				_image = new Sprite();
-			}
-			
-			with(_image.graphics)
-			{
-				beginFill(AskJon.colorOf[type], 0.8);
-				drawCircle(0, 0, PLACEHOLDER_SIZE);
-				endFill();
+				with(_image.graphics)
+				{
+					beginFill(AskJon.colorOf[type], 0.8);
+					drawCircle(0, 0, PLACEHOLDER_SIZE);
+					endFill();
+				}
 			}
 			_attackWasBenefitial = false;
 			
@@ -154,10 +156,11 @@ package com.creatures
 		{
 			_centerPoint.x %= bounds.width;
 			_centerPoint.y %= bounds.height;
+			
 			var $bounds:Rectangle = _image.getBounds(_image.parent);
-
-			_image.x = (_centerPoint.x - ($bounds.width * 0.5));
-			_image.y = (_centerPoint.y - ($bounds.height * 0.5));	
+			
+			_image.x = (_centerPoint.x);
+			_image.y = (_centerPoint.y);	
 		}
 		
 		public function moveTick():void
@@ -173,9 +176,33 @@ package com.creatures
 					return;
 				}
 				
-				_centerPoint.x += fearVector.x * deltaTime * AskJon.entitySpeedArray[_type];
-				_centerPoint.y += fearVector.y * deltaTime * AskJon.entitySpeedArray[_type];
+				var deltaVector:Point = new Point(fearVector.x * deltaTime * _speed
+													, fearVector.y * deltaTime * _speed);
+				
+				_centerPoint.x += deltaVector.x;
+				_centerPoint.y += deltaVector.y;
 
+				
+				var targetRotation:Number = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
+				//			_image.rotation += Math.min(Math.max(-15,(targetRotation - _image.rotation) * 0.5), 15);
+				_image.rotation = targetRotation;
+				
+				var vectLength:Number;
+				var checkVect:Point;
+				var dot:Number;
+				for each(var entity:Entity in _hitList)
+				{
+					if(entity === this)
+						continue
+					checkVect = entity._centerPoint.subtract(_centerPoint);
+					vectLength = checkVect.length;
+					if(vectLength < _image.width)
+					{
+						checkVect.normalize((vectLength - _image.width));
+						_centerPoint = _centerPoint.add(checkVect);
+					}
+				}
+				
 				updatePosition();
 			}
 			_lastMoveTime = _masterTime;
@@ -257,6 +284,7 @@ package com.creatures
 			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;
+			
 		}
 	}
 }

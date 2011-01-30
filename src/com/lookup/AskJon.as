@@ -193,7 +193,7 @@ package com.lookup
 			{
 				PANDA:			20,
 				SEAL:			10,
-				TIGER:			40,
+				TIGER:			100,
 				COMMANDO:		40,
 				MARINE:			30,
 				FIRE:			0,

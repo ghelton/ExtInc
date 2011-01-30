@@ -55,6 +55,7 @@ package
 		//--------------------------------------
 		private static var CHROME:String = 'chrome/';
 		
+		public static var testLayer:Sprite = new Sprite();
 		
 		//--------------------------------------
 		// VARIABLES
@@ -85,6 +86,7 @@ package
 			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), testTypes );//buildGameBoard());
 			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
+			addChild(testLayer);
 			
 			gameBoard.x = _gameBoardMask.x = 55; 
 			gameBoard.y = _gameBoardMask.y = 40;
