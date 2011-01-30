@@ -5,6 +5,7 @@ package com.statusBar
 	import com.lookup.AskJon;
 	
 	import flash.display.Loader;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
@@ -30,8 +31,10 @@ package com.statusBar
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
-		public static const BAIT:String = 'Bait';
-		public static const WEAPONS:String = 'Weapons';
+		public static const BAIT:String = 'BAIT';
+		public static const WEAPONS:String = 'WEAPONS';
+		public static const CASH_MONIES:String = 'CASH_MONIES';
+		public static const KILL_BOX:String = 'KILL_BOX';
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
@@ -41,6 +44,7 @@ package com.statusBar
 		private var _weaponTool:WeaponButton;
 		
 		private static var _currentTab:String = BAIT;
+		private static var _currentAnimal:String;
 		
 		//--------------------------------------
 		// CONSTRUCTOR
@@ -55,7 +59,10 @@ package com.statusBar
 			var cashMoniesBg:StatusBox = new StatusBox(145, 98, cornerRadius);
 			cashMoniesBg.x = 105;
 			cashMoniesBg.y = 662;
+			cashMoniesBg.name = CASH_MONIES;
 			addChild(cashMoniesBg);
+			cashMoniesBg.mouseChildren = false;
+			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
 			
 			var cashTitleLabel:TextField = new TextField();
 			cashTitleLabel.defaultTextFormat = Styles.PANEL_TF;
@@ -68,14 +75,17 @@ package com.statusBar
 			_cashLabel.defaultTextFormat = Styles.PANEL_TF;
 			_cashLabel.width = 145;
 			_cashLabel.y = 50;
-			_cashLabel.text = "$300,000";
+			_cashLabel.text = ExtInc.playerData.money.toString();
 			cashMoniesBg.addChild(_cashLabel);
 			
 			// - KILL BOX -
 			var killBoxBg:StatusBox = new StatusBox(165, 98, cornerRadius);
 			killBoxBg.x = 267;
 			killBoxBg.y = 662;
+			killBoxBg.name = KILL_BOX;
+			killBoxBg.mouseChildren = false;
 			addChild(killBoxBg);
+			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
 			
 			var killBoxLabel:TextField = new TextField();
 			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
@@ -117,6 +127,39 @@ package com.statusBar
 			var toolBoxBg:StatusBox = new StatusBox(434, 98, cornerRadius);
 			toolBoxBg.x = 505;
 			toolBoxBg.y = 662;
+			
+			var toolBoxLine:Shape = new Shape();
+			toolBoxLine.graphics.beginFill(Styles.REALLY_GREEN);
+			toolBoxLine.graphics.drawRect(20, (toolBoxBg.height - .5) / 2, toolBoxBg.width - 40, 1);
+			toolBoxLine.graphics.endFill(); 
+			toolBoxBg.addChild(toolBoxLine);
+			
+			var box:Shape;
+			var boxIndent:uint = 40;
+			for (var i:uint = 0; i < 5; i++)
+			{
+				box = new Shape();
+				box.graphics.lineStyle(1, Styles.REALLY_GREEN, 1, true);
+				box.graphics.beginFill(0x000000);
+				box.graphics.drawRect(boxIndent + i * 74, 25, 48, 50);
+				box.graphics.endFill();
+				box.filters = [Styles.SCREEN_GLOW];
+				toolBoxBg.addChild(box);
+			}
+			
+			var icon:Loader;
+			boxIndent = 45;
+			for (var j:uint = 0; j < 5; j++)
+			{
+				icon = new Loader();
+				icon.load(new URLRequest('chrome/weapons/mine.swf'));
+				icon.x = boxIndent + j * 74;
+				icon.y = 30;
+				icon.filters = [Styles.SCREEN_GLOW];
+				toolBoxBg.addChild(icon);
+			}
+			
+			
 			addChild(toolBoxBg);
 			
 			// - FS BUTTON -
@@ -128,7 +171,7 @@ package com.statusBar
 			fullScreenButton.buttonMode = true;
 			
 			updateTarget(AskJon.PANDA);
-			updateTabs(BAIT);
+			updateTabs(WEAPONS);
 		}
 		
 		//--------------------------------------
@@ -146,6 +189,7 @@ package com.statusBar
 		
 		private function updateTarget(target:String):void
 		{
+			_currentAnimal = target;
 			switch(target)
 			{
 				case AskJon.PANDA :
@@ -175,12 +219,40 @@ package com.statusBar
 		private function onTabOver(e:MouseEvent):void
 		{
 			e.currentTarget.gotoAndStop(2);
+			var message:String;
+			switch(e.currentTarget.name)
+			{
+				case BAIT :
+					message = OverlayEvent.BAIT;
+					break;
+				case WEAPONS :
+					message = OverlayEvent.WEAPONS;
+					break;
+				default :
+			}
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 		}
 		
 		private function onTabOut(e:MouseEvent):void
 		{
 			if(_currentTab != e.currentTarget.name)
 				e.currentTarget.gotoAndStop(1);
+		}
+		
+		private function onBoxRollover(e:MouseEvent):void
+		{
+			var message:String;
+			switch(e.currentTarget.name)
+			{
+				case CASH_MONIES :
+					message = OverlayEvent.CASH_MONIES;
+					break;
+				case KILL_BOX :
+					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomInsult() + " " + _currentAnimal;
+					break;
+				default :
+			}
+			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 		}
 		
 		//--------------------------------------

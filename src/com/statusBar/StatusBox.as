@@ -38,7 +38,6 @@ package com.statusBar
 		private var _overlayLines:Sprite;
 		private var _innerWidth:uint;
 		private var _innerHeight:uint;
-		private static var _screenGlow:GlowFilter = new GlowFilter(Styles.REALLY_GREEN, 1, 10, 10, 1, 5, true);
 		
 		//--------------------------------------
 		// CONSTRUCTOR
@@ -63,7 +62,7 @@ package com.statusBar
 			_screen = new Shape();
 			_screen.graphics.beginFill(0x000000);
 			_screen.graphics.drawRoundRect(padding, padding, _innerWidth, _innerHeight, $cornerRadius - padding);
-			_screen.filters = [_screenGlow];
+			_screen.filters = [Styles.SCREEN_INNER_GLOW];
 			addChild(_screen);
 			
 			_overlayLines = new Sprite();
@@ -98,6 +97,7 @@ package com.statusBar
 				_overlayLines.graphics.endFill();
 			}
 			
+			setChildIndex(_overlayLines, numChildren - 1);
 		}
 		
 		//--------------------------------------
