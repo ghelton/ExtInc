@@ -12,7 +12,7 @@ package com.player
 		
 		public function PlayerData()
 		{
-			var ids:Array = [AskTony.PANDA_BAIT_TOOL, AskTony.FIRE_TOOL, AskTony.MARINES_TOOL, AskTony.COMMANDO_TOOL, AskTony.SEAL_BAIT_TOOL, AskTony.TIGER_BAIT_TOOL, AskTony.MINES_TOOL];
+			var ids:Array = [AskTony.PANDA_BAIT_TOOL, AskTony.FIRE_TOOL, AskTony.MARINES_TOOL, AskTony.COMMANDO_TOOL, AskTony.SEAL_BAIT_TOOL, AskTony.TIGER_BAIT_TOOL, AskTony.MINE_TOOL];
 			_jerseyShore = new Vector.<Tool>(ids.length, true);
 			for(var i:int = 0; i < _jerseyShore.length; i++)
 			{
