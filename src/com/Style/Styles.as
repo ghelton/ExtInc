@@ -1,6 +1,8 @@
 
 package com.Style
 {
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	/**
 	 * [Description]
@@ -23,8 +25,16 @@ package com.Style
 		public static const ALMOST_GREEN:uint = 0x4B5044;
 		public static const REALLY_GREEN:uint = 0x00FF00;
 		
+		//--------------------------------------
+		// FONTS
+		//--------------------------------------
+		public static const TRANSPONDER:String = 'Transponder';
 		
-		
+		//--------------------------------------
+		// TEXT FORMAT
+		//--------------------------------------
+		public static const PANEL_TF:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
+		public static const PANEL_TF_L:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.LEFT);
 		
 	}
 }

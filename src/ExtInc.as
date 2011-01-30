@@ -3,6 +3,7 @@ package
 	import com.UI.UILoader;
 	import com.attacks.Firebomb;
 	import com.creatures.Entity;
+	import com.fonts.Transponder;
 	import com.gameBoard.GameBoard;
 	import com.gameBoard.Tile;
 	import com.lookup.AskJon;
@@ -78,32 +79,20 @@ package
 		{
 			trace(">  >  >  >  >  >  >  >  >  >  >  >\n> Ext Inc.\n> Created by TigerStyle\n> © " + new Date().getFullYear() + "\n>  >  >  >  >  >  >  >  >  >  >  >");
 			
-			// - FONTS -
-			var fontLoader:Loader = new Loader();
-			fontLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onFontsLoaded);
-			fontLoader.load(new URLRequest('chrome/Fonts.swf'));
-			
-		}
-		
-		private function onFontsLoaded(e:Event):void
-		{
-			traceFonts();
-			loadGame();
-			//Font.registerFont(TransponderAOE);
-//			Font.registerFont('TransponderGridAOE');
+//			Font.registerFont(com.fonts.Transponder);
 //			traceFonts();
+			loadGame();	
 		}
 		
 		private function traceFonts():void
 		{
-			trace('traceFonts');
 			var allFonts:Array = Font.enumerateFonts(true);
 			var font:Font;
-			//Logger.getInstance().log("[FontLoader] - Fonts Enumerated: " + allFonts.length);
+			trace("[FontLoader] - Fonts Enumerated: " + allFonts.length);
 			for( var i:Number = 0 ; i < allFonts.length ; i++)
 			{
 				if (allFonts[i].fontType == "embedded"){ 
-					/**TRACEDISABLE:trace('[FontLoader.whatFonts] name: '+allFonts[i].fontName +', style: '+allFonts[i].fontStyle+', type: '+allFonts[i].fontType);*/
+					trace('[FontLoader.whatFonts] name: '+allFonts[i].fontName +', style: '+allFonts[i].fontStyle+', type: '+allFonts[i].fontType);
 				}
 			}
 		}

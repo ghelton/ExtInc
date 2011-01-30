@@ -2,6 +2,9 @@
 package com.statusBar
 {
 	import com.Style.Styles;
+	import com.creatures.Marine;
+	import com.greensock.TweenNano;
+	import com.greensock.easing.Quad;
 	
 	import flash.display.Bitmap;
 	import flash.display.BlendMode;
@@ -10,8 +13,10 @@ package com.statusBar
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.filters.GlowFilter;
 	import flash.net.URLRequest;
+	import flash.utils.Timer;
 	
 	
 	/**
@@ -20,7 +25,7 @@ package com.statusBar
 	 * @author G$
 	 * @since Jan 29, 2011
 	 */
-	public class StatusBg extends Sprite
+	public class StatusBox extends Sprite
 	{
 		
 		//--------------------------------------
@@ -31,14 +36,16 @@ package com.statusBar
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
+		private var _screen:Shape;
 		private var _overlayLines:Sprite;
 		private var _innerWidth:uint;
 		private var _innerHeight:uint;
+		private static var _screenGlow:GlowFilter = new GlowFilter(Styles.REALLY_GREEN, 1, 10, 10, 1, 5, true);
 		
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
-		public function StatusBg($width:uint, $height:uint, $cornerRadius:int)
+		public function StatusBox($width:uint, $height:uint, $cornerRadius:int)
 		{
 			super();
 			
@@ -55,11 +62,11 @@ package com.statusBar
 			
 			graphics.endFill();
 			
-			var screen:Shape = new Shape();
-			screen.graphics.beginFill(0x000000);
-			screen.graphics.drawRoundRect(padding, padding, _innerWidth, _innerHeight, $cornerRadius - padding);
-			screen.filters = [new GlowFilter(Styles.REALLY_GREEN, 1, 10, 10, 1, 5, true)];
-			addChild(screen);
+			_screen = new Shape();
+			_screen.graphics.beginFill(0x000000);
+			_screen.graphics.drawRoundRect(padding, padding, _innerWidth, _innerHeight, $cornerRadius - padding);
+			_screen.filters = [_screenGlow];
+			addChild(_screen);
 			
 			_overlayLines = new Sprite();
 			_overlayLines.x = _overlayLines.y = padding;
@@ -92,6 +99,7 @@ package com.statusBar
 				_overlayLines.graphics.drawRect(0, 0, _innerWidth, _innerHeight);
 				_overlayLines.graphics.endFill();
 			}
+			
 		}
 		
 		//--------------------------------------
