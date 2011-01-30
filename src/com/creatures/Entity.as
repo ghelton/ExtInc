@@ -64,16 +64,19 @@ package com.creatures
 				}
 			}
 			
-			if(_image is UILoader) {
-				function loaderInit(e:Event):void
-				{
-					if(_image.stage)
-						init(e);
-					else
-						_image.addEventListener(Event.ADDED_TO_STAGE, init);
-				}
+			_target = _image;
+			if(_image is UILoader) 
+			{
 				(_image as UILoader).onComplete = loaderInit;
 			}
+			else
+				_image.addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		private function loaderInit(e:Event):void
+		{
+			if(_image.stage)
+				init(e);
 			else
 				_image.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -81,18 +84,22 @@ package com.creatures
 		{
 			_image.removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			_lastRegenTime = _lastMoveTime = _masterTime;
-			
-			var centerContainer:Sprite = new Sprite();
-//			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
-			centerContainer.rotation = _image.rotation;
-			_image.rotation = 0;
-			_image.x = -_image.width * 0.5;
-			_image.y = -_image.height * 0.5;
-			_image.parent.addChild(centerContainer);
-			centerContainer.addChild(_image);
-			_image = centerContainer;
+//			var centerContainer:Sprite = new Sprite();
+////			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
+//			centerContainer.rotation = _image.rotation;
+//			centerTarget();
+//			_image.rotation = 0;
+//			_image.parent.addChild(centerContainer);
+//			centerContainer.addChild(_image);
+//			_image = centerContainer;
 			updatePosition();
+		}
+		private var _target:Sprite;
+		private function centerTarget():void
+		{
+//			var bounds:Rectangle = _target.getBounds(_target.parent);
+			_target.x = -_target.width * 0.5;
+			_target.y = -_target.height * 0.5;
 		}
 		
 		//GETTERS AND SETTERS
@@ -136,17 +143,17 @@ package com.creatures
 		
 		//ACTUAL CODE
 		
-		public function attackEntity(enemy:Entity):Number
+		public function attackEntity(enemy:Entity):void
 		{
 			var healthChange:Number = AskJon.entityDamageMatrix[_type][enemy.type];
 			
 			changeHealth(healthChange);
-			return healthChange;
 		}
 		private function changeHealth(healthDelta:Number):void
 		{
 			_health += healthDelta;	
-			if((_health) < 0)
+//			trace('_health ' + _health);
+			if((_health) <= 0)
 			{
 				_health = 0;
 				killed();
@@ -155,11 +162,12 @@ package com.creatures
 				split();
 		}
 		
-		private var _killedEvent:EntityEvent = new EntityEvent(EntityEvent.KILLED, this);
 		protected function killed():void
 		{
-			if(_killedEvent != null)
-				dispatchEvent(_killedEvent);
+//			_killedEvent:EntityEvent = new EntityEvent(EntityEvent.KILLED, this);
+
+//			if(_killedEvent != null)
+				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
 			
 		}
 		protected function split():void
@@ -260,7 +268,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			attackEntity(bestEntity) > 0;
+			attackEntity(bestEntity);
 			bestEntity.riposte(this);
 		}
 		
@@ -278,18 +286,30 @@ package com.creatures
 			var bestVector:Point = new Point();
 			var newFearVector:Point = new Point();
 			var differenceVector:Point;
+			var distance:Number = 0;
 			for each (var enemy:Entity in _hitList)
 			{
-				if(enemy === this)
+				if(enemy === this || enemy.getHealth() <= 0)
 				{					
 					continue;
 				}
-				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) : 0;
+				distance = distanceFromEntity(enemy);
+				
+				if(AskJon.entityFearMatrix[type][enemy.type] > 0)
+				{
+					if(distance > Math.abs(AskJon.entityPredatorAgroRangeArray[_type] * AskJon.entityFearMatrix[_type][enemy.type]))
+						continue;
+					
+					scale = AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100));
+				} else {
+					if(distance > Math.abs(AskJon.entityPreyAgroRangeArray[_type] * AskJon.entityFearMatrix[_type][enemy.type]))
+						continue;
+					
+					scale = AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distance * 1/100);
+				}
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
-				differenceVector.normalize(1);
-				differenceVector.x *= scale;
-				differenceVector.y *= scale;
+				differenceVector.normalize(scale);
 				if(scale > 0 && scale > bestVector.length)
 				{
 					bestVector = differenceVector;
@@ -297,6 +317,9 @@ package com.creatures
 					newFearVector = newFearVector.add(differenceVector); 				
 				}
 			}
+			newFearVector.normalize(.5);
+			bestVector.normalize(.5);
+			
 			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;

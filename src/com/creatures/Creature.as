@@ -2,6 +2,7 @@ package com.creatures
 {
 	import com.UI.UILoader;
 	
+	import flash.display.AVM1Movie;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -20,28 +21,36 @@ package com.creatures
 			{
 				if(loader != null)
 					_movie = loader.loader.content as MovieClip;
+				playAnimation('walk');
+			}
+		}
+		
+		protected function playAnimation(keyFrame:String):void
+		{
+			if(_movie != null)
+			{
+//				try
+//				{
+					_movie.gotoAndPlay(keyFrame);
+//				}
+//				catch(e:*)
+//				{
+//					trace('unable to play explode');
+//				}
 			}
 		}
 		
 		
 		protected override function killed():void
 		{
-			if(_movie != null)
-			{
-				try
-				{
-					_movie.gotoAndPlay('explode');
-				}
-				catch(e:*)
-				{
-					trace('unable to play explode');
-				}
-			}
+			playAnimation('explode');
+			super.killed();
 		}
 		
 		protected override function split():void
 		{
-			
+			playAnimation('split');
+			super.split();
 		}
 	}
 }
