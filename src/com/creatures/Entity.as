@@ -215,7 +215,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			_attackWasBenefitial = attackEntity(bestEntity) > 0; 
+			_attackWasBenefitial = attackEntity(bestEntity) > 0;
 			bestEntity.riposte(this);
 		}
 		
@@ -240,13 +240,12 @@ package com.creatures
 					continue;
 				}
 				//trace(AskJon.entityFearMatrix[type][enemy.type] + "    " + (.25 + .75 * (enemy.getHealth() * 1/100)) + "    " + Math.exp(-distanceFromEntity(enemy) * 1/100));
-				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
+				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				differenceVector.normalize(1);
 				differenceVector.x *= scale;
 				differenceVector.y *= scale;
-				//trace(scale);
 				if(scale > 0 && scale > bestVector.length)
 				{
 					bestVector = differenceVector;
