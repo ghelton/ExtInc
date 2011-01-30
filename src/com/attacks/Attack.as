@@ -2,30 +2,27 @@ package com.attacks
 {
 	import com.creatures.Entity;
 	import com.creatures.Fire;
-	import com.gameBoard.GameBoard;
 	
-	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 
-	public class Firebomb extends EventDispatcher
+	public class Attack extends EventDispatcher
 	{
 		private var _start:Point;
 		private var _end:Point;
 		private var _numFires:uint;
-//		private var _fires:Vector.<Fire>;
+		private var _type:String;
 		
-		public function Firebomb($start:Point, $numFires:uint, $timeStagger:Number = 0.2)
+		public function Attack($numFires:uint, $type:String, $timeStagger:Number = 0.2 )
 		{
-			_start = $start;
 			_numFires = $numFires;
+			_type = $type;
 		}
 		
 		private var _pathOffset:Point;
-		public function drop(endPoint:Point):void
+		public function drop(point:Point):void
 		{
-			_end = endPoint;
-			var flame:Fire;
+			_start = _end = point;
 			var vector:Point = _end.subtract(_start);
 			var length:Number = vector.length;
 			
@@ -35,11 +32,25 @@ package com.attacks
 
 			for(var i:int = 0; i < _numFires; i++)
 			{
-				flame = new Fire(100, new Point(_start.x + _pathOffset.x * i, _start.y + _pathOffset.y * i));
-				dispatchEvent(new AttackEvent(AttackEvent.FIRE, flame));
-//				_fires[i] = flame;
+				fire(new Point(_start.x + _pathOffset.x * i, _start.y + _pathOffset.y * i));
 			}
-			dispatchEvent(new AttackEvent(AttackEvent.FINISHED, null, this));
+			clear();
+			finished();
+		}
+		
+		public function dropAgain(point:Point):void {
+			
+		}
+		
+		private var _projectile:Entity;
+		protected function fire(point:Point):void {
+			dispatchEvent(new AttackEvent(AttackEvent.FIRE, _type, point));
+		}
+		protected function finished():void {
+			dispatchEvent(new AttackEvent(AttackEvent.FINISHED, null, null, this));
+		}
+		protected function clear():void {
+			dispatchEvent(new AttackEvent(AttackEvent.IN_FLIGHT, null, null, this));
 		}
 		
 //		public function getSpawn():Vector.<Fire>

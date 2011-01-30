@@ -1,15 +1,42 @@
 package com.creatures
 {
-	import flash.display.Sprite;
-	import flash.geom.Point;
-	
+	import com.UI.UILoader;
 	import com.lookup.AskJon;
 	
-	public class Mine extends Entity
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	
+	public class Mine extends AnimatedEntity
 	{
+		private var graphic:MovieClip;
 		public function Mine($health:Number, $point:Point)
 		{
-			super(null, $health, $point, AskJon.MINE);
+			var mine:UILoader = new UILoader('../src/assets/Mine.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+
+			super(mine, $health, $point, AskJon.MINE);
+			
+//			var loader:UILoader = $graphic as UILoader;
+//			loader.onComplete = grabMovieClip;
+//			
+//			function grabMovieClip(e:Event):void
+//			{
+//				if(loader != null)
+//					_movie = loader.loader.content as MovieClip;
+//			}
+			_defaultAnimation = '';
+		}
+		
+		protected override function animationLoaded(e:Event):void
+		{
+			super.animationLoaded(e);
+			_movie.addEventListener(MouseEvent.CLICK, esplode);
+		}
+		
+		private function esplode(e:Event):void {
+			killed();
 		}
 	}
 }
