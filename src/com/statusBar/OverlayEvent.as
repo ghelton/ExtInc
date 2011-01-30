@@ -24,11 +24,6 @@ package com.statusBar
 		public static const WEAPONS:String = "Weapons - Use your weapons to kill creatures";
 		public static const CASH_MONIES:String = "Money Money Money!!!!!";
 		public static const KILL_BOX:String = "Kill the ";
-		public static const MINES_TOOL:String = " - Landmine";
-		public static const FIRE_TOOL:String = " - Napalm";
-		public static const COMMANDO_TOOL:String = " - Commando";
-		public static const MARINES_TOOL:String = " - Marines";
-		public static const BOOMBA_TOOL:String = " - Boomba";
 		public static const PURCHASED:String = "purchased!";
 		public static const BROKE:String = "You're Broke!";
 		
