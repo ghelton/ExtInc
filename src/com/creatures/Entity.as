@@ -1,8 +1,10 @@
 package com.creatures
 {
+	import com.UI.UILoader;
 	import com.lookup.AskJon;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -30,7 +32,8 @@ package com.creatures
 		private var _health:Number;
 		private var _centerPoint:Point;
 		
-		protected static const TEMP_ENTITY_SIZE:Number = 5;
+		protected static const TEMP_ENTITY_SIZE:Number = 30;
+		protected static const PLACEHOLDER_SIZE:Number = 5;
 		private var _attackWasBenefitial:Boolean;
 		
 		private var _lastAttackTime:Number = 0;
@@ -41,26 +44,41 @@ package com.creatures
 		{
 			super();
 			
-			_lastRegenTime = _lastMoveTime = _masterTime;
 			_type = $type;
-			_image = $graphic;
+//			_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
 			
 			if(_image == null)
 			{
-				var tempGraphic:Sprite = new Sprite();
-				with(tempGraphic.graphics)
-				{
-					beginFill(AskJon.colorOf[type], 0.8);
-					drawCircle(0, 0, TEMP_ENTITY_SIZE);
-					endFill();
-				}
-				_image = tempGraphic;
+				_image = new Sprite();
 			}
-			updatePosition();
 			
+			with(_image.graphics)
+			{
+				beginFill(AskJon.colorOf[type], 0.8);
+				drawCircle(0, 0, PLACEHOLDER_SIZE);
+				endFill();
+			}
 			_attackWasBenefitial = false;
+			
+			if(_image is UILoader)
+				(_image as UILoader).onComplete = loaderInit;
+			else
+				_image.addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		private function loaderInit(e:Event):void
+		{
+			if(_image.stage)
+				init(e);
+			else
+				_image.addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		private function init(e:Event = null):void
+		{
+			_lastRegenTime = _lastMoveTime = _masterTime;
+//			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
+			updatePosition();
 		}
 		
 		//GETTERS AND SETTERS
@@ -136,8 +154,10 @@ package com.creatures
 		{
 			_centerPoint.x %= bounds.width;
 			_centerPoint.y %= bounds.height;
-			_image.x = (_centerPoint.x - (_image.width * 0.5));
-			_image.y = (_centerPoint.y - (_image.height * 0.5));	
+			var $bounds:Rectangle = _image.getBounds(_image.parent);
+
+			_image.x = (_centerPoint.x - ($bounds.width * 0.5));
+			_image.y = (_centerPoint.y - ($bounds.height * 0.5));	
 		}
 		
 		public function moveTick():void
@@ -195,7 +215,7 @@ package com.creatures
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			_attackWasBenefitial = attackEntity(bestEntity) > 0; 
+			_attackWasBenefitial = attackEntity(bestEntity) > 0;
 			bestEntity.riposte(this);
 		}
 		
@@ -210,6 +230,7 @@ package com.creatures
 		public function updateFearVector():void
 		{
 			var scale:Number;
+			var bestVector:Point = new Point();
 			var newFearVector:Point = new Point();
 			var differenceVector:Point;
 			for each (var enemy:Entity in _hitList)
@@ -218,16 +239,21 @@ package com.creatures
 				{					
 					continue;
 				}
-				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
+				//trace(AskJon.entityFearMatrix[type][enemy.type] + "    " + (.25 + .75 * (enemy.getHealth() * 1/100)) + "    " + Math.exp(-distanceFromEntity(enemy) * 1/100));
+				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
 				differenceVector.normalize(1);
 				differenceVector.x *= scale;
 				differenceVector.y *= scale;
-				
-				newFearVector = newFearVector.add(differenceVector); 
+				if(scale > 0 && scale > bestVector.length)
+				{
+					bestVector = differenceVector;
+				} else if(scale < 0) {
+					newFearVector = newFearVector.add(differenceVector); 				
+				}
 			}
-			fearVector = (fearVector.add(newFearVector));
+			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;
 		}

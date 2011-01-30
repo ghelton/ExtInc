@@ -60,7 +60,7 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
-		private var testTypes:Array = [AskJon.TIGER];
+		private var testTypes:Array = [AskJon.TIGER, AskJon.COMMANDO, AskJon.SEAL, AskJon.MARINE];
 		
 		private var _player:PlayerData;
 
@@ -82,23 +82,12 @@ package
 			addChild(_gameBoardMask);
 			
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
-			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf") );//buildGameBoard());
+			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), testTypes );//buildGameBoard());
 			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
 			
 			gameBoard.x = _gameBoardMask.x = 55; 
 			gameBoard.y = _gameBoardMask.y = 40;
-			var count:int;
-			var testPoint:Point;
-			for each(var enemyType:String in testTypes)
-			{
-				for(count = 10; count >= 0; count--)
-				{
-					testPoint = new Point(Math.random() * gameBoard.width, Math.random() * gameBoard.height);
-					gameBoard.createEntity(testPoint, enemyType);
-//					gameBoard.addEntity(new Entity(null, 100, testPoint, enemyType));
-				}
-			}
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
