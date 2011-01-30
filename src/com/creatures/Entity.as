@@ -15,7 +15,7 @@ package com.creatures
 	public class Entity extends EventDispatcher
 	{
 		private static const DISABLE_ASSETS:Boolean = false;
-		private static const MAXIMUM_ROTATION_DELTA:Number = 30;
+		private static const MAXIMUM_ROTATION_DELTA:Number = 10;
 		public static var _masterTime:Number;
 		public static var bounds:Rectangle;
 		
@@ -270,36 +270,42 @@ package com.creatures
 				_idleStartTime = 0;
 			}
 			
-			targetRotation = (Math.atan2(deltaVector.y, deltaVector.x)) - Math.PI * 0.5;
-			
-//			targetRotation = flashitizeRotation(targetRotation);
-			
-			//expanded to make debug super fast no time to fix now!
-			var deltaRotation:Number;
-			var newRotation:Number = _image.rotation;
-			var radCurrent:Number = (newRotation * (Math.PI / 180));
-			deltaRotation=Math.atan2(Math.sin(targetRotation-radCurrent),Math.cos(targetRotation-radCurrent)) * 180 / Math.PI;
-
-//			deltaRotation = (Math.atan2(Math.sin(targetRotation - radCurrent)
-//				, Math.cos(targetRotation - radCurrent))  * 180 / Math.PI);
-//			if(targetRotation < 0 && newRotation > 0) //posible discontinuity
-//			{
-//				var checkRotation:Number = unflashitizeRotation(targetRotation) - unflashitizeRotation(newRotation);
-//				if(Math.abs(newRotation) > Math.abs(checkRotation))
-//					deltaRotation = checkRotation;
-//			}
-			if(deltaRotation > MAXIMUM_ROTATION_DELTA) {
-				newRotation += MAXIMUM_ROTATION_DELTA;
+			if(deltaVector.length > 1)
+			{
+				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x)) * 180 / Math.PI) - 90;
+				
+				//			targetRotation = flashitizeRotation(targetRotation);
+				
+				//expanded to make debug super fast no time to fix now!
+//				var deltaRotation:Number;
+//				var newRotation:Number = _image.rotation;
+//				var radCurrent:Number = (newRotation * (Math.PI / 180));
+//				deltaRotation=Math.atan2(Math.sin(targetRotation-radCurrent),Math.cos(targetRotation-radCurrent)) * 180 / Math.PI;
+//				
+//				//			deltaRotation = (Math.atan2(Math.sin(targetRotation - radCurrent)
+//				//				, Math.cos(targetRotation - radCurrent))  * 180 / Math.PI);
+//				//			if(targetRotation < 0 && newRotation > 0) //posible discontinuity
+//				//			{
+//				//				var checkRotation:Number = unflashitizeRotation(targetRotation) - unflashitizeRotation(newRotation);
+//				//				if(Math.abs(newRotation) > Math.abs(checkRotation))
+//				//					deltaRotation = checkRotation;
+//				//			}
+//				if(Math.abs(deltaRotation) > 90)
+//					deltaRotation = flashitizeRotation(deltaRotation);
+//				
+//				if(deltaRotation > MAXIMUM_ROTATION_DELTA) {
+//					newRotation += MAXIMUM_ROTATION_DELTA;
+//				}
+//				else if(deltaRotation < -MAXIMUM_ROTATION_DELTA) {
+//					newRotation -= -MAXIMUM_ROTATION_DELTA;
+//				}
+//				else
+//					newRotation += deltaRotation;
+				//			trace('targetRotation: ' + targetRotation + 'newRotation: ' + newRotation + ' image.Rotation ' + _image.rotation);
+				
+				_image.rotation = targetRotation;
+				//			_image.rotation = targetRotation;
 			}
-			else if(deltaRotation < -MAXIMUM_ROTATION_DELTA) {
-				newRotation -= -MAXIMUM_ROTATION_DELTA;
-			}
-			else
-				newRotation += deltaRotation;
-//			trace('targetRotation: ' + targetRotation + 'newRotation: ' + newRotation + ' image.Rotation ' + _image.rotation);
-
-			_image.rotation = newRotation;
-			//			_image.rotation = targetRotation;
 			
 			updatePosition();
 			
@@ -383,6 +389,7 @@ package com.creatures
 			_idleStartTime = 0;
 		}
 		
+		private var _lastHitTime:Number = Number.POSITIVE_INFINITY;
 		private const NORMAL_FILTERS:Array = [];
 		private const damageFilters:Array = [Styles.DAMAGE_GLOW]; 
 		public function riposte(attacker:Entity):void
@@ -390,13 +397,19 @@ package com.creatures
 			if(canAttack())
 			{
 				if(attackEntity(attacker) < 0 && _health > 0)
+				{
+					_lastHitTime = _masterTime + 0.2;
 					_image.filters = damageFilters;
+				}
 			}	
 		}
 		
 		public function updateFearVector():void
 		{
-			_image.filters = NORMAL_FILTERS;
+			if(_masterTime > _lastHitTime) {
+				_lastHitTime = Number.POSITIVE_INFINITY;
+				_image.filters = NORMAL_FILTERS;
+			}
 			var scale:Number;
 			var bestVector:Point = new Point();
 			var newFearVector:Point = new Point();
@@ -435,9 +448,13 @@ package com.creatures
 			newFearVector.normalize(.6);
 			bestVector.normalize(.4);
 			
-			fearVector = fearVector.add(newFearVector).add(bestVector);
-			fearVector.x *= 0.5;
-			fearVector.y *= 0.5;
+			fearVector.normalize(0.75);
+			newFearVector = newFearVector.add(bestVector);
+			newFearVector.normalize(0.25);
+			
+			fearVector = fearVector.add(newFearVector);
+//			fearVector.x *= 0.5;
+//			fearVector.y *= 0.5;
 			
 		}
 	}
