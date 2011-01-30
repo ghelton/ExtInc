@@ -48,7 +48,7 @@ package com.statusBar
 			_message.y = 4;
 			addChild(_message);
 			
-			_killTimer = new Timer(2000, 1);
+			_killTimer = new Timer(4000, 1);
 			_killTimer.addEventListener(TimerEvent.TIMER, onTimerTick);
 			_killTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 			

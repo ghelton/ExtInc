@@ -53,7 +53,7 @@ package com.statusBar
 					message = $optionalName;
 					break;
 				case KILL_BOX :
-					message = "Kill the " + getRandomCompliment() + " " + AskTony.classInfo[ExtInc.playerData.target].name + "s";
+					message = "Kill the " + getRandomCompliment() + " " + AskTony.classInfo[ExtInc.playerData.target].name + "s " + getRandomReason();
 					break;
 				case WEAPON_TOOL_TIP :
 					message = "$" + AskTony.toolInfo[$optionalName].cost + ' - ' + AskTony.toolInfo[$optionalName].name;

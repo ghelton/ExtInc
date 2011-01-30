@@ -75,7 +75,7 @@ package
 			trace(">  >  >  >  >  >  >  >  >  >  >  >\n> Ext Inc.\n> Created by TigerStyle\n> © " + new Date().getFullYear() + "\n>  >  >  >  >  >  >  >  >  >  >  >");
 			
 //			Font.registerFont(com.fonts.Transponder);
-//			traceFonts();
+			traceFonts();
 			_audioManager = new CoreAudioManager('audio/', 'music/');
 			_audioManager.backgroundSongs = ['FunkyAssBitch.mp3'];
 			_audioManager.playRandomBackground();
