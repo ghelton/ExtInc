@@ -6,7 +6,7 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	public class Tiger extends Entity
+	public class Tiger extends Creature
 	{
 		public function Tiger($health:Number, $point:Point)
 		{
@@ -17,7 +17,7 @@ package com.creatures
 //				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
 //				endFill();
 //			}
-			var tiger:UILoader = new UILoader('../src/assets/Seal.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+			var tiger:UILoader = new UILoader('../src/assets/Tiger.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
 			super(tiger, $health, $point, AskJon.TIGER);
 		}

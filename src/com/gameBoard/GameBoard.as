@@ -20,7 +20,7 @@ package com.gameBoard
 	{
 		private var _masterTimer:Timer;
 		private var _grid:Vector.<Vector.<Tile>>;
-		internal static var entities:Vector.<Entity>;
+		private var entities:Vector.<Entity>;
 		
 		
 		public function GameBoard(_bg:UILoader, $type:Array, $typeQuantities:Array = null, $typePositions:Array = null) //$theGrid:Vector.<Vector.<Tile>>)
@@ -137,15 +137,15 @@ package com.gameBoard
 		
 		public function tick():void
 		{
+			var count:int;
 			var entity:Entity;
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
-			for each(entity in entities) 
-			{
-				entity.attackTick();
-			}
 			
-			for each(entity in entities)
-				entity.moveTick();
+			for(count = entities.length - 1; count >= 0; count--)
+				entities[count].attackTick();
+			
+			for(count = 0; count < entities.length; count++)
+				entities[count].moveTick();
 		}
 		public function createEntity(point:Point, type:String):void
 		{
@@ -166,11 +166,12 @@ package com.gameBoard
 		public function removeEntity(deadEntity:Entity):void
 		{
 			var graphic:Sprite = deadEntity.getGraphic();
-//			deadEntity.getGraphic().alpha = 0.1;
-			graphic.scaleX = graphic.scaleY = 0.5;
+////			deadEntity.getGraphic().alpha = 0.1;
+//			graphic.scaleX = graphic.scaleY = 0.5;
 			var index:int = entities.lastIndexOf(deadEntity);
 			deadEntity.removeEventListener(EntityEvent.KILLED, tangoDown);
-			if(index >= 0) {
+			if(index >= 0) 
+			{
 				entities.splice(index, 1);
 			}
 		}
@@ -178,8 +179,8 @@ package com.gameBoard
 		private var _updater:uint = 0;
 		private function mainLoop(e:Event):void
 		{
-			for each(var entity:Entity in entities)
-				entity.updateFearVector();
+			for(var count:uint = 0; count < entities.length; count++)
+				entities[count].updateFearVector();
 //			var lastCheck:uint = _updater + uint(entities.length / 24);
 //			if(lastCheck >= entities.length)
 //				lastCheck = entities.length - 1;

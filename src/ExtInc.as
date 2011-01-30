@@ -60,12 +60,13 @@ package
 		//--------------------------------------
 		private static var CHROME:String = 'chrome/';
 		
+		public static var testLayer:Sprite = new Sprite();
 		
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
 		
-		private var testTypes:Array = [AskJon.COMMANDO, AskJon.MARINE];
+		private var testTypes:Array = [AskJon.TIGER, AskJon.MARINE];
 		
 		public static var playerData:PlayerData;
 
@@ -117,6 +118,7 @@ package
 			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), testTypes );//buildGameBoard());
 			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
+			addChild(testLayer);
 			
 			gameBoard.x = _gameBoardMask.x = 55; 
 			gameBoard.y = _gameBoardMask.y = 40;

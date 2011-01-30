@@ -163,8 +163,8 @@ package com.lookup
 				SEAL:			10,
 				TIGER:			35,
 				COMMANDO:		25,
-				MARINE:			55,
-				FIRE:			10,
+				MARINE:			80,
+				FIRE:			60,
 				TREE:			10,
 				PANDA_BAIT:		10,
 				SEAL_BAIT:		10,
@@ -191,9 +191,9 @@ package com.lookup
 		//
 		public static const entitySpeedArray:Object = 
 			{
-				PANDA:			30,
-				SEAL:			40,
-				TIGER:			40,
+				PANDA:			20,
+				SEAL:			10,
+				TIGER:			100,
 				COMMANDO:		40,
 				MARINE:			30,
 				FIRE:			0,
