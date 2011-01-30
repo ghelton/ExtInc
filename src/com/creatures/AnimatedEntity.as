@@ -46,7 +46,7 @@ package com.creatures
 		private var _currentAnimation:String = '';
 		protected override function killed():void
 		{
-			playAnimation('explode');
+			playAnimation('dead');
 			super.killed();
 		}
 		
@@ -57,8 +57,8 @@ package com.creatures
 		}
 		protected override function idle(delta:Number = 0):Number
 		{
-			playAnimation('idle');
-			return super.idle();
+//			playAnimation('idle');
+			return super.idle(delta);
 		}
 	}
 }
