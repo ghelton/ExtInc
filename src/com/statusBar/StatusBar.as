@@ -42,6 +42,7 @@ package com.statusBar
 		// VARIABLES
 		//--------------------------------------
 		private var _cashLabel:TextField;
+		private var _killLabel:TextField;
 		private var _animalFace:Loader;
 		private var _baitTool:BaitButton;
 		private var _weaponTool:WeaponButton;
@@ -94,14 +95,13 @@ package com.statusBar
 			addChild(killBoxBg);
 			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 			
-			var killBoxLabel:TextField = new TextField();
-			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
-			killBoxLabel.multiline = true;
-			killBoxLabel.width = 60;
-			killBoxLabel.x = 20;
-			killBoxLabel.y = 15;
-			killBoxLabel.text = "Kill\n100";
-			killBoxBg.addChild(killBoxLabel);
+			_killLabel = new TextField();
+			_killLabel.defaultTextFormat = Styles.PANEL_TF_L;
+			_killLabel.multiline = true;
+			_killLabel.width = 60;
+			_killLabel.x = 20;
+			_killLabel.y = 15;
+			killBoxBg.addChild(_killLabel);
 			
 			_animalFace = new Loader();
 			_animalFace.x = 80;
@@ -215,6 +215,7 @@ package com.statusBar
 			fullScreenButton.buttonMode = true;
 			
 			updateTarget(AskTony.PANDA);
+			updateKillCount(10);
 			updateTabs(WEAPONS);
 		}
 		
@@ -338,7 +339,10 @@ package com.statusBar
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		
+		public function updateKillCount(newKillCount:uint):void
+		{
+			_killLabel.text = 'Kill\n' + newKillCount;
+		}
 		
 		//--------------------------------------
 		// EVENT HANDLERS
