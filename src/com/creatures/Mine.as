@@ -1,7 +1,7 @@
 package com.creatures
 {
 	import com.UI.UILoader;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -16,8 +16,9 @@ package com.creatures
 		{
 			var mine:UILoader = new UILoader('../src/assets/Mine.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
-			super(mine, $health, $point, AskJon.MINE);
-			
+			super(mine, $health, $point, AskTony.MINE);
+			mine.buttonMode = true;
+			mine.addEventListener(MouseEvent.CLICK, esplode);
 //			var loader:UILoader = $graphic as UILoader;
 //			loader.onComplete = grabMovieClip;
 //			
@@ -35,8 +36,11 @@ package com.creatures
 			_movie.addEventListener(MouseEvent.CLICK, esplode);
 		}
 		
-		private function esplode(e:Event):void {
+		private function esplode(e:Event):void 
+		{
+			dispatchEvent(new EntityEvent(EntityEvent.SPLODED, this));
 			killed();
+			_loader.destruct();
 		}
 	}
 }

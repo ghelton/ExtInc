@@ -2,7 +2,7 @@
 package com.statusBar
 {
 	import com.Style.Styles;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Loader;
 	import flash.display.Shape;
@@ -127,6 +127,7 @@ package com.statusBar
 			var toolBoxBg:StatusBox = new StatusBox(434, 98, cornerRadius);
 			toolBoxBg.x = 505;
 			toolBoxBg.y = 662;
+			addChild(toolBoxBg);
 			
 			var toolBoxLine:Shape = new Shape();
 			toolBoxLine.graphics.beginFill(Styles.REALLY_GREEN);
@@ -148,28 +149,26 @@ package com.statusBar
 			}
 			
 			var icons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
-			icons.push(new ToolButtonData('Mine', 'chrome/weapons/mine.swf'));
-			icons.push(new ToolButtonData('Mine 2', 'chrome/weapons/mine.swf'));
-			icons.push(new ToolButtonData('Mine 3', 'chrome/weapons/mine.swf'));
-			icons.push(new ToolButtonData('Mine 4', 'chrome/weapons/mine.swf'));
+			icons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].url));
+			icons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].url));
+			icons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].url));
 			
 			var icon:ToolButton;
 			boxIndent = 45;
 			for each(var data:ToolButtonData in icons)
 			{
 				icon = new ToolButton(data);
-				icon.x = boxIndent + icons.indexOf(data) * 74;
-				icon.y = 30;
+				icon.x = boxIndent + icons.indexOf(data) * 74 + toolBoxBg.x;
+				icon.y = 30 + toolBoxBg.y;
 //				icon.filters = [Styles.SCREEN_GLOW];
 				icon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 				icon.addEventListener(MouseEvent.CLICK, onToolClick);
 				icon.mouseChildren = false;
 				icon.buttonMode = true;
-				toolBoxBg.addChild(icon);
+				addChild(icon);
 			}
 			
 			
-			addChild(toolBoxBg);
 			
 			// - FS BUTTON -
 			var fullScreenButton:StatusBox = new StatusBox(25, 25, cornerRadius);
@@ -179,7 +178,7 @@ package com.statusBar
 			fullScreenButton.addEventListener(MouseEvent.CLICK, onFsClick);
 			fullScreenButton.buttonMode = true;
 			
-			updateTarget(AskJon.PANDA);
+			updateTarget(AskTony.PANDA);
 			updateTabs(WEAPONS);
 		}
 		
@@ -199,12 +198,7 @@ package com.statusBar
 		private function updateTarget(target:String):void
 		{
 			_currentAnimal = target;
-			switch(target)
-			{
-				case AskJon.PANDA :
-					_animalFace.load(new URLRequest('chrome/panda.swf'));
-					break;
-			}
+			_animalFace.load(new URLRequest(AskTony.classInfo[target].url));
 		}
 		
 		private function updateTabs(targetTab:String):void
@@ -256,13 +250,28 @@ package com.statusBar
 					message = OverlayEvent.CASH_MONIES;
 					break;
 				case KILL_BOX :
-					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomInsult() + " " + _currentAnimal;
+					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomCompliment() + " " + AskTony.classInfo[_currentAnimal].name + "s";
 					break;
 				case BAIT :
 					message = OverlayEvent.BAIT;
 					break;
 				case WEAPONS :
 					message = OverlayEvent.WEAPONS;
+					break;
+				case AskTony.MINES_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.MINES_TOOL].cost + OverlayEvent.MINES_TOOL;
+					break;
+				case AskTony.MARINES_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.MARINES_TOOL].cost + OverlayEvent.MARINES_TOOL;
+					break;
+				case AskTony.COMMANDO_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.COMMANDO_TOOL].cost + OverlayEvent.COMMANDO_TOOL;
+					break;
+				case AskTony.FIRE_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.FIRE_TOOL].cost + OverlayEvent.FIRE_TOOL;
+					break;
+				case AskTony.BOOMBA_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.BOOMBA_TOOL].cost + OverlayEvent.BOOMBA_TOOL;
 					break;
 				default :
 			}

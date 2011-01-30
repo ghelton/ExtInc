@@ -6,6 +6,7 @@ package com.creatures
 	{
 		public static const KILLED:String = 'KILLED';
 		public static const SPLIT:String = 'SPLIT';
+		public static const SPLODED:String = 'SPLODED';
 		
 		public var entity:Entity;
 		public function EntityEvent(type:String, targetEntity:Entity)

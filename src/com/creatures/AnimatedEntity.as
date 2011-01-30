@@ -39,11 +39,11 @@ package com.creatures
 				{
 					trace('unable to play ' + keyFrame);
 				}
-				_currentAnimation = keyFrame;
 			}
+			_currentAnimation = keyFrame;
 		}
 		
-		private var _currentAnimation:String;
+		private var _currentAnimation:String = '';
 		protected override function killed():void
 		{
 			playAnimation('explode');
