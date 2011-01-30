@@ -6,12 +6,15 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	
 	public class Entity extends EventDispatcher
 	{
+		private static const DISABLE_ASSETS:Boolean = false;
+		private static const MAXIMUM_ROTATION_DELTA:Number = 10;
 		public static var _masterTime:Number;
 		public static var bounds:Rectangle;
 		
@@ -25,46 +28,52 @@ package com.creatures
 			_hitList = list;
 		}
 
+		private var _speed:Number = 0;
 		public var fearVector:Point = new Point();
 		private var _type:String;
 		private var _hitList:Vector.<Entity>;
 		private var _image:Sprite;
 		private var _health:Number;
 		private var _centerPoint:Point;
+		private var _rotation:Number;
 		
-		protected static const TEMP_ENTITY_SIZE:Number = 30;
+		protected static const TEMP_ENTITY_SIZE:Number = 50;
 		protected static const PLACEHOLDER_SIZE:Number = 5;
 		
 		private var _lastAttackTime:Number = 0;
-		private var _lastMoveTime:Number = 0;
-		private var _lastRegenTime:Number = 0;
+		private var _lastMoveTime:Number = _masterTime;
+		private var _lastRegenTime:Number = _masterTime;
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
 			super();
 			
 			_type = $type;
-//			_image = $graphic;
+			_speed = Number(AskJon.entitySpeedArray[_type]);
+			if(!DISABLE_ASSETS)
+				_image = $graphic;
 			_health = $health;
 			_centerPoint = $point;
 			
 			if(_image == null)
 			{
 				_image = new Sprite();
+				with(_image.graphics)
+				{
+					beginFill(AskJon.colorOf[type], 0.8);
+					drawCircle(0, 0, PLACEHOLDER_SIZE);
+					endFill();
+				}
 			}
 			
-			with(_image.graphics)
+			if(_image is UILoader) 
 			{
-				beginFill(AskJon.colorOf[type], 0.8);
-				drawCircle(0, 0, PLACEHOLDER_SIZE);
-				endFill();
+				(_image).addEventListener(Event.COMPLETE, loaderInit);// = loaderInit;
 			}
-			
-			if(_image is UILoader)
-				(_image as UILoader).onComplete = loaderInit;
 			else
 				_image.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
+		
 		private function loaderInit(e:Event):void
 		{
 			if(_image.stage)
@@ -74,8 +83,19 @@ package com.creatures
 		}
 		private function init(e:Event = null):void
 		{
-			_lastRegenTime = _lastMoveTime = _masterTime;
-//			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
+			_image.removeEventListener(Event.ADDED_TO_STAGE, init);
+			
+			var offsets:Object = AskJon.offsets[_type];
+			var centerContainer:Sprite = new Sprite();
+////			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
+			centerContainer.rotation = _image.rotation;
+			_image.rotation = 0;
+			_image.x = offsets.x;
+			_image.y = offsets.y;
+			_image.parent.addChild(centerContainer);
+			centerContainer.addChild(_image);
+			_image = centerContainer;
+			
 			updatePosition();
 		}
 		
@@ -92,8 +112,6 @@ package com.creatures
 		
 		public function getHealth():Number
 		{
-			if(isNaN(_health))
-				trace("what the fuck");
 			return _health;
 		}
 		
@@ -131,14 +149,34 @@ package com.creatures
 		private function changeHealth(healthDelta:Number):void
 		{
 			_health += healthDelta;	
-			if((_health) < 0)
+//			trace('_health ' + _health);
+			if((_health) <= 0)
 			{
 				_health = 0;
-				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
-			} 
+				killed();
+			}
 			else if(_health >= 200)
-				dispatchEvent(new EntityEvent(EntityEvent.SPLIT, this));
+				split();
 		}
+		
+		protected function killed():void
+		{
+//			_killedEvent:EntityEvent = new EntityEvent(EntityEvent.KILLED, this);
+
+//			if(_killedEvent != null)
+			with(_image.graphics)
+			{
+				clear();
+			}
+			dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
+			
+		}
+		protected function split():void
+		{
+			dispatchEvent(new EntityEvent(EntityEvent.SPLIT, this));
+			
+		}
+		
 		private function regenerate():void
 		{
 			var deltaTime:Number = _masterTime - _lastRegenTime;
@@ -151,21 +189,54 @@ package com.creatures
 		{
 			_centerPoint.x %= bounds.width;
 			_centerPoint.y %= bounds.height;
-			var $bounds:Rectangle = _image.getBounds(_image.parent);
-
-			_image.x = (_centerPoint.x - ($bounds.width * 0.5));
-			_image.y = (_centerPoint.y - ($bounds.height * 0.5));	
+			
+			_image.x = (_centerPoint.x);
+			_image.y = (_centerPoint.y);	
 		}
 		
+		private static const MINIMUM_SAFE_DISTANCE:Number = 15;
 		public function moveTick():void
 		{
 			var deltaTime:Number = _masterTime - _lastMoveTime;
-				
-			_centerPoint.x += fearVector.x * deltaTime * AskJon.entitySpeedArray[_type];
-			_centerPoint.y += fearVector.y * deltaTime * AskJon.entitySpeedArray[_type];
-			updatePosition();
 			
+			var deltaVector:Point = new Point(fearVector.x * deltaTime * _speed
+												, fearVector.y * deltaTime * _speed);
+			var targetPoint:Point = _centerPoint.add(deltaVector);
+			
+
+			var vectLength:Number;
+			var checkVect:Point;
+			var dot:Number;
+			for each(var entity:Entity in _hitList)
+			{
+				if(entity === this)
+					continue
+				checkVect = entity._centerPoint.subtract(targetPoint);
+				vectLength = checkVect.length;
+				if(vectLength < MINIMUM_SAFE_DISTANCE)
+				{
+					checkVect.normalize((vectLength - MINIMUM_SAFE_DISTANCE));
+					targetPoint = targetPoint.add(checkVect);
+				}
+			}
+			
+			var targetRotation:Number;
+			deltaVector = targetPoint.subtract(_centerPoint);
+			if(deltaVector.length < 0.00001)
+				targetRotation = idle();
+			else
+				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
+			_image.rotation += Math.min(Math.max(-MAXIMUM_ROTATION_DELTA,(targetRotation - _image.rotation) * 0.5), MAXIMUM_ROTATION_DELTA);
+			//			_image.rotation = targetRotation;
+			_centerPoint = targetPoint;
+			
+			updatePosition();
 			_lastMoveTime = _masterTime;
+		}
+		
+		protected function idle():Number
+		{
+			return 0;
 		}
 		
 		public function attackTick():void
@@ -256,6 +327,7 @@ package com.creatures
 			fearVector = fearVector.add(newFearVector).add(bestVector);
 			fearVector.x *= 0.5;
 			fearVector.y *= 0.5;
+			
 		}
 	}
 }
