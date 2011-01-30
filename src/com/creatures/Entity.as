@@ -165,7 +165,7 @@ package com.creatures
 		{
 			var distance:Number = 0;
 			var closestDistance:Number = Number.POSITIVE_INFINITY;
-			var closestEntity:Entity = null;
+			var bestEntity:Entity = null;
 			var deltaTime:Number = _masterTime - _lastAttackTime;
 			
 			regenerate();
@@ -174,16 +174,6 @@ package com.creatures
 			{
 				return;
 			}
-			var self:Entity = this;
-			var myType:String = type;
-			function compareFactionRisk(x:Entity, y:Entity):Number
-			{
-				return Number(AskJon.entityFactionMatrix[myType][x.type] - AskJon.entityFactionMatrix[myType][y.type]);
-			}
-//			trace("I am a " + _type + " and my hit list is " + _hitList);
-			var sortedHitList:Vector.<Entity> = _hitList.slice();
-			sortedHitList.sort(compareFactionRisk);
-//			trace("My biggest targets are at the end of this list " + sortedHitList);
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
@@ -191,20 +181,22 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if(!(AskJon.entityDamageMatrix[enemy.type] == AskJon.entityDamageMatrix[_type] == 0) && distance <= closestDistance && distance <= AskJon.entityRangeArray[_type])
+				if( AskJon.entityFactionMatrix[_type][enemy.type] > 0
+					&& (distance <= closestDistance && distance <= AskJon.entityRangeArray[_type])
+					&& (bestEntity === null || AskJon.entityFactionMatrix[_type][enemy.type] >= AskJon.entityFactionMatrix[_type][bestEntity.type]))
 				{
-					closestEntity = enemy;
+					bestEntity = enemy;
 					closestDistance = distance;
 				}
 			}
 			
-			if(closestEntity === null)
+			if(bestEntity === null)
 			{
 				return;
 			}
 			_lastAttackTime = _masterTime;
-			_attackWasBenefitial = attackEntity(closestEntity) > 0; 
-			closestEntity.riposte(this);
+			_attackWasBenefitial = attackEntity(bestEntity) > 0; 
+			bestEntity.riposte(this);
 		}
 		
 		public function riposte(attacker:Entity):void
@@ -229,7 +221,7 @@ package com.creatures
 				scale = enemy.getHealth() > 0 ? AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distanceFromEntity(enemy) * 1/100) : 0;
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
-				
+				differenceVector.normalize(1);
 				differenceVector.x *= scale;
 				differenceVector.y *= scale;
 				
