@@ -111,7 +111,7 @@ package
 		private function loadGame():void
 		{
 			// - PLAYER DATA -
-			playerData = new PlayerData(10000);
+			playerData = new PlayerData(1000);
 			
 			// - BG -
 			_bg = new Loader();
@@ -150,6 +150,7 @@ package
 			addEventListener(OverlayEvent.SHOW_MESSAGE, onOverlayEvent);
 			addEventListener(OverlayEvent.SHOW_ERROR_MESSAGE, onOverlayEvent);
 			addEventListener(AttackEvent.PURCHASED, onToolPurchased);
+			addEventListener(AttackEvent.DEATH, onDeath);
 			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
 			
 			// - TOOL LAYER -
@@ -178,6 +179,20 @@ package
 //			e.stopImmediatePropagation();
 			_mouseTool.destruct();
 			removeChild(_mouseTool);
+		}
+		
+		private function onDeath(e:AttackEvent):void
+		{
+			if(e.bombType != playerData.target)
+			{
+				playerData.money += AskTony.killIncorrectAward;
+			} else {
+				playerData.money += AskTony.killCorrectAward;
+				playerData.killCount--;
+			}
+			
+			_statusBar.updateCash(playerData.money);
+			_statusBar.updateKillCount(playerData.killCount);
 		}
 		//--------------------------------------
 		// PUBLIC METHODS

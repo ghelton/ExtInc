@@ -7,6 +7,8 @@ package com.player
 	{
 		private var _jerseyShore:Vector.<Tool>;
 		public var money:int;
+		public var target:String = getTarget();
+		public var killCount:int = 15;
 		
 		public function PlayerData($money:int)
 		{
@@ -45,6 +47,13 @@ package com.player
 				return tool;
 			}
 			else return null;
+		}
+		
+		private static function getTarget():String
+		{
+			var targets:Array = [AskTony.SEAL, AskTony.TIGER, AskTony.PANDA];
+			var target:String = targets[Math.floor(Math.random() * (1 + targets.length))];
+			return target;
 		}
 	}
 }
