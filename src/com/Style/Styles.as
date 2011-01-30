@@ -1,6 +1,7 @@
 
 package com.Style
 {
+	import flash.filters.GlowFilter;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
@@ -36,5 +37,10 @@ package com.Style
 		public static const PANEL_TF:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.CENTER);
 		public static const PANEL_TF_L:TextFormat = new TextFormat('Arial', 28, REALLY_GREEN, null, null, null, null, null, TextFormatAlign.LEFT);
 		
+		//--------------------------------------
+		// FILTERS
+		//--------------------------------------
+		public static const SCREEN_INNER_GLOW:GlowFilter = new GlowFilter(REALLY_GREEN, 1, 10, 10, 1, 5, true);
+		public static const SCREEN_GLOW:GlowFilter = new GlowFilter(REALLY_GREEN, .5, 5, 5, 2, 5);
 	}
 }

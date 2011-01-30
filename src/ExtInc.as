@@ -67,7 +67,7 @@ package
 		
 		private var testTypes:Array = [AskJon.COMMANDO, AskJon.MARINE];
 		
-		private var _player:PlayerData;
+		public static var playerData:PlayerData;
 
 		private var _bg:Loader;
 		private var _gameBoardMask:Loader;
@@ -99,6 +99,9 @@ package
 		
 		private function loadGame():void
 		{
+			// - PLAYER DATA -
+			playerData = new PlayerData(3000);
+			
 			// - BG -
 			_bg = new Loader();
 			_bg.load(new URLRequest(CHROME + 'MainBg.png'));

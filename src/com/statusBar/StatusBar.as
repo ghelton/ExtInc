@@ -5,6 +5,7 @@ package com.statusBar
 	import com.lookup.AskJon;
 	
 	import flash.display.Loader;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
@@ -68,7 +69,7 @@ package com.statusBar
 			_cashLabel.defaultTextFormat = Styles.PANEL_TF;
 			_cashLabel.width = 145;
 			_cashLabel.y = 50;
-			_cashLabel.text = "$300,000";
+			_cashLabel.text = ExtInc.playerData.money.toString();
 			cashMoniesBg.addChild(_cashLabel);
 			
 			// - KILL BOX -
@@ -117,6 +118,40 @@ package com.statusBar
 			var toolBoxBg:StatusBox = new StatusBox(434, 98, cornerRadius);
 			toolBoxBg.x = 505;
 			toolBoxBg.y = 662;
+			
+			var toolBoxLine:Shape = new Shape();
+			toolBoxLine.graphics.beginFill(Styles.REALLY_GREEN);
+			toolBoxLine.graphics.drawRect(20, (toolBoxBg.height - .5) / 2, toolBoxBg.width - 40, 1);
+			toolBoxLine.graphics.endFill(); 
+			toolBoxBg.addChild(toolBoxLine);
+			
+			var box:Shape;
+			var boxIndent:uint = 40;
+			for (var i:uint = 0; i < 5; i++)
+			{
+				box = new Shape();
+				box.graphics.lineStyle(1, Styles.REALLY_GREEN, 1, true);
+				box.graphics.beginFill(0x000000);
+				box.graphics.drawRect(boxIndent + i * 74, 25, 48, 50);
+				box.graphics.endFill();
+				box.filters = [Styles.SCREEN_GLOW];
+				toolBoxBg.addChild(box);
+			}
+			
+//			var box:Shape;
+//			var boxIndent:uint = 45;
+//			for (var i:uint = 0; i < 5; i++)
+//			{
+//				box = new Shape();
+//				box.graphics.lineStyle(1, Styles.REALLY_GREEN, 1, true);
+//				box.graphics.beginFill(0x000000);
+//				box.graphics.drawRect(boxIndent + i * 79, 30, 38, 40);
+//				box.graphics.endFill();
+//				box.filters = [Styles.SCREEN_GLOW];
+//				toolBoxBg.addChild(box);
+//			}
+			
+			
 			addChild(toolBoxBg);
 			
 			// - FS BUTTON -
