@@ -14,7 +14,7 @@ package com.creatures
 		private var graphic:MovieClip;
 		public function Mine($health:Number, $point:Point)
 		{
-			var mine:UILoader = new UILoader('../src/assets/Mine.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+			var mine:UILoader = new UILoader('assets/Mine.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
 			super(mine, $health, $point, AskTony.MINE);
 			mine.buttonMode = true;

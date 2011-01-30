@@ -49,9 +49,9 @@ package com.lookup
 		
 		public static const startingQuantities:Object =
 			{
-				PANDA: 			1,//gray
-				TIGER: 			0,//orange
-				SEAL: 			0,//blue gray
+				PANDA: 			4,//gray
+				TIGER: 			2,//orange
+				SEAL: 			4,//blue gray
 				COMMANDO:		0,//dark green
 				MARINE:			0,//pink
 				FIRE:			0,//yellow
