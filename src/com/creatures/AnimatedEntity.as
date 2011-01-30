@@ -30,7 +30,7 @@ package com.creatures
 		
 		protected override function changeHealth(healthDelta:Number, killedBy:String):void
 		{
-			_image.scaleX = _image.scaleY = (this.getHealth() / 200) + 0.5;
+			_image.scaleX = _image.scaleY = (this.getHealth() / 300) + 0.8;
 			super.changeHealth(healthDelta, killedBy);
 		}
 		
@@ -50,7 +50,15 @@ package com.creatures
 			_currentAnimation = keyFrame;
 		}
 		
-		private var _currentAnimation:String = '';
+		public override function attackEntity(attacker:Entity):Number
+		{
+			var value:Number = super.attackEntity(attacker);
+			if(value > 0)
+				playAnimation('attack');
+			return value;
+		}
+		
+		protected var _currentAnimation:String = '';
 		protected override function killed(killedByType:String):void
 		{
 			var animation:String = null;
