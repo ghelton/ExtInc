@@ -278,9 +278,9 @@ package com.lookup
 		//toolz
 		public static const toolInfo:Object =
 			{
-				PANDA_BAIT_TOOL:	{name: 'Panda Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/cake.swf', url:'chrome/tools/cake.swf', attackType:PANDA_BAIT},
-				SEAL_BAIT_TOOL:		{name: 'Seal Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/fish.swf', url:'chrome/tools/fish.swf', attackType:SEAL_BAIT},
-				TIGER_BAIT_TOOL:	{name: 'Tiger Bait', cooldown:5, cost:100, iconUrl:'chrome/tools/icons/steak.swf', url:'chrome/tools/steak.swf', attackType:TIGER_BAIT},
+				PANDA_BAIT_TOOL:	{name: 'Panda Bait', cooldown:5, cost:500, iconUrl:'chrome/tools/icons/cake.swf', url:'chrome/tools/cake.swf', attackType:PANDA_BAIT},
+				SEAL_BAIT_TOOL:		{name: 'Seal Bait', cooldown:5, cost:500, iconUrl:'chrome/tools/icons/fish.swf', url:'chrome/tools/fish.swf', attackType:SEAL_BAIT},
+				TIGER_BAIT_TOOL:	{name: 'Tiger Bait', cooldown:5, cost:500, iconUrl:'chrome/tools/icons/steak.swf', url:'chrome/tools/steak.swf', attackType:TIGER_BAIT},
 				FIRE_TOOL:			{name: 'Napalm', cooldown:5, cost:2000, iconUrl:'chrome/tools/icons/napalm.swf', url:'chrome/tools/napalm.swf', attackType:FIRE},
 				MINES_TOOL:			{name: 'Mines', cooldown:5, cost:1000, iconUrl:'chrome/tools/icons/mine.swf', url:'chrome/tools/mine.swf', attackType:MINE},
 				MARINES_TOOL:		{name: 'Marines', cooldown:5, cost:3000, iconUrl:'chrome/tools/icons/marines.swf', url:'chrome/tools/marines.swf', attackType:MARINE},

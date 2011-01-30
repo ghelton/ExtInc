@@ -7,8 +7,8 @@ package com.player
 	{
 		private var _jerseyShore:Vector.<Tool>;
 		public var money:int;
-		public var target:String = AskTony.SEAL;
-		public var killCount:int = 10;
+		public var target:String = getTarget();
+		public var killCount:int = 15;
 		
 		public function PlayerData($money:int)
 		{

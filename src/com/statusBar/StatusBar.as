@@ -162,7 +162,8 @@ package com.statusBar
 			var weapons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
 			weapons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].iconUrl));
 			weapons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].iconUrl));
-			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+//			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			
@@ -214,8 +215,8 @@ package com.statusBar
 			fullScreenButton.addEventListener(MouseEvent.CLICK, onFsClick);
 			fullScreenButton.buttonMode = true;
 			
-			updateTarget(AskTony.PANDA);
-			updateKillCount(10);
+			updateTarget(ExtInc.playerData.target);
+			updateKillCount(ExtInc.playerData.killCount);
 			updateTabs(WEAPONS);
 		}
 		
