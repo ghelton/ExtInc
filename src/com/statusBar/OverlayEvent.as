@@ -92,10 +92,17 @@ package com.statusBar
 		//--------------------------------------
 		public static function getRandomCompliment():String
 		{
-			var compliments:Array = ['cuddly', 'friendly', 'soft', 'fluffy', 'cuddly-wuddly', 'helpless', 'orphaned', 'adorable', 'abandoned'];
-			var compliment:int = Math.floor(Math.random() * (compliments.length - 1));  
+			var compliments:Array = ['cuddly', 'friendly', 'soft', 'fluffy', 'cuddly-wuddly', 'helpless', 'orphaned', 'adorable', 'abandoned', 'baby', 'motherlovin'];
+			var compliment:int = Math.random() * (compliments.length);  
 			trace('getRandomInsult: ' + compliments[compliment]);
 			return compliments[compliment];
+		}
+		
+		public static function getRandomReason():String
+		{
+			var suffixes:Array = ['for science', 'for king and country', 'for SPARTA!!!', 'for the greater good', 'for no reason', 'for glue', 'so you can sleep', 'for mittens', 'out of spite', 'for Ted Nugent'];
+			var suffix:int = Math.random() * (suffixes.length);
+			return suffixes[suffix];
 		}
 		
 		

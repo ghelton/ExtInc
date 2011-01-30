@@ -39,7 +39,7 @@ package com.creatures
 		private function esplode(e:Event):void 
 		{
 			dispatchEvent(new EntityEvent(EntityEvent.SPLODED, this));
-			killed();
+			killed(type);
 			_loader.destruct();
 		}
 	}

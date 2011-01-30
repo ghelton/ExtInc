@@ -44,6 +44,8 @@ package com.Style
 		//--------------------------------------
 		// FILTERS
 		//--------------------------------------
+		public static const DAMAGE_GLOW:GlowFilter = new GlowFilter(0xC63D36, 1, 10, 10, 2, 5, true);
+
 		public static const SCREEN_INNER_GLOW:GlowFilter = new GlowFilter(REALLY_GREEN, 1, 10, 10, 1, 5, true);
 		public static const SCREEN_GLOW:GlowFilter = new GlowFilter(REALLY_GREEN, .5, 5, 5, 2, 5);
 		public static const OVERLAY_DROP:DropShadowFilter = new DropShadowFilter(2, 0, 0, .7, 4, 4);

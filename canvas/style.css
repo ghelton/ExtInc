@@ -1,0 +1,18 @@
+body {
+	background: #000000;
+	width:760px;
+	overflow:hidden;
+}
+
+.center {
+	margin: 0 auto;
+	display: block;
+}
+
+#header {
+	margin-bottom: 10px;
+}
+#Content {
+	width:760px;
+}
+#likeframe {margin: 0 auto; width:450px;}

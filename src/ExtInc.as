@@ -180,9 +180,9 @@ package
 		{
 			if(e.bombType != playerData.target)
 			{
-				playerData.money += 500;
+				playerData.money += AskTony.killIncorrectAward;
 			} else {
-				playerData.money += 1500;
+				playerData.money += AskTony.killCorrectAward;
 				playerData.killCount--;
 				if(playerData.killCount == 0)
 					killGame();
