@@ -52,7 +52,8 @@ package com.creatures
 			_speed = Number(AskTony.entitySpeedArray[_type]);
 			if(!DISABLE_ASSETS)
 				_image = $graphic;
-			_health = $health;
+			var noiseAmount:Number = $health * AskTony.HEALTH_NOISE;
+			_health = $health + (Math.random() * 2 * noiseAmount) - noiseAmount;
 			_centerPoint = $point;
 			
 			if(_image == null)
@@ -156,7 +157,7 @@ package com.creatures
 				_health = 0;
 				killed();
 			}
-			else if(_health >= 200)
+			else if(_health >= AskTony.splitHealth)
 				split();
 		}
 		
@@ -229,16 +230,59 @@ package com.creatures
 			if(deltaVector.length < 0.0000000000001)
 				targetRotation = idle(deltaTime);
 			else
-				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
-			_image.rotation += Math.min(Math.max(-MAXIMUM_ROTATION_DELTA,(targetRotation - _image.rotation) * 0.5), MAXIMUM_ROTATION_DELTA);
+				targetRotation = (Math.atan2(deltaVector.y, deltaVector.x)) - Math.PI * 0.5;
+			
+//			targetRotation = flashitizeRotation(targetRotation);
+			
+			//expanded to make debug super fast no time to fix now!
+			var deltaRotation:Number;
+			var newRotation:Number = _image.rotation;
+			var radCurrent:Number = (newRotation * (Math.PI / 180));
+			deltaRotation=Math.atan2(Math.sin(targetRotation-radCurrent),Math.cos(targetRotation-radCurrent)) * 180 / Math.PI;
+
+//			deltaRotation = (Math.atan2(Math.sin(targetRotation - radCurrent)
+//				, Math.cos(targetRotation - radCurrent))  * 180 / Math.PI);
+//			if(targetRotation < 0 && newRotation > 0) //posible discontinuity
+//			{
+//				var checkRotation:Number = unflashitizeRotation(targetRotation) - unflashitizeRotation(newRotation);
+//				if(Math.abs(newRotation) > Math.abs(checkRotation))
+//					deltaRotation = checkRotation;
+//			}
+			if(deltaRotation > MAXIMUM_ROTATION_DELTA) {
+				newRotation += MAXIMUM_ROTATION_DELTA;
+			}
+			else if(deltaRotation < -MAXIMUM_ROTATION_DELTA) {
+				newRotation -= -MAXIMUM_ROTATION_DELTA;
+			}
+			else
+				newRotation += deltaRotation;
+			trace('delta ' + deltaRotation);
+//			trace('targetRotation: ' + targetRotation + 'newRotation: ' + newRotation + ' image.Rotation ' + _image.rotation);
+
+			_image.rotation = newRotation;
 			//			_image.rotation = targetRotation;
 			
 			updatePosition();
 			_lastMoveTime = _masterTime;
 		}
 		
+		private static function unflashitizeRotation(rot:Number):Number
+		{
+			if(rot < 0)
+				rot = (360.0 + rot);
+			return rot;
+		}
+		private static function flashitizeRotation(rot:Number):Number
+		{
+			if(rot > 180)
+				rot = (rot - 360.0);
+			else if(rot < -180)
+				rot = (360.0 + rot);
+			return rot;
+		}
+		
 		private static const MOSEY_SPEED:Number = 5;
-		private var _wanderVect:Point = new Point(0, -1);
+		private var _wanderVect:Point = new Point(0, 1);
 		protected function idle(delta:Number = 0):Number
 		{
 			var wanderClone:Point = _wanderVect.clone();

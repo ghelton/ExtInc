@@ -144,7 +144,10 @@ package com.gameBoard
 		private function onSplit(e:EntityEvent):void
 		{
 			if(entities.length < 40)
-				createEntity(e.entity.centerPoint.add(new Point(Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE)), e.entity.type);
+			{
+				var entity:Entity = e.entity;
+				createEntity(entity.centerPoint.add(new Point(Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE)), entity.type, entity.getHealth());
+			}
 //			explode(e.entity.centerPoint);
 		}
 //		private function onAttackUp(e:Event):void
@@ -250,12 +253,12 @@ package com.gameBoard
 			for(count = 0; count < entities.length; count++)
 				entities[count].moveTick();
 		}
-		public function createEntity(point:Point, type:String):void
+		public function createEntity(point:Point, type:String, health:int = 100):void
 		{
 			var contructor:* = AskTony.classLookup[type];
 			if(contructor != null)
 			{
-				var entity:Entity = new contructor(100, point);
+				var entity:Entity = new contructor(health, point);
 				addEntity(entity);
 			}
 		}
