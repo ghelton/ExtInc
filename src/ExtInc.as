@@ -64,7 +64,7 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
-		private var testTypes:Array = [AskJon.COMMANDO, AskJon.MARINE];
+		private var testTypes:Array = [AskJon.SEAL, AskJon.TIGER, AskJon.PANDA];
 		
 		private var _player:PlayerData;
 
