@@ -1,9 +1,10 @@
 package com.creatures
 {
+	import com.UI.UILoader;
+	import com.lookup.AskJon;
+	
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	
-	import com.lookup.AskJon;
 	
 	public class Tiger extends Entity
 	{
@@ -16,7 +17,9 @@ package com.creatures
 //				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
 //				endFill();
 //			}
-			super(null, $health, $point, AskJon.TIGER);
+			var tiger:UILoader = new UILoader('../src/assets/Seal.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+
+			super(tiger, $health, $point, AskJon.TIGER);
 		}
 	}
 }

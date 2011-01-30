@@ -5,11 +5,13 @@ package com.creatures
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	
 	public class Entity extends EventDispatcher
 	{
 		public static var _masterTime:Number;
+		public static var bounds:Rectangle;
 		
 		public static function setMasterTime(masterTime:Number):void
 		{
@@ -108,32 +110,34 @@ package com.creatures
 		{
 			var healthChange:Number = AskJon.entityDamageMatrix[_type][enemy.type];
 			
-			if(isNaN(healthChange))
-				trace("fuck yall");
-			if(isNaN(_health))
-				trace("fuck yall");
-			if((_health + healthChange) < 0)
+			changeHealth(healthChange);
+			return healthChange;
+		}
+		private function changeHealth(healthDelta:Number):void
+		{
+			_health += healthDelta;	
+			if((_health) < 0)
 			{
 				_health = 0;
 				dispatchEvent(new EntityEvent(EntityEvent.KILLED, this));
-			} else {
-				_health += healthChange;	
-			}
-			return healthChange;
+			} 
+			else if(_health >= 200)
+				dispatchEvent(new EntityEvent(EntityEvent.SPLIT, this));
 		}
-		
 		private function regenerate():void
 		{
 			var deltaTime:Number = _masterTime - _lastRegenTime;
 			var deltaHealth:Number = deltaTime * AskJon.entityRegenArray[_type];
-			_health += deltaHealth;
+			changeHealth(deltaHealth);
 			_lastRegenTime = _masterTime;
 		}
 		
 		protected function updatePosition():void
 		{
-			_image.x = _centerPoint.x - (_image.width * 0.5);
-			_image.y = _centerPoint.y - (_image.height * 0.5);	
+			_centerPoint.x %= bounds.width;
+			_centerPoint.y %= bounds.height;
+			_image.x = (_centerPoint.x - (_image.width * 0.5));
+			_image.y = (_centerPoint.y - (_image.height * 0.5));	
 		}
 		
 		public function moveTick():void
@@ -170,6 +174,16 @@ package com.creatures
 			{
 				return;
 			}
+			var self:Entity = this;
+			var myType:String = type;
+			function compareFactionRisk(x:Entity, y:Entity):Number
+			{
+				return Number(AskJon.entityFactionMatrix[myType][x.type] - AskJon.entityFactionMatrix[myType][y.type]);
+			}
+//			trace("I am a " + _type + " and my hit list is " + _hitList);
+			var sortedHitList:Vector.<Entity> = _hitList.slice();
+			sortedHitList.sort(compareFactionRisk);
+//			trace("My biggest targets are at the end of this list " + sortedHitList);
 			for each (var enemy:Entity in _hitList)
 			{
 				if(enemy === this)
