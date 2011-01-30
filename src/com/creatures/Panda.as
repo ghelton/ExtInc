@@ -10,7 +10,7 @@ package com.creatures
 	{
 		public function Panda($health:Number, $point:Point)
 		{
-			var panda:UILoader = new UILoader('../src/assets/Panda.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+			var panda:UILoader = new UILoader('assets/Panda.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 			super(panda, $health, $point, AskTony.PANDA);
 		}
 	}

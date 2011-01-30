@@ -17,7 +17,7 @@ package com.creatures
 //				drawCircle(0, 0, Entity.TEMP_ENTITY_SIZE);
 //				endFill();
 //			}
-			var tiger:UILoader = new UILoader('../src/assets/Tiger.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
+			var tiger:UILoader = new UILoader('assets/Tiger.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
 			super(tiger, $health, $point, AskTony.TIGER);
 		}

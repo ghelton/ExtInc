@@ -106,7 +106,7 @@ package
 		private function loadGame():void
 		{
 			// - PLAYER DATA -
-			playerData = new PlayerData(3000);
+			playerData = new PlayerData(10000);
 			
 			// - BG -
 			_bg = new Loader();
@@ -125,7 +125,7 @@ package
 			
 			// - GAME BOARD -
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
-			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), AskTony.startingQuantities );//buildGameBoard());
+			gameBoard = new GameBoard( new UILoader("assets/terrain.swf"), AskTony.startingQuantities );//buildGameBoard());
 			screen.addChild(gameBoard);
 			
 			gameBoard.x = _screenMask.x = 54; 
