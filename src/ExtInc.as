@@ -9,7 +9,7 @@ package
 	import com.fonts.Transponder;
 	import com.gameBoard.GameBoard;
 	import com.gameBoard.Tile;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	import com.player.PlayerData;
 	import com.player.tools.Tool;
 	import com.player.tools.ToolEvent;
@@ -69,7 +69,6 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
-		private var testTypes:Array = [AskJon.SEAL, AskJon.TIGER, AskJon.PANDA];
 		
 		public static var playerData:PlayerData;
 
@@ -125,7 +124,7 @@ package
 			
 			// - GAME BOARD -
 			Entity.setMasterTime(Number(getTimer()) / 1000.0);
-			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), testTypes );//buildGameBoard());
+			gameBoard = new GameBoard( new UILoader("../src/assets/terrain.swf"), AskTony.startingQuantities );//buildGameBoard());
 			screen.addChild(gameBoard);
 			
 			gameBoard.x = _screenMask.x = 54; 

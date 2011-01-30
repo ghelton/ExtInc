@@ -1,7 +1,7 @@
 package com.creatures
 {
 	import com.UI.UILoader;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -32,12 +32,12 @@ package com.creatures
 		public var fearVector:Point = new Point();
 		private var _type:String;
 		private var _hitList:Vector.<Entity>;
-		private var _image:Sprite;
+		protected var _image:Sprite;
 		private var _health:Number;
 		private var _centerPoint:Point;
 		private var _rotation:Number;
 		
-		protected static const TEMP_ENTITY_SIZE:Number = 50;
+		public static const TEMP_ENTITY_SIZE:Number = 50;
 		protected static const PLACEHOLDER_SIZE:Number = 5;
 		
 		private var _lastAttackTime:Number = 0;
@@ -49,7 +49,7 @@ package com.creatures
 			super();
 			
 			_type = $type;
-			_speed = Number(AskJon.entitySpeedArray[_type]);
+			_speed = Number(AskTony.entitySpeedArray[_type]);
 			if(!DISABLE_ASSETS)
 				_image = $graphic;
 			_health = $health;
@@ -60,7 +60,7 @@ package com.creatures
 				_image = new Sprite();
 				with(_image.graphics)
 				{
-					beginFill(AskJon.colorOf[type], 0.8);
+					beginFill(AskTony.colorOf[type], 0.8);
 					drawCircle(0, 0, PLACEHOLDER_SIZE);
 					endFill();
 				}
@@ -85,7 +85,7 @@ package com.creatures
 		{
 			_image.removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			var offsets:Object = AskJon.offsets[_type];
+			var offsets:Object = AskTony.offsets[_type];
 			var centerContainer:Sprite = new Sprite();
 ////			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
 			centerContainer.rotation = _image.rotation;
@@ -129,7 +129,7 @@ package com.creatures
 		//HELPERS
 		public function canAttack():Boolean
 		{
-			return _health > 0 && ((AskJon.entityROFArray[_type] + _lastAttackTime) < _masterTime);
+			return _health > 0 && ((AskTony.entityROFArray[_type] + _lastAttackTime) < _masterTime);
 		}
 		
 		public function distanceFromEntity(other:Entity):Number
@@ -142,11 +142,11 @@ package com.creatures
 		
 		public function attackEntity(enemy:Entity):void
 		{
-			var healthChange:Number = AskJon.entityDamageMatrix[_type][enemy.type];
+			var healthChange:Number = AskTony.entityDamageMatrix[_type][enemy.type];
 			
 			changeHealth(healthChange);
 		}
-		private function changeHealth(healthDelta:Number):void
+		protected function changeHealth(healthDelta:Number):void
 		{
 			_health += healthDelta;	
 //			trace('_health ' + _health);
@@ -173,6 +173,7 @@ package com.creatures
 		}
 		protected function split():void
 		{
+			_health *= 0.5;
 			dispatchEvent(new EntityEvent(EntityEvent.SPLIT, this));
 			
 		}
@@ -180,7 +181,7 @@ package com.creatures
 		private function regenerate():void
 		{
 			var deltaTime:Number = _masterTime - _lastRegenTime;
-			var deltaHealth:Number = deltaTime * AskJon.entityRegenArray[_type];
+			var deltaHealth:Number = deltaTime * AskTony.entityRegenArray[_type];
 			changeHealth(deltaHealth);
 			_lastRegenTime = _masterTime;
 		}
@@ -222,7 +223,7 @@ package com.creatures
 			
 			var targetRotation:Number;
 			deltaVector = targetPoint.subtract(_centerPoint);
-			if(deltaVector.length < 0.00001)
+			if(deltaVector.length < 0.0000000000001)
 				targetRotation = idle();
 			else
 				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x) * 180 / Math.PI)) - 90;
@@ -258,9 +259,9 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if( AskJon.entityFactionMatrix[_type][enemy.type] > 0
-					&& (distance <= closestDistance && distance <= AskJon.entityRangeArray[_type])
-					&& (bestEntity === null || AskJon.entityFactionMatrix[_type][enemy.type] >= AskJon.entityFactionMatrix[_type][bestEntity.type]))
+				if( AskTony.entityFactionMatrix[_type][enemy.type] > 0
+					&& (distance <= closestDistance && distance <= AskTony.entityRangeArray[_type])
+					&& (bestEntity === null || AskTony.entityFactionMatrix[_type][enemy.type] >= AskTony.entityFactionMatrix[_type][bestEntity.type]))
 				{
 					bestEntity = enemy;
 					closestDistance = distance;
@@ -299,17 +300,17 @@ package com.creatures
 				}
 				distance = distanceFromEntity(enemy);
 				
-				if(AskJon.entityFearMatrix[type][enemy.type] > 0)
+				if(AskTony.entityFearMatrix[type][enemy.type] > 0)
 				{
-					if(distance > Math.abs(AskJon.entityPredatorAgroRangeArray[_type] * AskJon.entityFearMatrix[_type][enemy.type]))
+					if(distance > Math.abs(AskTony.entityPredatorAgroRangeArray[_type] * AskTony.entityFearMatrix[_type][enemy.type]))
 						continue;
 					
-					scale = AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100));
+					scale = AskTony.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100));
 				} else {
-					if(distance > Math.abs(AskJon.entityPreyAgroRangeArray[_type] * AskJon.entityFearMatrix[_type][enemy.type]))
+					if(distance > Math.abs(AskTony.entityPreyAgroRangeArray[_type] * AskTony.entityFearMatrix[_type][enemy.type]))
 						continue;
 					
-					scale = AskJon.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distance * 1/100);
+					scale = AskTony.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distance * 1/100);
 				}
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);

@@ -1,6 +1,7 @@
 package com.lookup
 {
 	import com.creatures.Commando;
+	import com.creatures.Distractor;
 	import com.creatures.Fire;
 	import com.creatures.Marine;
 	import com.creatures.Mine;
@@ -12,7 +13,7 @@ package com.lookup
 	import com.creatures.TigerBait;
 	import com.creatures.Tree;
 
-	public class AskJon
+	public class AskTony
 	{
 		//Animals
 		public static const PANDA:String 				= 'PANDA';
@@ -32,6 +33,7 @@ package com.lookup
 		public static const PANDA_BAIT:String			= 'PANDA_BAIT';
 		public static const SEAL_BAIT:String			= 'SEAL_BAIT';
 		public static const TIGER_BAIT:String			= 'TIGER_BAIT';
+		public static const DISTRACTOR:String			= 'DISTRACTOR';
 		
 		
 		//TOOLS
@@ -44,17 +46,32 @@ package com.lookup
 		public static const COMMANDO_TOOL:String		= 'COMMANDO_TOOL';
 		public static const BOOMBA_TOOL:String			= 'BOOMBA_TOOL';
 		
+		public static const startingQuantities:Object =
+			{
+				PANDA: 			0,//gray
+				TIGER: 			1,//orange
+				SEAL: 			1,//blue gray
+				COMMANDO:		0,//dark green
+				MARINE:			0,//pink
+				FIRE:			0,//yellow
+				TREE:			0,//light green
+				PANDA_BAIT:		0,
+				SEAL_BAIT:		0,
+				TIGER_BAIT:		0,
+				MINE:			0,
+				DISTRACTOR:		0
+			};
 		//Inclination for an entity type to move towards or away from another entity type
 		public static const entityFearMatrix:Object = 
 			{
 				PANDA:{ 
-					PANDA:-1, SEAL:0.0, TIGER:0, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.3, TREE:0.2, PANDA_BAIT:0.5, SEAL_BAIT:-0.2, TIGER_BAIT:0.3, MINE:0
+					PANDA:-.1, SEAL:0.0, TIGER:0, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.3, TREE:1.0, PANDA_BAIT:2.0, SEAL_BAIT:-0.2, TIGER_BAIT:0.3, MINE:0
 				},
 				SEAL:{
-					PANDA:0.0, SEAL:0.3, TIGER:0, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.2, TREE:0.1, PANDA_BAIT:0.2, SEAL_BAIT:0.5, TIGER_BAIT:-0.3, MINE:0
+					PANDA:0.0, SEAL:0.1, TIGER:0, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.2, TREE:0.1, PANDA_BAIT:0.3, SEAL_BAIT:0.5, TIGER_BAIT:-0.3, MINE:0
 				},
 				TIGER:{
-					PANDA:-0.1, SEAL:0.5, TIGER:-0.05, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.4, TREE:0.1, PANDA_BAIT:-0.1, SEAL_BAIT:0.2, TIGER_BAIT:0.5, MINE:0
+					PANDA:-0.1, SEAL:0.3, TIGER:-0.05, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.4, TREE:0.1, PANDA_BAIT:-0.1, SEAL_BAIT:0.2, TIGER_BAIT:0.5, MINE:0
 				},
 				COMMANDO:{
 					PANDA:0.4, SEAL:0.4, TIGER:0.4, COMMANDO:0.4, MARINE:0, FIRE:0, TREE:0.1, PANDA_BAIT:0.1, SEAL_BAIT:0.1, TIGER_BAIT:0.1, MINE:0
@@ -123,54 +140,57 @@ package com.lookup
 		public static const entityDamageMatrix:Object = 
 			{
 				PANDA:{ 
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:15, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:15, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100, DISTRACTOR:0
 				},
 				SEAL:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-50, MARINE:-30, FIRE:-100, TREE:5, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:-100
+					PANDA:0, SEAL:0, TIGER:-5, COMMANDO:-50, MARINE:-30, FIRE:-100, TREE:5, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:-100, DISTRACTOR:0
 				},
 				TIGER:{
-					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-40, MARINE:-25, FIRE:-90, TREE:0, PANDA_BAIT:-5, SEAL_BAIT:3, TIGER_BAIT:8, MINE:-100
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-40, MARINE:-25, FIRE:-90, TREE:0, PANDA_BAIT:-5, SEAL_BAIT:3, TIGER_BAIT:8, MINE:-100, DISTRACTOR:0
 				},
 				COMMANDO:{
-					PANDA:-30, SEAL:-10, TIGER:0, COMMANDO:-80, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-30, SEAL:-10, TIGER:0, COMMANDO:-80, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				MARINE:{
-					PANDA:-35, SEAL:-20, TIGER:-60, COMMANDO:-10, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-35, SEAL:-20, TIGER:-60, COMMANDO:-10, MARINE:0, FIRE:-100, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				FIRE:{
-					PANDA:10, SEAL:10, TIGER:5, COMMANDO:0, MARINE:0, FIRE:0, TREE:20, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:10, SEAL:10, TIGER:5, COMMANDO:0, MARINE:0, FIRE:0, TREE:20, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				TREE:{
-					PANDA:-5, SEAL:-10, TIGER:0, COMMANDO:0, MARINE:0, FIRE:-30, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-100, SEAL:-10, TIGER:0, COMMANDO:0, MARINE:0, FIRE:-30, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				PANDA_BAIT:{
-					PANDA:25, SEAL:25, TIGER:25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-25, SEAL:-25, TIGER:-25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				SEAL_BAIT:{
-					PANDA:25, SEAL:25, TIGER:25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-25, SEAL:-25, TIGER:-25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				TIGER_BAIT:{
-					PANDA:25, SEAL:25, TIGER:25, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:-25, SEAL:-25, TIGER:-100, COMMANDO:0, MARINE:0, FIRE:20, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				},
 				MINE:{
-					PANDA:100, SEAL:100, TIGER:100, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
+					PANDA:100, SEAL:100, TIGER:100, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
+				},
+				DISTRACTOR:{
+					PANDA:100, SEAL:100, TIGER:100, COMMANDO:0, MARINE:0, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0, DISTRACTOR:0
 				}
 			};
 		
 		//range
 		public static const entityRangeArray:Object = 
 			{
-				PANDA:			30,
-				SEAL:			10,
-				TIGER:			35,
+				PANDA:			50,
+				SEAL:			50,
+				TIGER:			90,
 				COMMANDO:		250,
-				MARINE:			80,
+				MARINE:			130,
 				FIRE:			60,
-				TREE:			10,
-				PANDA_BAIT:		10,
-				SEAL_BAIT:		10,
-				TIGER_BAIT:		10,
-				MINE:			20
+				TREE:			50,
+				PANDA_BAIT:		50,
+				SEAL_BAIT:		50,
+				TIGER_BAIT:		50,
+				MINE:			50
 			};
 		
 		//rate of fire
@@ -192,9 +212,9 @@ package com.lookup
 		//
 		public static const entitySpeedArray:Object = 
 			{
-				PANDA:			20,
-				SEAL:			10,
-				TIGER:			100,
+				PANDA:			90,
+				SEAL:			60,
+				TIGER:			120,
 				COMMANDO:		160,
 				MARINE:			30,
 				FIRE:			0,
@@ -214,7 +234,7 @@ package com.lookup
 				COMMANDO:		-10.0,
 				MARINE:			-20.0,
 				FIRE:			-10.0,
-				TREE:			5.0,
+				TREE:			0.0,
 				PANDA_BAIT:		0.0,
 				SEAL_BAIT:		0.0,
 				TIGER_BAIT:		0.0,
@@ -240,17 +260,17 @@ package com.lookup
 		//Predator agro range
 		public static const entityPredatorAgroRangeArray:Object = 
 			{
-				PANDA:			200,
-				SEAL:			200,
-				TIGER:			200,
-				COMMANDO:		2000,
+				PANDA:			250,
+				SEAL:			350,
+				TIGER:			500,
+				COMMANDO:		500,
 				MARINE:			200,
-				FIRE:			200,
-				TREE:			200,
-				PANDA_BAIT:		200,
-				SEAL_BAIT:		200,
-				TIGER_BAIT:		200,
-				MINE:			200
+				FIRE:			0,
+				TREE:			0,
+				PANDA_BAIT:		0,
+				SEAL_BAIT:		0,
+				TIGER_BAIT:		0,
+				MINE:			0
 			};
 		
 		//toolz
@@ -285,7 +305,8 @@ package com.lookup
 				PANDA_BAIT:		PandaBait,
 				SEAL_BAIT:		SealBait,
 				TIGER_BAIT:		TigerBait,
-				MINE:			Mine
+				MINE:			Mine,
+				DISTRACTOR:		Distractor
 			}
 		
 		public static const colorOf:Object =
@@ -315,11 +336,14 @@ package com.lookup
 				PANDA_BAIT:		{x:0, y:0},
 				SEAL_BAIT:		{x:0, y:0},
 				TIGER_BAIT:		{x:0, y:0},
-				MINE:			{x:0, y:0}
+				MINE:			{x:-10, y:-14},
+				DISTRACTOR:		{x:0, y:0}
 			}
-		public function AskJon()
-		{
 			
+		
+		public function AskTony()
+		{
+			trace('jon doesnt know shit check the static constz');
 		}
 	}
 }

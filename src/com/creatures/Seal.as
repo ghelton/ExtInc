@@ -1,7 +1,7 @@
 package com.creatures
 {
 	import com.UI.UILoader;
-	import com.lookup.AskJon;
+	import com.lookup.AskTony;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -19,7 +19,7 @@ package com.creatures
 //			}
 			var seal:UILoader = new UILoader('../src/assets/Seal.swf', Entity.TEMP_ENTITY_SIZE, Entity.TEMP_ENTITY_SIZE);
 
-			super(seal, $health, $point, AskJon.SEAL);
+			super(seal, $health, $point, AskTony.SEAL);
 		}
 	}
 }
