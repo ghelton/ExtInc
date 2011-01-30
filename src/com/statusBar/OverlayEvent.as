@@ -23,6 +23,11 @@ package com.statusBar
 		public static const WEAPONS:String = "Weapons - Use your weapons to kill creatures";
 		public static const CASH_MONIES:String = "Money Money Money!!!!!";
 		public static const KILL_BOX:String = "Kill the ";
+		public static const MINES_TOOL:String = " - Landmine";
+		public static const FIRE_TOOL:String = " - Napalm";
+		public static const COMMANDO_TOOL:String = " - Commando";
+		public static const MARINES_TOOL:String = " - Marines";
+		public static const BOOMBA_TOOL:String = " - Boomba";
 		
 		//--------------------------------------
 		// VARIABLES
@@ -45,12 +50,12 @@ package com.statusBar
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		public static function getRandomInsult():String
+		public static function getRandomCompliment():String
 		{
-			var insults:Array = ['filthy', 'rabid', 'crazy', 'smelly', 'ugly', 'killer'];
-			var insult:int = Math.floor(Math.random() * (insults.length - 1));  
-			trace('getRandomInsult: ' + insults[insult]);
-			return insults[insult];
+			var compliments:Array = ['cuddly', 'friendly', 'soft', 'fluffy', 'cuddly-wuddly', 'helpless', 'orphaned', 'adorable', 'abandoned'];
+			var compliment:int = Math.floor(Math.random() * (compliments.length - 1));  
+			trace('getRandomInsult: ' + compliments[compliment]);
+			return compliments[compliment];
 		}
 		
 		

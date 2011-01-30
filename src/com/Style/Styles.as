@@ -24,7 +24,7 @@ package com.Style
 		public static const DARK_GRAY:uint = 0x333333;
 		public static const LIGHTER_THAN_DARK_GRAY:uint = 0x433E3B;
 		public static const ALMOST_GREEN:uint = 0x4B5044;
-		public static const REALLY_GREEN:uint = 0x00FF00;
+		public static const REALLY_GREEN:uint = 0x36B454;
 		
 		//--------------------------------------
 		// FONTS

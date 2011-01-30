@@ -66,7 +66,6 @@ package
 		// VARIABLES
 		//--------------------------------------
 		
-//		private var testTypes:Array = [AskJon.TIGER, AskJon.SEAL, AskJon.PANDA];
 		
 		public static var playerData:PlayerData;
 
@@ -140,7 +139,6 @@ package
 			// - STATUS MESSAGE -
 			addEventListener(OverlayEvent.SHOW_MESSAGE, onOverlayEvent);
 			dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, OverlayEvent.WELCOME));
-			
 		}
 		
 		//--------------------------------------

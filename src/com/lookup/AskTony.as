@@ -44,6 +44,7 @@ package com.lookup
 		public static const MINES_TOOL:String			= 'MINES_TOOL';
 		public static const MARINES_TOOL:String			= 'MARINES_TOOL';
 		public static const COMMANDO_TOOL:String		= 'COMMANDO_TOOL';
+		public static const BOOMBA_TOOL:String			= 'BOOMBA_TOOL';
 		
 		public static const startingQuantities:Object =
 			{
@@ -58,19 +59,19 @@ package com.lookup
 				SEAL_BAIT:		0,
 				TIGER_BAIT:		0,
 				MINE:			1,
-				DISTRACTOR:		4
+				DISTRACTOR:		0
 			};
 		//Inclination for an entity type to move towards or away from another entity type
 		public static const entityFearMatrix:Object = 
 			{
 				PANDA:{ 
-					PANDA:-0.05, SEAL:0.0, TIGER:0, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.3, TREE:0.2, PANDA_BAIT:0.5, SEAL_BAIT:-0.2, TIGER_BAIT:0.3, MINE:0
+					PANDA:-1, SEAL:0.0, TIGER:0, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.3, TREE:0.2, PANDA_BAIT:0.5, SEAL_BAIT:-0.2, TIGER_BAIT:0.3, MINE:0
 				},
 				SEAL:{
-					PANDA:0.0, SEAL:0.3, TIGER:-0.05, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.2, TREE:0.1, PANDA_BAIT:0.2, SEAL_BAIT:0.5, TIGER_BAIT:-0.3, MINE:0
+					PANDA:0.0, SEAL:0.3, TIGER:0, COMMANDO:-0.4, MARINE:-0.4, FIRE:-0.2, TREE:0.1, PANDA_BAIT:0.2, SEAL_BAIT:0.5, TIGER_BAIT:-0.3, MINE:0
 				},
 				TIGER:{
-					PANDA:-0.1, SEAL:1, TIGER:-0.05, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.4, TREE:0.1, PANDA_BAIT:-0.1, SEAL_BAIT:0.2, TIGER_BAIT:0.5, MINE:0
+					PANDA:-0.1, SEAL:0.5, TIGER:-0.05, COMMANDO:-0.3, MARINE:-0.5, FIRE:-0.4, TREE:0.1, PANDA_BAIT:-0.1, SEAL_BAIT:0.2, TIGER_BAIT:0.5, MINE:0
 				},
 				COMMANDO:{
 					PANDA:0.4, SEAL:0.4, TIGER:0.4, COMMANDO:0.4, MARINE:0, FIRE:0, TREE:0.1, PANDA_BAIT:0.1, SEAL_BAIT:0.1, TIGER_BAIT:0.1, MINE:0
@@ -108,7 +109,7 @@ package com.lookup
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:1, MARINE:1, FIRE:0, TREE:2, PANDA_BAIT:3, SEAL_BAIT:4, TIGER_BAIT:0, MINE:0
 				},
 				TIGER:{
-					PANDA:0, SEAL:1, TIGER:0, COMMANDO:2, MARINE:2, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:2, TIGER_BAIT:3, MINE:0
+					PANDA:0, SEAL:0, TIGER:0, COMMANDO:2, MARINE:2, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:2, TIGER_BAIT:3, MINE:0
 				},
 				COMMANDO:{
 					PANDA:1, SEAL:1, TIGER:1, COMMANDO:1, MARINE:1, FIRE:0, TREE:0, PANDA_BAIT:0, SEAL_BAIT:0, TIGER_BAIT:0, MINE:0
@@ -142,7 +143,7 @@ package com.lookup
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:15, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100, DISTRACTOR:0
 				},
 				SEAL:{
-					PANDA:0, SEAL:0, TIGER:-20, COMMANDO:-50, MARINE:-30, FIRE:-100, TREE:5, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:-100, DISTRACTOR:0
+					PANDA:0, SEAL:0, TIGER:-5, COMMANDO:-50, MARINE:-30, FIRE:-100, TREE:5, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:-100, DISTRACTOR:0
 				},
 				TIGER:{
 					PANDA:0, SEAL:0, TIGER:0, COMMANDO:-40, MARINE:-25, FIRE:-90, TREE:0, PANDA_BAIT:-5, SEAL_BAIT:3, TIGER_BAIT:8, MINE:-100, DISTRACTOR:0
@@ -273,15 +274,23 @@ package com.lookup
 			};
 		
 		//toolz
-		public static const toolStats:Object =
+		public static const toolInfo:Object =
 			{
-				PANDA_BAIT_TOOL:	{cooldown:5, cost:100},
-				SEAL_BAIT_TOOL:		{cooldown:5, cost:100},
-				TIGER_BAIT_TOOL:	{cooldown:5, cost:100},
-				FIRE_TOOL:			{cooldown:5, cost:100},
-				MINES_TOOL:			{cooldown:5, cost:100},
-				MARINES_TOOL:		{cooldown:5, cost:100},
-				COMMANDO_TOOL:		{cooldown:5, cost:100}
+				PANDA_BAIT_TOOL:	{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
+				SEAL_BAIT_TOOL:		{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
+				TIGER_BAIT_TOOL:	{cooldown:5, cost:100, url:'chrome/weapons/mine.swf'},
+				FIRE_TOOL:			{cooldown:5, cost:2000, url:'chrome/weapons/napalm.swf'},
+				MINES_TOOL:			{cooldown:5, cost:1000, url:'chrome/weapons/mine.swf'},
+				MARINES_TOOL:		{cooldown:5, cost:3000, url:'chrome/weapons/marines.swf'},
+				BOOMBA_TOOL:		{cooldown:5, cost:5000, url:'chrome/weapons/boomba.swf'},
+				COMMANDO_TOOL:		{cooldown:5, cost:7000, url:'chrome/weapons/mine.swf'}
+			};
+		
+		public static const classInfo:Object =
+			{
+				PANDA:	{name: "Panda", url:'chrome/classes/panda.swf'},
+				SEAL:	{name: "Seal", url:'chrome/classes/seal.swf'},
+				TIGER:	{name: "Tiger", url:'chrome/classes/tiger.swf'}
 			};
 		
 		public static const classLookup:Object =

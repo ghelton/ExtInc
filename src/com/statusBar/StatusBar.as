@@ -62,7 +62,7 @@ package com.statusBar
 			cashMoniesBg.name = CASH_MONIES;
 			addChild(cashMoniesBg);
 			cashMoniesBg.mouseChildren = false;
-			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
+			cashMoniesBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 			
 			var cashTitleLabel:TextField = new TextField();
 			cashTitleLabel.defaultTextFormat = Styles.PANEL_TF;
@@ -85,7 +85,7 @@ package com.statusBar
 			killBoxBg.name = KILL_BOX;
 			killBoxBg.mouseChildren = false;
 			addChild(killBoxBg);
-			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onBoxRollover);
+			killBoxBg.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
 			
 			var killBoxLabel:TextField = new TextField();
 			killBoxLabel.defaultTextFormat = Styles.PANEL_TF_L;
@@ -127,6 +127,7 @@ package com.statusBar
 			var toolBoxBg:StatusBox = new StatusBox(434, 98, cornerRadius);
 			toolBoxBg.x = 505;
 			toolBoxBg.y = 662;
+			addChild(toolBoxBg);
 			
 			var toolBoxLine:Shape = new Shape();
 			toolBoxLine.graphics.beginFill(Styles.REALLY_GREEN);
@@ -147,20 +148,27 @@ package com.statusBar
 				toolBoxBg.addChild(box);
 			}
 			
-			var icon:Loader;
+			var icons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
+			icons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].url));
+			icons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].url));
+			icons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].url));
+			
+			var icon:ToolButton;
 			boxIndent = 45;
-			for (var j:uint = 0; j < 5; j++)
+			for each(var data:ToolButtonData in icons)
 			{
-				icon = new Loader();
-				icon.load(new URLRequest('chrome/weapons/mine.swf'));
-				icon.x = boxIndent + j * 74;
-				icon.y = 30;
-				icon.filters = [Styles.SCREEN_GLOW];
-				toolBoxBg.addChild(icon);
+				icon = new ToolButton(data);
+				icon.x = boxIndent + icons.indexOf(data) * 74 + toolBoxBg.x;
+				icon.y = 30 + toolBoxBg.y;
+//				icon.filters = [Styles.SCREEN_GLOW];
+				icon.addEventListener(MouseEvent.MOUSE_OVER, onIconRollover);
+				icon.addEventListener(MouseEvent.CLICK, onToolClick);
+				icon.mouseChildren = false;
+				icon.buttonMode = true;
+				addChild(icon);
 			}
 			
 			
-			addChild(toolBoxBg);
 			
 			// - FS BUTTON -
 			var fullScreenButton:StatusBox = new StatusBox(25, 25, cornerRadius);
@@ -190,12 +198,7 @@ package com.statusBar
 		private function updateTarget(target:String):void
 		{
 			_currentAnimal = target;
-			switch(target)
-			{
-				case AskTony.PANDA :
-					_animalFace.load(new URLRequest('chrome/panda.swf'));
-					break;
-			}
+			_animalFace.load(new URLRequest(AskTony.classInfo[target].url));
 		}
 		
 		private function updateTabs(targetTab:String):void
@@ -219,18 +222,7 @@ package com.statusBar
 		private function onTabOver(e:MouseEvent):void
 		{
 			e.currentTarget.gotoAndStop(2);
-			var message:String;
-			switch(e.currentTarget.name)
-			{
-				case BAIT :
-					message = OverlayEvent.BAIT;
-					break;
-				case WEAPONS :
-					message = OverlayEvent.WEAPONS;
-					break;
-				default :
-			}
-			parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
+			showOverlay(e.currentTarget.name);
 		}
 		
 		private function onTabOut(e:MouseEvent):void
@@ -239,16 +231,47 @@ package com.statusBar
 				e.currentTarget.gotoAndStop(1);
 		}
 		
-		private function onBoxRollover(e:MouseEvent):void
+		private function onIconRollover(e:MouseEvent):void
+		{
+			showOverlay(e.currentTarget.name);
+		}
+		
+		private function onToolClick(e:MouseEvent):void
+		{
+			trace('tool clicked: ' + e.currentTarget.name);
+		}
+		
+		private function showOverlay(name:String):void
 		{
 			var message:String;
-			switch(e.currentTarget.name)
+			switch(name)
 			{
 				case CASH_MONIES :
 					message = OverlayEvent.CASH_MONIES;
 					break;
 				case KILL_BOX :
-					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomInsult() + " " + _currentAnimal;
+					message = OverlayEvent.KILL_BOX + OverlayEvent.getRandomCompliment() + " " + AskTony.classInfo[_currentAnimal].name + "s";
+					break;
+				case BAIT :
+					message = OverlayEvent.BAIT;
+					break;
+				case WEAPONS :
+					message = OverlayEvent.WEAPONS;
+					break;
+				case AskTony.MINES_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.MINES_TOOL].cost + OverlayEvent.MINES_TOOL;
+					break;
+				case AskTony.MARINES_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.MARINES_TOOL].cost + OverlayEvent.MARINES_TOOL;
+					break;
+				case AskTony.COMMANDO_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.COMMANDO_TOOL].cost + OverlayEvent.COMMANDO_TOOL;
+					break;
+				case AskTony.FIRE_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.FIRE_TOOL].cost + OverlayEvent.FIRE_TOOL;
+					break;
+				case AskTony.BOOMBA_TOOL :
+					message = "$" + AskTony.toolInfo[AskTony.BOOMBA_TOOL].cost + OverlayEvent.BOOMBA_TOOL;
 					break;
 				default :
 			}
