@@ -15,6 +15,7 @@ package com.lookup
 
 	public class AskTony
 	{
+		public static const HEALTH_NOISE:Number 		= 0.1;
 		//Animals
 		public static const PANDA:String 				= 'PANDA';
 		public static const SEAL:String 				= 'SEAL';
