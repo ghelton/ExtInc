@@ -58,7 +58,7 @@ package com.gameBoard
 				
 				for(var enemyType:String in $type)			
 				{
-					for(count = $type[enemyType]; count > 0; count--)
+					for(count = int($type[enemyType]); count > 0; count--)
 					{
 						testPoint = new Point(Math.random() * _bg.width, Math.random() * _bg.height);
 						createEntity(testPoint, enemyType);
@@ -120,8 +120,9 @@ package com.gameBoard
 //		}
 		private function clearAttack(attack:AttackEvent):void 
 		{
-			_entityLayer.mouseChildren = true;
-			setAttackType(null);
+			_attack = null;
+//			_entityLayer.mouseChildren = true;
+//			setAttackType(null);
 		}
 		private function fireAttack($attack:AttackEvent):void 
 		{

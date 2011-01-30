@@ -27,7 +27,8 @@ package com.creatures
 		
 		protected override function changeHealth(healthDelta:Number):void
 		{
-			_image.scaleX = _image.scaleY = this.getHealth() / 100;
+			_image.scaleX = _image.scaleY = (this.getHealth() / 200) + 0.5;
+			super.changeHealth(healthDelta);
 		}
 	}
 }
