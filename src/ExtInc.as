@@ -16,6 +16,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.FullScreenEvent;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.text.Font;
@@ -29,7 +30,7 @@ package
 	 * @author G$
 	 * @since Jan 28, 2011
 	 */
-	//[SWF(width="1024", height="768", version_major="10", frameRate="24")]
+	[SWF(width="1024", height="768", version_major="10", frameRate="24")]
 	
 	public class ExtInc extends Sprite
 	{
@@ -132,13 +133,22 @@ package
 			_statusBar = new StatusBar();
 			addChild(_statusBar);
 			
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
+//			addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+//			addEventListener(Event.RESIZE, onResize);
 		}
 		
 		//--------------------------------------
 		// PROTECTED & PRIVATE METHODS
 		//--------------------------------------	
+		/*private function onFullScreen(e:FullScreenEvent):void
+		{
+			
+		}
+		
+		private function onResize(e:Event):void
+		{
+			
+		}*/
 		
 		//--------------------------------------
 		// PUBLIC METHODS

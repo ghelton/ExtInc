@@ -2,6 +2,10 @@
 package com.statusBar
 {
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
+	import flash.display.StageScaleMode;
+	import flash.events.MouseEvent;
 	
 	
 	/**
@@ -24,6 +28,7 @@ package com.statusBar
 		private var _cashMoniesBg:StatusBg;
 		private var _killBoxBg:StatusBg;
 		private var _toolBoxBg:StatusBg;
+		private var _fullScreenButton:StatusBg;
 		
 		//--------------------------------------
 		// CONSTRUCTOR
@@ -51,12 +56,29 @@ package com.statusBar
 			_toolBoxBg.x = 495;
 			_toolBoxBg.y = 662;
 			addChild(_toolBoxBg);
+			
+			// - FS BUTTON -
+			_fullScreenButton = new StatusBg(25, 25, cornerRadius);
+			_fullScreenButton.x = 950;
+			_fullScreenButton.y = 700;
+			addChild(_fullScreenButton);
+			_fullScreenButton.addEventListener(MouseEvent.CLICK, onFsClick);
+			_fullScreenButton.buttonMode = true;
+			
 		}
 		
 		//--------------------------------------
 		// PROTECTED & PRIVATE METHODS
 		//--------------------------------------	
-		
+		private function onFsClick(e:MouseEvent):void
+		{
+			if(stage.displayState == StageDisplayState.NORMAL)
+			{
+				stage.displayState = StageDisplayState.FULL_SCREEN;
+			} else {
+				stage.displayState = StageDisplayState.NORMAL;
+			}
+		}
 		
 		//--------------------------------------
 		// PUBLIC METHODS
