@@ -172,7 +172,7 @@ package com.lookup
 				MINE:			30
 			};
 		
-		//rate of fire, attacks per second
+		//rate of fire, seconds between attacks
 		public static const entityROFArray:Object = 
 			{
 				PANDA:			1,
