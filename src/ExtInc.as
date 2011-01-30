@@ -8,13 +8,16 @@ package
 	import com.player.PlayerData;
 	import com.player.tools.Tool;
 	import com.player.tools.ToolEvent;
+	import com.statusBar.StatusBar;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
+	import flash.text.Font;
 	import flash.text.engine.TabAlignment;
 	import flash.utils.getTimer;
 	
@@ -65,11 +68,45 @@ package
 
 		private var _bg:Loader;
 		private var _gameBoardMask:Loader;
-		private var _
+		private var _statusBar:StatusBar;
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
 		public function ExtInc()
+		{
+			trace(">  >  >  >  >  >  >  >  >  >  >  >\n> Ext Inc.\n> Created by TigerStyle\n> © " + new Date().getFullYear() + "\n>  >  >  >  >  >  >  >  >  >  >  >");
+			
+			// - FONTS -
+			var fontLoader:Loader = new Loader();
+			fontLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onFontsLoaded);
+			fontLoader.load(new URLRequest('chrome/Fonts.swf'));
+			
+		}
+		
+		private function onFontsLoaded(e:Event):void
+		{
+			traceFonts();
+			loadGame();
+			//Font.registerFont(TransponderAOE);
+//			Font.registerFont('TransponderGridAOE');
+//			traceFonts();
+		}
+		
+		private function traceFonts():void
+		{
+			trace('traceFonts');
+			var allFonts:Array = Font.enumerateFonts(true);
+			var font:Font;
+			//Logger.getInstance().log("[FontLoader] - Fonts Enumerated: " + allFonts.length);
+			for( var i:Number = 0 ; i < allFonts.length ; i++)
+			{
+				if (allFonts[i].fontType == "embedded"){ 
+					/**TRACEDISABLE:trace('[FontLoader.whatFonts] name: '+allFonts[i].fontName +', style: '+allFonts[i].fontStyle+', type: '+allFonts[i].fontType);*/
+				}
+			}
+		}
+		
+		private function loadGame():void
 		{
 			// - BG -
 			_bg = new Loader();
@@ -87,8 +124,8 @@ package
 			gameBoard.mask = _gameBoardMask;
 			addChild(gameBoard);
 			
-			gameBoard.x = _gameBoardMask.x = 55; 
-			gameBoard.y = _gameBoardMask.y = 40;
+			gameBoard.x = _gameBoardMask.x = 54; 
+			gameBoard.y = _gameBoardMask.y = 39;
 			
 			var testPoint:Point;
 			for(var count:int = 10; count >= 0; count--)
@@ -98,7 +135,8 @@ package
 			}
 			
 			// - STATUS BAR -
-			
+			_statusBar = new StatusBar();
+			addChild(_statusBar);
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
