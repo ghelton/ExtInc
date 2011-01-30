@@ -162,7 +162,8 @@ package com.statusBar
 			var weapons:Vector.<ToolButtonData> = new Vector.<ToolButtonData>();
 			weapons.push(new ToolButtonData(AskTony.MINES_TOOL, AskTony.toolInfo[AskTony.MINES_TOOL].iconUrl));
 			weapons.push(new ToolButtonData(AskTony.FIRE_TOOL, AskTony.toolInfo[AskTony.FIRE_TOOL].iconUrl));
-			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+//			weapons.push(new ToolButtonData(AskTony.BOOMBA_TOOL, AskTony.toolInfo[AskTony.BOOMBA_TOOL].iconUrl));
+			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			weapons.push(new ToolButtonData('Coming Soon', 'chrome/comingsoon.swf'));
 			
@@ -214,8 +215,8 @@ package com.statusBar
 			fullScreenButton.addEventListener(MouseEvent.CLICK, onFsClick);
 			fullScreenButton.buttonMode = true;
 			
-			updateTarget(AskTony.PANDA);
-			updateKillCount(10);
+			updateTarget(ExtInc.playerData.target);
+			updateKillCount(ExtInc.playerData.killCount);
 			updateTabs(WEAPONS);
 		}
 		
@@ -284,7 +285,8 @@ package com.statusBar
 			var message:String;
 			if(ExtInc.playerData.money >= AskTony.toolInfo[tool].cost)
 			{
-				updateCash(-AskTony.toolInfo[tool].cost);
+				ExtInc.playerData.money -= AskTony.toolInfo[tool].cost;
+				updateCash(ExtInc.playerData.money);
 				message = AskTony.toolInfo[tool].name + " " + OverlayEvent.PURCHASED;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_MESSAGE, message));
 				var event:AttackEvent = new AttackEvent(AttackEvent.PURCHASED, AskTony.toolInfo[tool].attackType, new Point(0,0));
@@ -294,12 +296,6 @@ package com.statusBar
 				message = OverlayEvent.BROKE;
 				parent.dispatchEvent(new OverlayEvent(OverlayEvent.SHOW_ERROR_MESSAGE, message));
 			}
-		}
-		
-		private function updateCash(diff:int):void
-		{
-			ExtInc.playerData.money += diff;
-			_cashLabel.text = '$' + ExtInc.playerData.money.toString();
 		}
 		
 		private function showOverlay(name:String):void
@@ -342,6 +338,11 @@ package com.statusBar
 		public function updateKillCount(newKillCount:uint):void
 		{
 			_killLabel.text = 'Kill\n' + newKillCount;
+		}
+		
+		public function updateCash(newCash:uint):void
+		{
+			_cashLabel.text = '$' + newCash;
 		}
 		
 		//--------------------------------------
