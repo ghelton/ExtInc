@@ -56,13 +56,13 @@ package com.lookup
 		
 		public static const startingQuantities:Object =
 			{
-				PANDA: 			5,//gray
-				TIGER: 			2,//orange
+				PANDA: 			6,//gray
+				TIGER: 			3,//orange
 				SEAL: 			5,//blue gray
 				COMMANDO:		0,//dark green
 				MARINE:			0,//pink
 				FIRE:			0,//yellow
-				TREE:			4,//light green
+				TREE:			10,//light green
 				PANDA_BAIT:		0,
 				SEAL_BAIT:		0,
 				TIGER_BAIT:		0,
@@ -157,7 +157,7 @@ package com.lookup
 					PANDA:0, SEAL:0, TIGER:-50, COMMANDO:-35, MARINE:-20, FIRE:-80, TREE:10, PANDA_BAIT:20, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:0, DISTRACTOR:0
 				},
 				TIGER:{
-					PANDA:0, SEAL:0, TIGER:-10, COMMANDO:-35, MARINE:-20, FIRE:-150, TREE:10, PANDA_BAIT:20, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100, DISTRACTOR:0
+					PANDA:10, SEAL:10, TIGER:-10, COMMANDO:-35, MARINE:-20, FIRE:-150, TREE:10, PANDA_BAIT:20, SEAL_BAIT:-5, TIGER_BAIT:8, MINE:-100, DISTRACTOR:0
 				},
 				SEAL:{
 					PANDA:0, SEAL:0, TIGER:-10, COMMANDO:-50, MARINE:-30, FIRE:-150, TREE:10, PANDA_BAIT:10, SEAL_BAIT:20, TIGER_BAIT:0, MINE:-100, DISTRACTOR:0

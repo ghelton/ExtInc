@@ -15,7 +15,7 @@ package com.creatures
 	public class Entity extends EventDispatcher
 	{
 		private static const DISABLE_ASSETS:Boolean = false;
-		private static const MAXIMUM_ROTATION_DELTA:Number = 10;
+		private static const MAXIMUM_ROTATION_DELTA:Number = 30;
 		public static var _masterTime:Number;
 		public static var bounds:Rectangle;
 		
