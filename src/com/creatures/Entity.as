@@ -10,12 +10,19 @@ package com.creatures
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	
 	
 	public class Entity extends EventDispatcher
 	{
+		public static const TEMP_ENTITY_SIZE:Number = 50;
+		
+		protected static const PLACEHOLDER_SIZE:Number = 5;
+		
+		private static const MINIMUM_SAFE_DISTANCE:Number = 15; //used for collision
 		private static const DISABLE_ASSETS:Boolean = false;
 		private static const MAXIMUM_ROTATION_DELTA:Number = 10;
+		
 		public static var _masterTime:Number;
 		public static var bounds:Rectangle;
 		
@@ -28,7 +35,13 @@ package com.creatures
 		{
 			_hitList = list;
 		}
-
+		private var _idleStartTime:Number = 0;
+		
+		private var _predatorAggroRange:Number = 0;
+		private var _preyAggroRange:Number = 0;
+		
+		private var _splitHealth:Number = AskTony.splitHealth;
+		private var _range:Number = 0;
 		private var _speed:Number = 0;
 		public var fearVector:Point = new Point();
 		private var _type:String;
@@ -37,20 +50,50 @@ package com.creatures
 		private var _health:Number;
 		private var _centerPoint:Point;
 		private var _rotation:Number;
+		private var _rateOfFire:Number;
 		
-		public static const TEMP_ENTITY_SIZE:Number = 50;
-		protected static const PLACEHOLDER_SIZE:Number = 5;
 		
 		private var _lastAttackTime:Number = 0;
 		private var _lastMoveTime:Number = _masterTime;
 		private var _lastRegenTime:Number = _masterTime;
+		private var _graphicOffset:Point;
+		
+		private var _regen:Number;
+		
+		private var _myFactionMatrix:Dictionary = new Dictionary();
+		private var _myFearLookup:Dictionary = new Dictionary();
+		private var _myDamageLookup:Dictionary = new Dictionary();
 		
 		public function Entity($graphic:Sprite, $health:Number, $point:Point, $type:String)
 		{
+			var key:Object;
+			
+			_type = $type;
+			_regen = AskTony.entityRegenArray[_type];
+			
 			super();
 			
+			_rateOfFire = AskTony.entityROFArray[_type];
+			
+			_predatorAggroRange = AskTony.entityPredatorAgroRangeArray[_type];
+			_preyAggroRange = AskTony.entityPreyAgroRangeArray[_type];
+			
+			_entityFactionMatrix = AskTony.entityFactionMatrix;
+			_range = AskTony.entityRangeArray[_type];
+			//build faction matrix
+			var tempStats:Object = _entityFactionMatrix[_type];
+			for(key in tempStats)
+				_myFactionMatrix[key] = tempStats[key];
+			
+			//build fear matrix
+			tempStats = AskTony.entityFearMatrix[_type];
+			for(key in tempStats)
+				_myFearLookup[key] = tempStats[key];
+			
+			var offsets:Object = AskTony.offsets[_type];
+			_graphicOffset = new Point(offsets.x, offsets.y);
+			
 			_idleStartTime = _masterTime - (Math.random() * 5);
-			_type = $type;
 			_speed = Number(AskTony.entitySpeedArray[_type]);
 			if(!DISABLE_ASSETS)
 				_image = $graphic;
@@ -84,20 +127,20 @@ package com.creatures
 			else
 				_image.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
+		
 		protected function init(e:Event = null):void
 		{
 			_image.removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			var offsets:Object = AskTony.offsets[_type];
 			var centerContainer:Sprite = new Sprite();
-////			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
+			////			_image.removeEventListener(Event.REMOVED_FROM_STAGE, init);
 			centerContainer.rotation = _image.rotation;
 			_image.filters = NORMAL_FILTERS;
 			centerContainer.scaleX = _image.scaleX;
 			centerContainer.scaleY = _image.scaleY;
 			_image.rotation = 0;
-			_image.x = offsets.x;
-			_image.y = offsets.y;
+			_image.x = _graphicOffset.x;
+			_image.y = _graphicOffset.y;
 			_image.scaleX = _image.scaleY = 1;
 			_image.parent.addChild(centerContainer);
 			centerContainer.addChild(_image);
@@ -112,7 +155,7 @@ package com.creatures
 		{
 			return _image;
 		}
-
+		
 		public function setMasterTime(masterTime:Number):void
 		{
 			_masterTime = masterTime;
@@ -137,7 +180,7 @@ package com.creatures
 		//HELPERS
 		public function canAttack():Boolean
 		{
-			return _health > 0 && ((AskTony.entityROFArray[_type] + _lastAttackTime) < _masterTime);
+			return _health > 0 && ((_rateOfFire + _lastAttackTime) < _masterTime);
 		}
 		
 		public function distanceFromEntity(other:Entity):Number
@@ -150,11 +193,12 @@ package com.creatures
 		
 		public function attackEntity(enemy:Entity):Number
 		{
-			var healthChange:Number = AskTony.entityDamageMatrix[_type][enemy.type];
+			var healthChange:Number = _myDamageLookup[enemy.type];
 			
 			changeHealth(healthChange, enemy.type);
 			return healthChange;
 		}
+		
 		protected function changeHealth(healthDelta:Number, attackedBy:String):void
 		{
 			if(_health > 0)
@@ -166,7 +210,7 @@ package com.creatures
 					_health = 0;
 					killed(attackedBy);
 				}
-				else if(_health >= AskTony.splitHealth)
+				else if(_health >= _splitHealth)
 					split();
 				
 				_image.scaleX = _image.scaleY = (this.getHealth() / 300) + 0.8;
@@ -175,9 +219,9 @@ package com.creatures
 		
 		protected function killed(killedByType:String):void
 		{
-//			_killedEvent:EntityEvent = new EntityEvent(EntityEvent.KILLED, this);
-
-//			if(_killedEvent != null)
+			//			_killedEvent:EntityEvent = new EntityEvent(EntityEvent.KILLED, this);
+			
+			//			if(_killedEvent != null)
 			_image.filters = NORMAL_FILTERS;
 			with(_image.graphics)
 			{
@@ -196,7 +240,7 @@ package com.creatures
 		private function regenerate():void
 		{
 			var deltaTime:Number = _masterTime - _lastRegenTime;
-			var deltaHealth:Number = deltaTime * AskTony.entityRegenArray[_type];
+			var deltaHealth:Number = deltaTime * _regen;
 			changeHealth(deltaHealth, type);
 			_lastRegenTime = _masterTime;
 		}
@@ -210,12 +254,9 @@ package com.creatures
 			_image.y = (_centerPoint.y);	
 		}
 		
-		private static const MINIMUM_SAFE_DISTANCE:Number = 15;
-		private var _idleStartTime:Number = 0;
-		
 		public function moveTick():void
 		{
-			if(AskTony.entitySpeedArray[type] == 0)
+			if(_speed == 0)
 				return;
 			
 			var deltaTime:Number = _masterTime - _lastMoveTime;
@@ -224,7 +265,7 @@ package com.creatures
 			
 			
 			var wayPointDirection:Point = null;
-		
+			
 			if(_waypoint !== null) {
 				wayPointDirection = _waypoint.subtract(_centerPoint);
 				wayPointDirection.normalize(1);
@@ -232,9 +273,9 @@ package com.creatures
 			} else {
 				deltaVector = new Point(fearVector.x * deltaTime * _speed, fearVector.y * deltaTime * _speed);
 			}
-
+			
 			var targetPoint:Point = _centerPoint.add(deltaVector);
-
+			
 			var vectLength:Number;
 			var checkVect:Point;
 			var dot:Number;
@@ -242,7 +283,7 @@ package com.creatures
 			{
 				if(entity === this)
 					continue
-				checkVect = entity._centerPoint.subtract(targetPoint);
+					checkVect = entity._centerPoint.subtract(targetPoint);
 				vectLength = checkVect.length;
 				if(vectLength < (MINIMUM_SAFE_DISTANCE * _image.scaleX))
 				{
@@ -255,7 +296,7 @@ package com.creatures
 			var turnToIdle:Boolean = false;
 			deltaVector = targetPoint.subtract(_centerPoint);
 			_centerPoint = targetPoint;
-
+			
 			
 			if(deltaVector.length < 0.0000000000001)
 			{
@@ -273,35 +314,6 @@ package com.creatures
 			if(deltaVector.length > 1)
 			{
 				targetRotation = ((Math.atan2(deltaVector.y, deltaVector.x)) * 180 / Math.PI) - 90;
-				
-				//			targetRotation = flashitizeRotation(targetRotation);
-				
-				//expanded to make debug super fast no time to fix now!
-//				var deltaRotation:Number;
-//				var newRotation:Number = _image.rotation;
-//				var radCurrent:Number = (newRotation * (Math.PI / 180));
-//				deltaRotation=Math.atan2(Math.sin(targetRotation-radCurrent),Math.cos(targetRotation-radCurrent)) * 180 / Math.PI;
-//				
-//				//			deltaRotation = (Math.atan2(Math.sin(targetRotation - radCurrent)
-//				//				, Math.cos(targetRotation - radCurrent))  * 180 / Math.PI);
-//				//			if(targetRotation < 0 && newRotation > 0) //posible discontinuity
-//				//			{
-//				//				var checkRotation:Number = unflashitizeRotation(targetRotation) - unflashitizeRotation(newRotation);
-//				//				if(Math.abs(newRotation) > Math.abs(checkRotation))
-//				//					deltaRotation = checkRotation;
-//				//			}
-//				if(Math.abs(deltaRotation) > 90)
-//					deltaRotation = flashitizeRotation(deltaRotation);
-//				
-//				if(deltaRotation > MAXIMUM_ROTATION_DELTA) {
-//					newRotation += MAXIMUM_ROTATION_DELTA;
-//				}
-//				else if(deltaRotation < -MAXIMUM_ROTATION_DELTA) {
-//					newRotation -= -MAXIMUM_ROTATION_DELTA;
-//				}
-//				else
-//					newRotation += deltaRotation;
-				//			trace('targetRotation: ' + targetRotation + 'newRotation: ' + newRotation + ' image.Rotation ' + _image.rotation);
 				
 				_image.rotation = targetRotation;
 				//			_image.rotation = targetRotation;
@@ -351,6 +363,8 @@ package com.creatures
 		{
 			_waypoint = waypoint;
 		}
+		
+		private var _entityFactionMatrix:Object;
 		public function attackTick():void
 		{
 			var distance:Number = 0;
@@ -370,9 +384,9 @@ package com.creatures
 					continue;
 				}
 				distance = distanceFromEntity(enemy);
-				if( AskTony.entityFactionMatrix[_type][enemy.type] > 0
-					&& (distance <= closestDistance && distance <= AskTony.entityRangeArray[_type])
-					&& (bestEntity === null || AskTony.entityFactionMatrix[_type][enemy.type] >= AskTony.entityFactionMatrix[_type][bestEntity.type]))
+				if( _myFactionMatrix[enemy.type] > 0
+					&& (distance <= closestDistance && distance <= _range)
+					&& (bestEntity === null || _myFactionMatrix[enemy.type] >= _myFactionMatrix[bestEntity.type]))
 				{
 					bestEntity = enemy;
 					closestDistance = distance;
@@ -423,17 +437,17 @@ package com.creatures
 				}
 				distance = distanceFromEntity(enemy);
 				
-				if(AskTony.entityFearMatrix[type][enemy.type] > 0)
+				if(_myFearLookup[enemy.type] > 0)
 				{
-					if(distance > Math.abs(AskTony.entityPredatorAgroRangeArray[_type] * AskTony.entityFearMatrix[_type][enemy.type]))
+					if(distance > Math.abs(_predatorAggroRange * _myFearLookup[enemy.type]))
 						continue;
 					
-					scale = AskTony.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * ((2000 - distance ) / 2000);
+					scale = _myFearLookup[enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * ((2000 - distance ) / 2000);
 				} else {
-					if(distance > Math.abs(AskTony.entityPreyAgroRangeArray[_type] * AskTony.entityFearMatrix[_type][enemy.type]))
+					if(distance > Math.abs(_preyAggroRange * _myFearLookup[enemy.type]))
 						continue;
 					
-					scale = AskTony.entityFearMatrix[type][enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distance * 1/100);
+					scale = _myFearLookup[enemy.type] * (.25 + .75 * (enemy.getHealth() * 1/100)) * Math.exp(-distance * 1/100);
 				}
 				
 				differenceVector = enemy._centerPoint.subtract(_centerPoint);
@@ -453,9 +467,40 @@ package com.creatures
 			newFearVector.normalize(0.25);
 			
 			fearVector = fearVector.add(newFearVector);
-//			fearVector.x *= 0.5;
-//			fearVector.y *= 0.5;
+			//			fearVector.x *= 0.5;
+			//			fearVector.y *= 0.5;
 			
 		}
+		
+		
+		//			targetRotation = flashitizeRotation(targetRotation);
+		
+		//expanded to make debug super fast no time to fix now!
+		//				var deltaRotation:Number;
+		//				var newRotation:Number = _image.rotation;
+		//				var radCurrent:Number = (newRotation * (Math.PI / 180));
+		//				deltaRotation=Math.atan2(Math.sin(targetRotation-radCurrent),Math.cos(targetRotation-radCurrent)) * 180 / Math.PI;
+		//				
+		//				//			deltaRotation = (Math.atan2(Math.sin(targetRotation - radCurrent)
+		//				//				, Math.cos(targetRotation - radCurrent))  * 180 / Math.PI);
+		//				//			if(targetRotation < 0 && newRotation > 0) //posible discontinuity
+		//				//			{
+		//				//				var checkRotation:Number = unflashitizeRotation(targetRotation) - unflashitizeRotation(newRotation);
+		//				//				if(Math.abs(newRotation) > Math.abs(checkRotation))
+		//				//					deltaRotation = checkRotation;
+		//				//			}
+		//				if(Math.abs(deltaRotation) > 90)
+		//					deltaRotation = flashitizeRotation(deltaRotation);
+		//				
+		//				if(deltaRotation > MAXIMUM_ROTATION_DELTA) {
+		//					newRotation += MAXIMUM_ROTATION_DELTA;
+		//				}
+		//				else if(deltaRotation < -MAXIMUM_ROTATION_DELTA) {
+		//					newRotation -= -MAXIMUM_ROTATION_DELTA;
+		//				}
+		//				else
+		//					newRotation += deltaRotation;
+		//			trace('targetRotation: ' + targetRotation + 'newRotation: ' + newRotation + ' image.Rotation ' + _image.rotation);
+		
 	}
 }
